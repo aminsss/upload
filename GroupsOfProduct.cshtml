@@ -1,0 +1,19 @@
+﻿@model IEnumerable<Koshop.DomainClasses.ProductGroup>
+
+<select class="form-control" data-val="true" data-val-required="لطفا گروه محصول را انتخاب کنید" id="PageContetnt" name="PageContetnt">
+    <option value="">--لطفا یک گروه انتخاب کنید--</option>
+    @ShowTree(Model.Where(s => s.Depth == 0))
+</select>
+
+@helper ShowTree(IEnumerable<Koshop.DomainClasses.ProductGroup> product_Groups)
+    {
+        foreach (var item in product_Groups)
+        {
+            <option value="@item.GroupTitle.Trim().Replace(" ","-")">@string.Concat(Enumerable.Repeat(" - ", Convert.ToInt32(item.Depth))) @item.GroupTitle </option>
+            if (Model.Any(s => s.ParentId == item.ProductGroupId))
+            {
+                @ShowTree(Model.Where(s => s.ParentId == item.ProductGroupId));
+            }
+        }
+}
+
