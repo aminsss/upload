@@ -1,0 +1,78 @@
+﻿@model IEnumerable<Koshop.DomainClasses.City>
+@{
+    var statename = "";
+    if (Model.Any())
+    {
+        statename = "(" + Model.FirstOrDefault().State.StateName + ")";
+    }
+}
+<div class="an-accordion">
+    <div class="" id="accordioncity" role="tablist" aria-multiselectable="true">
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingOne">
+                <div class="an-tab-container">
+                    <div class="panel-title">
+                        <h4 class="no-margin">
+                            <a class="colapsflex" role="button" data-toggle="collapse" data-parent="#accordioncity" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                <span id="cityname"> شهر </span>
+                                <i class="ion-android-arrow-dropdown color-primary" />
+                            </a>
+                        </h4>
+                    </div>
+                </div>
+            </div>
+            <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne" aria-expanded="true">
+                <div class="panel-body">
+                    <div class="group-body">
+                        <span class="an-custom-checkbox radio dark-text">
+                            <input type="radio" name="slccityList" value="همه-شهرها" id="allcityradio" checked>
+                            <label for="allcityradio">همه شهرها @statename <span></span></label>
+                        </span>
+                        @foreach (var item in Model.Where(x => x.Store.Any(u => u.CityId == x.CityId)).OrderBy(o => o.CityName))
+                        {
+                            <span class="an-custom-checkbox radio dark-text">
+                                <input type="radio" name="slccityList" value="@item.CityName.Replace(" ","-")" id="@item.CityName">
+                                <label for="@item.CityName.Replace(" ","-")">@item.CityName<span></span></label>
+                            </span>
+                        }
+                        @*</select>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    $(document).ready(function () {
+        var thishref = getUrlVars();
+        if (thishref["city"] != undefined && thishref["city"] != '') {
+            $("#" + decodeURI(thishref["city"])).prop("checked", true);
+            $("#cityname").text("شهر - " + decodeURI(thishref["city"]).replace(/-/g, " "));
+
+        }
+    });
+
+    $(':radio[name="slccityList"]').change(function (e) {
+        $("#cityname").text("شهر - " + this.value.replace(/-/g, " "));
+        e.preventDefault();
+        $('#loadingIndicator').fadeIn();
+        var curentUrl = "/Product/search?city=" + this.value + getAllVars("slccityList");
+        $.ajax({
+            url: curentUrl,
+            success: function (result, status, xhr) {
+                $('#loadingIndicator').hide();
+                ChangeUrl("Product/search", curentUrl);
+                $('#dvContent').html(result);
+                $("#counter").html(" ( " + xhr.getResponseHeader("Counter") + " کالا ) ");
+
+            },
+            error: function () {
+                $('#loadingIndicator').hide();
+                //noty({ text: 'این کار در حال حاضر امکان پذیر نیست!', type: 'error', timeout: 4000, });
+            },
+        });
+    });
+</script>

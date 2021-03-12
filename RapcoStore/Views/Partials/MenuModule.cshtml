@@ -1,0 +1,20 @@
+﻿@model Koshop.DomainClasses.Module
+@{
+    Koshop.DataLayer.AppDbContext db = new Koshop.DataLayer.AppDbContext();
+}
+
+<h3>@Model.ModuleTitle</h3>
+
+<ul class="useful-links">
+    @foreach (var item in db.Menus.Where(x => x.MenuGroup.MenuModule.Any(y => y.MenuModuleId == Model.ModuleId)))
+    {
+        if (item.PageType != "5")
+        {
+            <li><a href="/page/@item.PageName">@item.MenuTitle</a></li>
+        }
+        else
+        {
+            <li><a href="/page/@item.PageName">@item.MenuTitle</a></li>
+        }
+    }
+</ul>

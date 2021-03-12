@@ -1,0 +1,135 @@
+﻿@model PagedList.IPagedList<Koshop.DomainClasses.StoresProduct>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    Koshop.DataLayer.AppDbContext db = new Koshop.DataLayer.AppDbContext();
+    string StID = Url.RequestContext.RouteData.Values["id"].ToString();
+}
+
+<div class="an-tab-container">
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane fade active in" id="lowest-detail">
+
+            @foreach (var item in Model)
+            {
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12" style="padding:0 0 0 10px">
+                    <div class="an-accordion">
+                        <div class="" id="accordionkala_@item.ProductId" role="tablist" aria-multiselectable="true">
+                           <div style="position:absolute;top:10px;right:10px;width:15px">
+                            @if (item.Color.Contains("F"))
+                                    {<div style="float:left;border-radius:10px;margin:1px 1px;background-color:#FFF;height:10px;width:10px;border:solid 1px #333" rel="help"></div>}
+                                    @if (item.Color.Contains("L"))
+                                    {<div style="float:left;border-radius:10px;margin:1px 1px;background-color:#000;height:10px;width:10px;border:solid 1px #333" rel="help"></div>}
+                                    @if (item.Color.Contains("R"))
+                                    {<div style="float:left;border-radius:10px;margin:1px 1px;background-color:#f00;height:10px;width:10px;border:solid 1px #333" rel="help"></div>}
+                                    @if (item.Color.Contains("B"))
+                                    {<div style="float:left;border-radius:10px;margin:1px 1px;background-color:#00f;height:10px;width:10px;border:solid 1px #333" rel="help"></div>}
+                                    @if (item.Color.Contains("Y"))
+                                    {<div style="float:left;border-radius:10px;margin:1px 1px;background-color:#ff0;height:10px;width:10px;border:solid 1px #333" rel="help"></div>}
+                                    @if (item.Color.Contains("G"))
+                                    {<div style="float:left;border-radius:10px;margin:1px 1px;background-color:#f1ea29;height:10px;width:10px;border:solid 1px #333" rel="help"></div>}
+                                    @if (item.Color.Contains("N"))
+                                    {<div style="float:left;border-radius:10px;margin:1px 1px;background-color:#0f0;height:10px;width:10px;border:solid 1px #333" rel="help"></div>}
+                                    @if (item.Color.Contains("H"))
+                                    {<div style="float:left;border-radius:10px;margin:1px 1px;background-color:#c5c5c1;height:10px;width:10px;border:solid 1px #333" rel="help"></div>}
+                                    @if (item.Color.Contains("P"))
+                                    {<div style="float:left;border-radius:10px;margin:1px 1px;background-color:#ffc0c0;height:10px;width:10px;border:solid 1px #333" rel="help"></div>}
+                                    @if (item.Color.Contains("V"))
+                                    {<div style="float:left;border-radius:10px;margin:1px 1px;background-color:#df00e4;height:10px;width:10px;border:solid 1px #333" rel="help"></div>}
+                                    @if (item.Color.Contains("O"))
+                                    {<div style="float:left;border-radius:10px;margin:1px 1px;background-color:#ffc800;height:10px;width:10px;border:solid 1px #333" rel="help"></div>}
+                                    @if (item.Color.Contains("W"))
+                                    {<div style="float:left;border-radius:10px;margin:1px 1px;background-color:#867272;height:10px;width:10px;border:solid 1px #333" rel="help"></div>}
+                                    @if (item.Color.Contains("Z"))
+                                    {<div style="float:left;border-radius:10px;margin:1px 1px;background-color:#ece6e6;height:10px;width:10px;border:solid 1px #333" rel="help"></div>}
+                                    @if (item.Color.Contains("S"))
+                                    {<div style="float:left;border-radius:10px;margin:1px 1px;background-color:#f5f2f2;height:10px;width:10px;border:solid 1px #333" rel="help"></div>}
+                                    @if (item.Color.Contains("A"))
+                                    {<div style="float:left;border-radius:10px;margin:1px 1px;background-image:linear-gradient(to right, red,orange,yellow,green,blue,violet);height:10px;width:10px;border:solid 1px #333" rel="help"></div>}
+                                </div>
+                            <div class="panel panel-default">
+                                <div id="collapsekala_@item.ProductId" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headkala_@item.ProductId" aria-expanded="false" style="height:0px;position: absolute;z-index: 1;width: 100%">
+                                    <a style="position:absolute;top:2px;right:2px;z-index:3" role="button" data-toggle="collapse" data-parent="#accordionkala" href="#collapsekala_@item.ProductId" aria-expanded="false" aria-controls="collapsekala_@item.ProductId" class="collapsed"><i class="ion-close-circled" style="color:#fff"></i></a>
+                                    <div class="panel-body" style="padding-top:0px;max-height:320px;min-height:320px;overflow:auto;background-color:#2c353a;opacity:0.95;border-radius:2px">
+                                        <div id="kala_@item.ProductId" name="kala_@item.ProductId" style="padding:12px 9px 0 0">
+                                            @foreach (var detl in db.ProductDetails.Where(x => x.ProductId == item.ProductId))
+                                            {
+                                            <span class="" style="font-weight:400;font-size:12px;display:flex;justify-content:space-between">
+                                                <span style="font-size:11px;color:#c1c1c1;white-space:nowrap;">@detl.DetailItem.DetailTitle</span>
+                                                <label style="color:aliceblue;white-space:pre-line;text-align: left;font-weight:100">@detl.Value </label>
+                                            </span>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="an-tab-container">
+                                    <div class="">
+                                        <div class="an-listing-single">
+                                            <div class="listing-img-container" style="text-align:center">
+                                                <img class="backgrkala" height="180" width="180" src="/Content/Upload/productImages/thumbnail/@item.Product.ProductImage" style=" margin:10px 0" />
+                                            </div>
+                                        </div> <!-- end listing-single -->
+                                        <div class="" style="padding:5px 5px">
+                                            <p style="max-height:45px;min-height:45px;font-size:13px"><a href="@Url.Action("search","mapshow",new { @id=item.Product.AliasName})">@Html.DisplayFor(modelitem => item.Product.ProductTitle)</a></p>
+                                            @if (item.OffPrice != "" && item.OffPrice != "0")
+                                            {
+                                                long takhfif = Convert.ToInt64(item.Price) * Convert.ToInt64(item.OffPrice) / 100;
+                                                long cost = Convert.ToInt64(item.Price) - takhfif;
+                                            <div style="max-height:20px;min-height:20px;">
+                                                <span style="padding:0px 6px;text-decoration: line-through;font-size:14px;color:#ccc;white-space:nowrap">@Html.DisplayFor(Model => item.Price) &nbsp; تومان</span>
+                                                <span class="color-primary" style="padding:0px 6px;font-size:15px;white-space:nowrap">@string.Format("{0:C}", cost) &nbsp;تومان</span>
+                                            </div>
+                                            }
+                                            else
+                                            {
+                                            <span class="color-primary" style="max-height:15px;min-height:15px;padding:0px 6px;font-size:15px;">@Html.DisplayFor(Model => item.Price) &nbsp;تومان</span>
+                                            }
+                                            <div class="listing-meta">
+                                                <span><a role="button" data-toggle="collapse" data-parent="#accordionkala" href="#collapsekala_@item.ProductId" aria-expanded="false" aria-controls="collapsekala_@item.ProductId" class="collapsed"><i class="ion-information-circled"></i></a></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            }
+        </div>
+    </div> <!-- end tab-content -->
+</div>
+
+<div class="col-md-12">
+    <div class="an-pagination">
+        <div id="myPager">
+
+            @Html.PagedListPager(
+                                       Model,
+                                page => Url.Action("", "Product", new { page, SearchString = ViewBag.SearchString, sortOption = ViewBag.sortOption, SlctGrpFilt = ViewBag.SlctGrpFilt, filt = ViewBag.filt, state = ViewBag.state, city = ViewBag.city }), PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new PagedListRenderOptions
+                                {
+                                    LinkToFirstPageFormat = "<<",
+                                    DisplayLinkToNextPage = PagedListDisplayMode.IfNeeded,
+                                    DisplayLinkToPreviousPage = PagedListDisplayMode.IfNeeded,
+                                    LinkToPreviousPageFormat = "<",
+                                    LinkToNextPageFormat = ">",
+                                    LinkToLastPageFormat = ">>",
+                                    DisplayLinkToLastPage = PagedListDisplayMode.IfNeeded,
+                                    DisplayLinkToFirstPage = PagedListDisplayMode.IfNeeded,
+                                    DisplayEllipsesWhenNotShowingAllPageNumbers = true,
+                                    MaximumPageNumbersToDisplay = 10,
+                                },
+                                 new AjaxOptions
+                                 {
+                                     InsertionMode = InsertionMode.Replace,
+                                     AllowCache = true,
+                                     HttpMethod = "Get",
+                                     UpdateTargetId = "dvContent",
+                                     LoadingElementId = "loadingIndicator"
+                                 })
+                         )
+        </div>
+    </div> <!-- an-pagination -->
+</div>

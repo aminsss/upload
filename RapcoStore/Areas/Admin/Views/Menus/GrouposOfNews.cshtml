@@ -1,0 +1,20 @@
+﻿@model IEnumerable<Koshop.DomainClasses.NewsGroup>
+@{Layout = null; }
+<select class="form-control" data-val="true" data-val-required="لطفا گروه خبری را انتخاب کنید" id="PageContetnt" name="PageContetnt">
+    <option value="">--لطفا یک گروه انتخاب کنید--</option>
+    @ShowTree(Model.Where(s => s.Depth == 0))
+</select>
+
+@helper ShowTree(IEnumerable<Koshop.DomainClasses.NewsGroup> news_Groups)
+    {
+        foreach (var item in news_Groups)
+        {
+            <option value="@item.NewsGroupId">@string.Concat(Enumerable.Repeat(" - ", Convert.ToInt32(item.Depth))) @item.GroupTitle </option>
+            if (Model.Any(s => s.ParentId == item.NewsGroupId))
+            {
+                @ShowTree(Model.Where(s => s.ParentId == item.NewsGroupId));
+            }
+        }
+}
+
+

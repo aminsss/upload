@@ -1,0 +1,251 @@
+﻿@model PagedList.IPagedList<Koshop.DomainClasses.NewsComment>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = " فهرست محصولات";
+}
+
+<div class="table-responsive portlet box border shadow">
+    <div class="portlet-heading">
+        <h2 class="col-md-10">@ViewBag.Title</h2>
+        <br />
+    </div>
+    @using (Html.BeginForm("Index", "NewsComment", FormMethod.Get))
+    {
+        <div class="row">
+            <div class="col-sm-4 m-b-20">
+               @* @Html.ActionLink("افزودن", "Create", null, new { @class = "btn btn-success btn-round" })*@
+            </div><!-- /.col-sm-4 -->
+            <div class="col-sm-4 m-b-20">
+                تعداد در صفحه
+                @Html.DropDownList("_pageSize", new SelectList(new Dictionary<string, int> { { "5", 5 }, { "10", 10 }, { "20", 20 }, { "50", 50 }, { "100", 100 } }, "Key", "Value", Model.PageSize), new { @class = "input-sm round", id = "pagesizelist" })
+            </div><!-- /.col-sm-4 -->
+            <div class="col-sm-4 m-b-20">
+            وضعیت انتشار
+                @Html.DropDownList("isActive", new SelectList(new Dictionary<bool,string> {
+               {  true ,"تایید شده" },
+               { false , "تایید نشده" },
+           },"Key" , "Value" , false),
+                    new { @class = "input-sm round" })
+            </div><!-- /.col-sm-4 -->
+        </div>
+    }
+
+    <table class="table table-bordered table-hover table-striped text-center" id="data-table">
+        <thead>
+            <tr>
+                <th>
+                    نام نظر دهنده
+                </th>
+                <th>
+                    نظر
+                </th>
+                <th>
+                    وضعیت
+                </th>
+                <th>
+                    تاریخ ارسال
+                </th>
+                <th>
+                    مطلب مرتبط
+                </th>
+                <th>
+                    عملیات
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+            <tr id="item_@item.NewsCommentId">
+                <td class="text-right">
+                    @if (item.UserId == null)
+                    {
+                        <img class="img-person img-circle" src="~/Content/Upload/Profile/thumbnail/no-photo.png">
+                    }
+                    else
+                    {
+                        <img class="img-person img-circle" src="~/Content/Upload/Profile/thumbnail/@item.User.Profile">
+                    }
+                    <span>
+                        @Html.DisplayFor(modelitem => item.Name)
+                    </span>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelitem => item.Comment)
+                </td>
+                <td>
+                    @if (item.IsActive == true)
+                    {
+                        <a id="btnActive_@item.NewsCommentId" class="label label-success" data-style="slide-right" onclick="ActiveFunc(@item.NewsCommentId)">تایید شده</a>
+                    }
+                    else
+                    {
+                        <a id="btnActive_@item.NewsCommentId" class="label label-danger" data-style="slide-right" onclick="ActiveFunc(@item.NewsCommentId)">تایید نشده</a>
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelitem => item.AddedDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelitem => item.News.NewsTitle)
+                </td>
+                <td>
+                    <a class="btn btn-danger btn-round" href="#" onclick="Delete(@item.NewsCommentId)">حذف</a>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+    <br />
+
+    <div class="row">
+        <div class="col-md-6">
+            صفحه @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) از @Model.PageCount
+        </div>
+        <div class="ltr col-md-6">
+            @Html.PagedListPager(Model, page => Url.Action("Index",
+                         new { page, _PageSize = Model.PageSize, currentFilter = ViewBag.CurrentFilter }))
+        </div>
+    </div>
+</div>
+
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 id="myModalLabel" class="myModalLabel">تیتر مودال</h4>
+            </div>
+            <div id="bodyModal" class="bodyModal">
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Script{
+    <script src="~/content/assets/plugins/ladda/dist/spin.min.js"></script>
+    <script src="~/content/assets/plugins/ladda/dist/ladda.min.js"></script>
+    <script src="~/content/assets/js/pages/ladda.js"></script>
+    <script>
+
+        function Delete(id) {
+            swal({
+                title: 'آیا اطمینان دارید؟',
+                text: "این عملیات برگشت پذیر نیست...",
+                type: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#f44336',
+                cancelButtonColor: '#777',
+                confirmButtonText: 'بله، حذف شود. '
+            }).then(function (result) {
+                $.ajax({
+                    url: "/admin/NewsComment/Delete",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: 'application/x-www-form-urlencoded; charset=utf-8',
+                    data: {
+                        __RequestVerificationToken: gettoken(),
+                        id: id
+                    },
+                    async: true,
+                    cache: false,
+                    success: function (result) {
+                        swal(
+                            'انتخاب شما حذف کردن بود.',
+                            'نظر با موفقیت حذف شد.',
+                            'success'
+                        ).then($("#item_" + id).hide(700))
+
+                    },
+                    error: function (xc) {
+                        swal(
+                            'خطا در پردازش.',
+                            'نظر به دلایلی قابل حذف نمیباشد.',
+                            'error'
+                        );
+                    }
+                })
+            }, function (dismiss) {
+                if (dismiss == 'cancel') {
+                    swal(
+                        'لغو گردید',
+                        'نظر همچنان وجود دارد.',
+                        'error'
+                    ).catch(swal.noop);;
+                }
+            }).catch(swal.noop);
+        }
+
+
+        function ActiveFunc(id) {
+            var isActive = true;
+            if ($("#btnActive_" + id).hasClass("label-success")) {
+                isActive = false;
+            }
+            var l = Ladda.create(document.querySelector("#btnActive_" + id));
+            l.start();
+            $.ajax({
+                url: "/admin/NewsComment/ChangeStatus",
+                dataType: "json",
+                type: "Post",
+                contentType: 'application/x-www-form-urlencoded; charset=utf-8',
+                data: {
+                    __RequestVerificationToken: gettoken(),
+                    commentId: id,
+                    isActive: isActive,
+                },
+                async: true,
+                //processData: false,
+                cache: false,
+                success: function (result) {
+                    l.stop();
+                    if (result == true) {
+                        if (isActive == false) {
+                            $("#btnActive_" + id).removeClass("label-success");
+                            $("#btnActive_" + id).text("تایید نشده");
+                            $("#btnActive_" + id).addClass("label-danger");
+                        }
+                        else {
+                            $("#btnActive_" + id).removeClass("label-danger");
+                            $("#btnActive_" + id).text("تایید شده");
+                            $("#btnActive_" + id).addClass("label-success");
+                        }
+                    }
+                    else {
+                        noty({ text: 'این کار در حال حاضر امکان پذیر نیست!', type: 'error', timeout: 4000, });
+                    }
+                },
+                error: function (result) {
+                    l.stop();
+                    noty({ text: 'این کار در حال حاضر امکان پذیر نیست!', type: 'error', timeout: 4000, });
+                }
+            });
+        }
+         function gettoken() {
+             var token = '@Html.AntiForgeryToken()';
+             token = $(token).val();
+             return token;
+        }
+    </script>
+
+    <script>
+        $("#pagesizelist").change(function (event) {
+            var form = $(event.target).parents("form");
+            form.submit();
+        });
+
+        $("#isActive").change(function (event) {
+            var form = $(event.target).parents("form");
+            form.submit();
+        });
+
+    </script>
+
+}
+
+@section Head{
+    <link href="~/content/assets/plugins/noty/css/flat.css" rel="stylesheet">
+    <link href="~/content/assets/plugins/ladda/dist/ladda-themeless.min.css" rel="stylesheet">
+}

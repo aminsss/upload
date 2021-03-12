@@ -1,0 +1,17 @@
+﻿@model IEnumerable<Koshop.DomainClasses.State>
+
+@if (ViewBag.selected == null && ViewBag.city != null)
+{
+    ViewBag.selected = Model.Where(x => x.City.Any(u => u.CityName == ViewBag.city.Replace("-", " "))).FirstOrDefault().StateName;
+}
+
+<option value="همه-استان-ها">-همه استان ها-</option>
+@foreach (var item in Model.OrderBy(x => x.StateName))
+{
+    var selected = "";
+    if (ViewBag.selected == item.StateName)
+    {
+        selected = "selected=selected";
+    }
+    <option @selected value="@item.StateName.Replace(" ","-")">@item.StateName</option>
+}

@@ -1,0 +1,110 @@
+﻿@model Koshop.DomainClasses.ProductGroup
+@{
+    Koshop.DataLayer.AppDbContext db = new Koshop.DataLayer.AppDbContext();
+    var path = Model.Path.Split('/');
+}
+<div class="an-accordion">
+    <div class="" id="accordionyadak" role="tablist" aria-multiselectable="true">
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingOne">
+                <div class="an-tab-container">
+                    <div class="panel-title">
+                        <h4 class="no-margin">
+                            <a class="colapsflex" role="button" data-toggle="collapse" data-parent="#accordionyadak" href="#collapseyadak" aria-expanded="true" aria-controls="collapseyadak">
+                                <span id="yadakGrp"> انتخاب یدک</span>
+                                <i class="ion-android-arrow-dropdown color-primary" />
+                            </a>
+                        </h4>
+                    </div>
+                </div>
+            </div>
+            <div id="collapseyadak" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingyadak" aria-expanded="true">
+                <div class="panel-body">
+                    <div class="group-body">
+                        @foreach (var item in path.AsEnumerable().Reverse())
+                        {
+
+                            if (item != "16" && item != "0")
+                            {
+                                int id = Convert.ToInt32(item);
+                                var parent = @db.ProductGroups.Where(x => x.ProductGroupId == id).FirstOrDefault();
+                                <span class="an-custom-checkbox radio dark-text">
+                                    <input type="radio" name="slcyadakList" value="@parent.GroupTitle.Replace(" ", "-")" id="@parent.GroupTitle.Replace(" ", "-")">
+                                    <label for="@parent.GroupTitle.Replace(" ", "-")">@string.Concat(Enumerable.Repeat(" ┊ ", Convert.ToInt16(parent.Depth) - 1)) @parent.GroupTitle<span></span></label>
+                                </span>
+                            }
+                            else if (item != "0")
+                            {
+                                int id = Convert.ToInt32(item);
+                                var parent = @db.ProductGroups.Where(x => x.ProductGroupId == id).FirstOrDefault();
+                                <span class="an-custom-checkbox radio dark-text">
+                                    <input type="radio" name="slcyadakList" value="@parent.GroupTitle.Replace(" ", "-")" id="@parent.GroupTitle.Replace(" ", "-")">
+                                    <label for="@parent.GroupTitle.Replace(" ", "-")">@string.Concat(Enumerable.Repeat(" ┊ ", Convert.ToInt16(parent.Depth))) @parent.GroupTitle<span></span></label>
+                                </span>
+                            }
+                        }
+
+
+                        @if (Model.Depth != 0)
+                        {
+                            <span class="an-custom-checkbox radio dark-text">
+                                <input type="radio" name="slcyadakList" value="@Model.GroupTitle.Replace(" ", "-")" id="@Model.GroupTitle.Replace(" ", "-")">
+                                <label for="@Model.GroupTitle.Replace(" ", "-")">@string.Concat(Enumerable.Repeat(" ┊ ", Convert.ToInt16(Model.Depth) - 1)) @Model.GroupTitle<span></span></label>
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="an-custom-checkbox radio dark-text">
+                                <input type="radio" name="slcyadakList" value="@Model.GroupTitle.Replace(" ", "-")" id="@Model.GroupTitle.Replace(" ", "-")">
+                                <label for="@Model.GroupTitle.Replace(" ", "-")">@string.Concat(Enumerable.Repeat(" ┊ ", Convert.ToInt16(Model.Depth))) @Model.GroupTitle<span></span></label>
+                            </span>
+                        }
+
+                        @foreach (var ittem in db.ProductGroups.Where(x => x.ParentId == Model.ProductGroupId))
+                        {
+                            <span class="an-custom-checkbox radio dark-text">
+                                <input type="radio" name="slcyadakList" value="@ittem.GroupTitle.Replace(" ", "-")" id="@ittem.GroupTitle.Replace(" ", "-")">
+                                <label for="@ittem.GroupTitle.Replace(" ", "-")">@string.Concat(Enumerable.Repeat(" ┊ ", Convert.ToInt16(ittem.Depth) - 1)) @ittem.GroupTitle<span></span></label>
+                            </span>
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    $(document).ready(function () {
+        var thishref = getUrlVars();
+        if (thishref["yadak"] != undefined && thishref["yadak"] != '') {
+            $("#" + decodeURI(thishref["yadak"])).prop("checked", true);
+        }
+        else {
+            $("#" + decodeURI("همه-قطعات")).prop("checked", true);
+        }
+    });
+
+    $(':radio[name="slcyadakList"]').change(function (e) {
+        var id = this.value;
+        e.preventDefault();
+        $('#loadingIndicator').fadeIn();
+        var curentUrl = "/Product/search?yadak=" + id + getAllVars("yadak");
+        $.ajax({
+            url: curentUrl,
+            success: function (result, status, xhr) {
+                $('#loadingIndicator').hide();
+                ChangeUrl("Product/search", curentUrl);
+                $('#dvContent').html(result);
+                $("#counter").html(" ( " + xhr.getResponseHeader("Counter") + " کالا ) ");
+                //yadaktreeCrtor(id);
+            },
+            error: function () {
+                $('#loadingIndicator').hide();
+            },
+        });
+    });
+</script>

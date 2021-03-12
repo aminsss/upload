@@ -1,0 +1,31 @@
+﻿@model Koshop.DomainClasses.MultiPictureModule
+
+@if (Model.MultiPictureItems.Any())
+{
+<section class="how-we-work-area ptb-100">
+    <div class="container">
+        <div class="section-title">
+            <span class="sub-title">@Model.Title</span>
+            <h2>@Model.TitleBold</h2>
+            <p>@Model.Description</p>
+        </div>
+
+        <div class="how-we-work-process">
+            <div class="process-list">
+                @foreach (var item in Model.MultiPictureItems)
+                {
+                    <div class="single-process">
+                        <div class="content" style="background:url(/Content/Modules/Images/thumbnail/@item.Image) ; background-size: cover ">
+                            <div class="number">
+                                @item.Title
+                            </div>
+                            <h3>@item.TitleBold</h3>
+                            <p>@item.Description</p>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+}

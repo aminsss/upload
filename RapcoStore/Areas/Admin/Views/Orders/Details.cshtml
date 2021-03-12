@@ -1,0 +1,42 @@
+﻿@model Koshop.DomainClasses.Order
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Orders</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Date)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Date)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsFinally)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsFinally)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.User.moblie)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.User.moblie)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.OrderId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

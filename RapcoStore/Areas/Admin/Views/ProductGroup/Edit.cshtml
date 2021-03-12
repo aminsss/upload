@@ -1,0 +1,90 @@
+﻿@model Koshop.DomainClasses.ProductGroup
+
+@{
+    ViewBag.Title = "ویرایش " + Server.HtmlDecode(Html.DisplayNameFor(model => model).ToString());
+    //Layout = null;
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal" style="padding:10px">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.ProductGroupId)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.GroupTitle, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.GroupTitle, null, new { @class = "form-control " })
+                @Html.ValidationMessageFor(model => model.GroupTitle, null, new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.ParentId, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <select class="form-control" data-val="true" data-val-required="لطفا والد گروه را انتخاب کنید"
+                        data-val-remote="نمیتوانید از گروه فعلی و زیر گروه های آن جهت گروه والد انتخاب کنید!" data-val-remote-additionalfields="*.ParentId,*.GroupID"
+                        data-val-remote-url="/Admin/ProductGroup/ErrorGroup" id="ParentId" name="ParentId">
+                    <option value="0">--ریشه گروه--</option>
+                    @Html.Action("GroupsOfProduct", "ProductGroup", new { area = "admin" })
+                </select>
+                @Html.ValidationMessageFor(model => model.ParentId, null, new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.AliasName, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.AliasName, null, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.AliasName, null, new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.IsActive, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.IsActive, new[] {
+new SelectListItem() { Text = "فعال", Value = bool.TrueString },
+new SelectListItem() { Text = "غیر فعال", Value = bool.FalseString },
+}, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.IsActive, null, new { @class = "text-danger" })
+            </div>
+            <br />
+        </div>
+        @*<div class="form-group">
+            @Html.LabelFor(model => model.type, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.type, null, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.type, null, new { @class = "text-danger" })
+            </div>
+        </div>*@
+        <div class="form-actions text-left">
+            <button type="submit" class="btn btn-info btn-round">
+                <i class="icon-check"></i>
+                ویرایش
+            </button>
+            <a  data-dismiss="modal" class="btn btn-warning btn-round">
+                <i class="icon-close"></i>
+                بازگشت
+            </a>
+        </div>
+    </div>
+}
+
+<script>
+     $(function () {
+            //Set the value of your TypeId <select> list to the element with value '33'
+         $('#ParentId').val('@Model.ParentId');
+        });
+</script>
+<script>
+     $(function () {
+            //Set the value of your TypeId <select>
+         $('#IsActive').val('@Model.IsActive');
+    });
+</script>
+
+
+<script type="text/javascript" language=javascript>
+    $.validator.unobtrusive.parse(document);
+</script>
+

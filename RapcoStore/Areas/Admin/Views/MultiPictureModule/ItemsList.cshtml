@@ -1,0 +1,115 @@
+﻿@model IEnumerable<Koshop.DomainClasses.MultiPictureItems>
+
+<div class=" portlet box row">
+            @foreach (var item in Model)
+            {
+                <div id="Item_@item.MultiPictureItemsId" class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
+                    <div class="portlet box border shadow">
+                        <div class="portlet-title">
+                            <h3 class="title">
+                                 @Html.DisplayFor(modelItem => item.Title)
+                            </h3>
+                        </div>
+                        <div class=" buttons-box">
+                            <a id="btnUpload_@item.MultiPictureItemsId"  class="btn btn-sm btn-default btn-round " rel="tooltip" title="آپلود عکس" onclick="UploadPic(@item.MultiPictureItemsId)">
+                                <i class="icon-picture"></i>
+                            </a>
+                        </div>
+                        <div class="row">
+                            <div class="portlet-body">
+                                <div class="content col-md-12">
+                                    <img class="img-responsive" style="height:150px" src="~/Content/Modules/Images/thumbnail/@item.Image">
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="text-center">
+                            <div class=" text-white">
+                                <a id="btnEdit_@item.MultiPictureItemsId" class="btn btn-info btn-round" data-style="slide-right" onclick="EditItems(@item.MultiPictureItemsId)">ویرایش</a>
+                                <a id="btnDelete_@item.MultiPictureItemsId" class="btn btn-danger btn-round" data-style="slide-right" onclick="DeleteItems(@item.MultiPictureItemsId)">حذف</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+</div>
+
+<script>
+    function EditItems(id) {
+        var l = Ladda.create(document.querySelector('#btnEdit_' + id));
+        l.start();
+        $.ajax({
+            url: "/admin/MultiPictureModule/EditItems",
+            type: "Get",
+            data: { MultiPictureItemsId: id }
+        }).done(function (result) {
+            $('#myModal').modal('show');
+            $('#myModalLabel').html('ویرایش آیتم جدید');
+            $('#bodyModal').html(result);
+            l.stop();
+        });
+    }
+
+    function UploadPic(id) {
+        var l = Ladda.create(document.querySelector('#btnUpload_' + id));
+        l.start();
+        $.ajax({
+            url: "/admin/MultiPictureModule/UploadImage",
+            type: "Get",
+            data: { MultiPictureItemsId: id }
+        }).done(function (result) {
+            $('#myModal').modal('show');
+            $('#myModalLabel').html('ویرایش آیتم جدید');
+            $('#bodyModal').html(result);
+            l.stop();
+        });
+    }
+
+
+
+    function DeleteItems(id) {
+        swal({
+            title: 'آیا اطمینان دارید؟',
+            text: "این عملیات برگشت پذیر نیست...",
+            type: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#f44336',
+            cancelButtonColor: '#777',
+            confirmButtonText: 'بله، حذف شود. '
+        }).then(function (result) {
+            $.ajax({
+                url: "/admin/MultiPictureModule/DeleteItems/" + id,
+                dataType: "json",
+                type: "POST",
+                //contentType: 'application/x-www-form-urlencoded; charset=utf-8',
+                data: {
+                },
+                async: true,
+                cache: false,
+                success: function (result) {
+                    swal(
+                        'انتخاب شما حذف کردن بود.',
+                        ' آیتم با موفقیت حذف شد.',
+                        'success'
+                    ).then($('#Item_' + id).hide(700))
+
+                },
+                error: function (xc) {
+                    swal(
+                        'خطا در پردازش.',
+                        'آیتم به دلایلی قابل حذف نمیباشد.',
+                        'error'
+                    );
+                }
+            })
+        }, function (dismiss) {
+            if (dismiss == 'cancel') {
+                swal(
+                    'لغو گردید',
+                    'آیتم همچنان وجود دارد.',
+                    'error'
+                ).catch(swal.noop);;
+            }
+        }).catch(swal.noop);
+    }
+</script>

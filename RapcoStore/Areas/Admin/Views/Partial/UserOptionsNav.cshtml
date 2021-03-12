@@ -1,0 +1,43 @@
+﻿@model Koshop.DomainClasses.User
+
+<a href="#" class="dropdown-toggle dropdown-hover" data-toggle="dropdown">
+    <img src="~/Content/Upload/Profile/thumbnail/@Model.Profile" alt="عکس پرفایل" width="40" height="20" class="img-circle img-responsive">
+    <span>@Model.Name</span>
+    <i class="icon-arrow-down"></i>
+</a>
+<ul class="dropdown-menu">
+    <li>
+        <a href="/admin/users/edit/@Model.UserId">
+            <i class="icon-note"></i>
+            ویرایش پروفایل
+        </a>
+    </li>
+    <li>
+        <a href="/Admin/Users/changePass/@Model.UserId">
+            <i class="icon-key"></i>
+            تفییر رمز عبور
+        </a>
+    </li>
+    <li class="divider"></li>
+    <li>
+        <a href="/admin/Messages/Index">
+            <span class="badge badge-primary pull-left"> @Model.Messages.Count(u => u.ISRead == false) </span>
+            <i class="icon-envelope"></i>
+            پیام های جدید
+        </a>
+    </li>
+    <li>
+        <a target="_blank" href="/">
+            <i class="icon-arrow-left-circle"></i>
+            رفتن به سایت
+        </a>
+    </li>
+    <li class="divider"></li>
+    <li>
+        <a href="/Account/SignOut">
+            <i class="icon-power"></i>
+            خروج
+        </a>
+    </li>
+</ul>
+

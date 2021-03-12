@@ -1,0 +1,100 @@
+﻿@model Koshop.ViewModels.MenuModulViewModel
+<div class="portlet box border shadow">
+    @using (Html.BeginForm("Create", "MenuModule", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        <div>
+            <div class="portlet-heading">
+                <h2 class="col-md-10">افزودن @Html.DisplayNameFor(model => model)</h2>
+                <div class="form-group form-actions">
+                    <button type="submit" class="btn btn-info btn-round">
+                        <i class="icon-check"></i>
+                        ذخیره
+                    </button>
+                    <a href="/admin/modules/index" class="btn btn-warning btn-round">
+                        <i class="icon-close"></i>
+                        بازگشت
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <ul class="nav nav-tabs curve">
+            <li class="active">
+                <a data-toggle="tab" href="#tab1">ماژول</a>
+            </li>
+            <li>
+                <a data-toggle="tab" href="#tab2">صفحات انتخابی</a>
+            </li>
+            <li>
+                <a data-toggle="tab" href="#tab3">تنظیمات</a>
+            </li>
+        </ul>
+        <div class="tab-content ">
+            <div id="tab1" class="tab-pane fade active in">
+                <div class="row">
+                    <br />
+                    <div class=" col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.ModuleTitle, new { @class = "control-label" })
+                            <div class="col-md-12">
+                                @Html.TextBoxFor(model => model.ModuleTitle, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.ModuleTitle, null, new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.MenuGroupId, new { @class = "control-label" })
+                            <div class="col-md-12">
+                                @Html.DropDownList("MenuGroupId", null, htmlAttributes: new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.MenuGroupId, null, new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class=" col-md-4 pull-left">
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.IsActive, new { @class = "control-label" })
+                            <div class="col-md-12">
+                                @Html.DropDownListFor(model => model.IsActive, new[] {
+new SelectListItem() { Text = "فعال", Value = bool.TrueString },
+new SelectListItem() { Text = "غیر فعال", Value = bool.FalseString },
+}, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.IsActive, null, new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Positions, new { @class = "control-label" })
+                            <div class="col-md-12">
+                                @Html.DropDownList("PositionId", null, htmlAttributes: new { @class = "form-control" })
+                                @*<select id="GroupID" name="GroupID" onchange="getSubMenu()" class="form-control">
+                                                                    @foreach (var item in ViewBag.MenuGoup)
+                                                    {
+                                                        <option value="@item.GroupID">@item.MenuTitile</option>
+                                    }
+                                                                </select>*@
+                                @Html.ValidationMessageFor(model => model.Positions, null, new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <br />
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab2" class="tab-pane fade">
+                <div class="row">
+                    @Html.Action("ModulePageShow", "Modules")
+                </div>
+            </div>
+            <div id="tab3" class="tab-pane fade">
+                3
+            </div>
+
+        </div>
+    }
+</div>
+

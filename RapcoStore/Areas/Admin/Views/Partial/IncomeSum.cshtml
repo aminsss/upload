@@ -1,0 +1,20 @@
+﻿@*odel IEnumerable<Koshop.DomainClasses.Order>
+
+@{
+    int i = Convert.ToInt32(Model.Sum(s => s.OrderDetail.All(x=>x.Product).ToString());
+    i /= 1000;
+
+}
+<div class="col-md-3 col-xs-6 xxs-full-width">
+    <div class="stat-box bg-red shadow">
+        <a href="#">
+            <div class="stat">
+                <div class="counter-down" data-value="@i"></div>
+                <div class="h3">میلیون ریال درآمد</div>
+            </div><!-- /.stat -->
+            <div class="visual">
+                <i class="icon-wallet"></i>
+            </div><!-- /.visual -->
+        </a>
+    </div><!-- /.stat-box -->
+</div><!-- /.col-md-3 -->*@

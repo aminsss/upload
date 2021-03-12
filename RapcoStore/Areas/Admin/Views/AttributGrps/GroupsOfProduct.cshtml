@@ -1,0 +1,14 @@
+﻿@model IEnumerable<Koshop.DomainClasses.ProductGroup>
+@ShowTree(Model.Where(s => s.Depth == 0))
+
+@helper ShowTree(IEnumerable<Koshop.DomainClasses.ProductGroup> product_Groups)
+    {
+        foreach (var item in product_Groups)
+        {
+            <option value="@item.ProductGroupId">@string.Concat(Enumerable.Repeat(" - ", Convert.ToInt32(item.Depth))) @item.GroupTitle </option>
+            if (Model.Any(s => s.ParentId == item.ProductGroupId))
+            {
+                @ShowTree(Model.Where(s => s.ParentId == item.ProductGroupId));
+            }
+        }
+}

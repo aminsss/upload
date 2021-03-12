@@ -1,0 +1,31 @@
+﻿@model Koshop.DomainClasses.MultiPictureModule
+
+@if (Model.MultiPictureItems.Any())
+{
+<section class="services-area ptb-100 bg-faf5f5">
+    <div class="container">
+        <div class="section-title">
+            <span class="sub-title">@Model.Title</span>
+            <h2>@Model.TitleBold</h2>
+            <p>@Model.Description</p>
+        </div>
+    </div>
+
+    <div class="services-slides owl-carousel owl-theme">
+        @foreach (var item in Model.MultiPictureItems)
+        {
+            <div class="single-services-box">
+                <div class="services-image">
+                    <img src="~/Content/Modules/Images/thumbnail/@item.Image" alt="image">
+                </div>
+
+                <div class="services-content">
+                    <h3><a href="@item.Link">@item.Title</a></h3>
+
+                    <a href="@item.LinkMore" class="details-btn"><i class="flaticon-left-chevron"></i></a>
+                </div>
+            </div>
+        }
+    </div>
+</section>
+}

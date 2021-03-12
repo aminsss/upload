@@ -1,0 +1,25 @@
+﻿@model IEnumerable<Koshop.DomainClasses.Menu>
+
+@{ 
+    string lastMenu="1";
+    var last = Model.OrderByDescending(x => x.DisplayOrder).FirstOrDefault();
+    if (last != null)
+    {
+        lastMenu = last.DisplayOrder.ToString();
+    }
+}
+<select class="form-control" id="DisplayOrder" name="DisplayOrder">
+    @if (lastMenu != "1")
+    {
+        <option value="1">-اولین-</option>
+    }
+    @foreach (var item in Model.OrderBy(x => x.DisplayOrder))
+    {
+        <option value="@item.DisplayOrder">@item.MenuTitle</option>
+    }
+    @if (lastMenu != "1")
+    {
+        <option value="@lastMenu">-آخرین-</option>
+    }
+</select>
+

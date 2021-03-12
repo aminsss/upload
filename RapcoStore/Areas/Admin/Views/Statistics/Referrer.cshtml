@@ -1,0 +1,34 @@
+﻿@model List<Koshop.ViewModels.ReferrerViewModel>
+
+
+<div class="col-md-6 col-xs-12">
+    <div class="portlet box border shadow">
+        <div class="portlet-heading">
+            <div class="portlet-title">
+                <h3 class="title">
+                    <i class="fa fa-eye"></i>
+                    ارجاعات
+                </h3>
+            </div><!-- /.portlet-title -->
+        </div><!-- /.portlet-heading -->
+        <div class="portlet-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped table-hover">
+                    <tbody>
+                        @{
+                            foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td><span class="badge">@item.ReferrerCount</span></td>
+                                    <td><span class="referrerurl">@item.ReferrerUrl</span></td>
+                                </tr>
+                            }
+
+
+                        }
+                    </tbody>
+                </table>
+            </div><!-- /.table-responsive -->
+        </div><!-- /.portlet-body -->
+    </div><!-- /.portlet -->
+</div><!-- /.col-md-6 -->

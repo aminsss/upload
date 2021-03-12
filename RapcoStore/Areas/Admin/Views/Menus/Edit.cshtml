@@ -1,0 +1,246 @@
+﻿@model Koshop.DomainClasses.Menu
+@{
+    ViewBag.Title = "افزودن " + Server.HtmlDecode(Html.DisplayNameFor(model => model).ToString());
+}
+
+@using (Html.BeginForm("Edit", "Menus", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.MenuId)
+    <input id="pastParentId" name="pastParentId" type="hidden" value="@Model.ParentId" />
+    <input id="pastDisOrder" name="pastDisOrder" type="hidden" value="@Model.DisplayOrder" />
+    <input id="pastGroupId" name="pastGroupId" type="hidden" value="@Model.MenuGroupId" />
+
+    <div class="portlet box border shadow">
+        <div class="portlet-heading">
+            <h2 class="col-md-10">ویرایش @Html.DisplayNameFor(model => model)</h2>
+            <div class="form-group form-actions">
+                <button type="submit" class="btn btn-info btn-round">
+                    <i class="icon-check"></i>
+                    ذخیره
+                </button>
+                <a href="/admin/Menus/Index/@Model.MenuGroupId" class="btn btn-warning btn-round">
+                    <i class="icon-close"></i>
+                    بازگشت
+                </a>
+            </div>
+        </div>
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true,"",new  { @class="text-danger"})
+
+
+            <div class=" col-md-8">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.MenuTitle, new { @class = "control-label " })
+                    <div class="col-md-12">
+                        @Html.TextBoxFor(model => model.MenuTitle, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.MenuTitle, null, new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Description, new { @class = "control-label " })
+                    <div class="col-md-12 ">
+                        @Html.EditorFor(model => model.Description, new { @class = "form-control col-md-5" })
+                        @Html.ValidationMessageFor(model => model.Description, null, new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class=" col-md-4">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.PageName, new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.TextBoxFor(model => model.PageName, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.PageName, null, new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.MenuGroupId, new { @class = "control-label " })
+                    <div class="col-md-12">
+                        @Html.DropDownList("MenuGroupId", null, htmlAttributes: new { @class = "form-control" })
+                        @*<select id="MenuGroupId" name="MenuGroupId" onchange="getSubMenu()" class="form-control">
+                            @foreach (var item in ViewBag.MenuGoup)
+                            {
+                                <option value="@item.MenuGroupId">@item.MenuTitile</option>
+                            }
+                        </select>*@
+                        @Html.ValidationMessageFor(model => model.MenuGroupId, null, new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ParentId, new { @class = "control-label " })
+                    <div class="col-md-12">
+                        <select id="ParentId" name="ParentId" class="form-control"></select>
+                        @Html.ValidationMessageFor(model => model.ParentId, null, new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.DisplayOrder, new { @class = "control-label " })
+                    <div class="col-md-12">
+                        @Html.Action("DisplayOrder", "Menus", new { id = Model.ParentId })
+                        @Html.ValidationMessageFor(model => model.DisplayOrder, null, new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.IsActive, new { @class = "control-label " })
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(model => model.IsActive, new[] {
+new SelectListItem() { Text = "فعال", Value = bool.TrueString },
+new SelectListItem() { Text = "غیر فعال", Value = bool.FalseString },
+}, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.IsActive, null, new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.PageType, new { @class = "control-label" })
+                    <div class="col-md-12">
+                        <select id="PageType" name="PageType" onchange="getPageContetnt()" class="form-control">
+                            <option value="1">متن ساده</option>
+                            <option value="2">فروشگاه</option>
+                            <option value="3">مطالب</option>
+                            <option value="4">منوی والد</option>
+                            <option value="5">آدرس خارجی</option>
+                        </select>
+                        @*@Html.DropDownListFor(model => model.PageType, new[] {
+                            new SelectListItem() { Text = "Html سفارشی", Value = "Matn" },
+                            new SelectListItem() { Text = "فروشگاه", Value = "Product" },
+                            new SelectListItem() { Text = "مطالب", Value = "News" },
+                            }, new { @class = "form-control" })
+                                                    @Html.ValidationMessageFor(model => model.PageType, null, new { @class = "text-danger" })*@
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label id="lableContent" name="lableContent" class="control-label" for="PageContetnt"></label>
+                    <div class="col-md-12">
+                        <div id="divContetnt" name="divContetnt"></div>
+                        @Html.ValidationMessageFor(model => model.PageContetnt, null, new { @class = "text-danger" })
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="form-group"></div>
+        </div>
+
+    </div>
+}
+
+@section Script{
+
+    <script src="~/content/ckeditor/ckeditor.js"></script>
+    <script src="~/content/ckeditor/adapters/jquery.js"></script>
+    <script>
+        $(function () {
+            $('#Description').ckeditor();
+        });
+    </script>
+
+    <script>
+        $(function () {
+            //Set the value of your TypeId <select>
+            $('#MenuGroupId').val('@Model.MenuGroupId').after(getSubMenu(@Model.MenuGroupId));
+        });
+
+         $(function () {
+            //Set the value of your TypeId <select>
+             $('#DisplayOrder ').val('@Model.DisplayOrder');
+        });
+
+        $("#MenuGroupId").change(function (e) {
+            getSubMenu();
+        });
+
+        function getSubMenu(id) {
+            var MenuGroupId = $("#MenuGroupId").val();
+                if (id != null) {
+                    MenuId = id
+                }
+                $.ajax({
+                    url: "/admin/Menus/OrderOfMenus/" + MenuGroupId,
+                    type: "Get",
+                    data: {}
+                }).done(function (result) {
+                    $('#ParentId').html(result).after(
+                        $('#ParentId').val('@Model.ParentId')
+                    );
+                });
+            }
+
+    </script>
+    <script>
+        $(function () {
+            $("#PageType").val('@Model.PageType').after(getPageContetnt());
+        });
+
+
+        function getPageContetnt() {
+            var pagetype = $("#PageType").val();
+            if (pagetype == "1") {
+                $('#lableContent').text("");
+                $('#PageContetnt').remove();
+                $('#divContetnt').html("<input id=\"PageContetnt\" name=\"PageContetnt\" type=\"hidden\" Value=\"#\">");
+            }
+            else if (pagetype == "2") {
+                $.ajax({
+                    url: "/admin/Menus/GroupsOfProduct",
+                    type: "Get",
+                    data: {}
+                }).done(function (result) {
+                    $('#lableContent').text("انتخاب گروه محصولات");
+                    $('#PageContetnt').remove();
+                    $('#divContetnt').html(result).after(ValofPageContent());
+                });
+            }
+            else if (pagetype == "3") {
+                $.ajax({
+                    url: "/admin/Menus/GrouposOfNews",
+                    type: "Get",
+                    data: {}
+                }).done(function (result) {
+                    $('#lableContent').text("انتخاب گروه مطالب");
+                    $('#PageContetnt').remove();
+                    $('#divContetnt').html(result).after(ValofPageContent());
+                });
+            }
+            else if (pagetype == "4") {
+                $('#lableContent').text("");
+                $('#PageContetnt').remove();
+                $('#divContetnt').html("<input id=\"PageContetnt\" name=\"PageContetnt\" type=\"hidden\" Value=\"#\">");
+            }
+            else if (pagetype == "5") {
+                $('#lableContent').text("لینک URL ");
+                $('#PageContetnt').remove();
+                $('#divContetnt').html("<input id=\"PageContetnt\" name=\"PageContetnt\" class=\"form-control ltr text-left \" Value=\"#\">").after(ValofPageContent());
+            }
+        }
+
+        function ValofPageContent() {
+            if ($('#PageType').val() == @Model.PageType) {
+                $('#PageContetnt').val('@Model.PageContetnt')
+            }
+        }
+
+    </script>
+
+
+    <script>
+                                    //$("#IsActive").change(function () {
+                                    //    if ($("#IsActive").val() != true) {
+                                    //        $("#IsActive").addClass("p-3 mb-2 bg-success text-white")
+                                    //        $("#IsActive").removeClass("bg-danger")
+                                    //    }
+                                    //    else {
+                                    //        $("#IsActive").addClass("bg-danger")
+                                    //        $("#IsActive").removeClass("bg-success")
+                                    //    }
+                                    //});
+    </script>
+
+}
+
+

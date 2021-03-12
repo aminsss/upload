@@ -1,0 +1,64 @@
+﻿@model Koshop.ViewModels.LoginViewModel
+@{
+    Layout = "~/Views/Shared/_LayoutAccount.cshtml";
+    Koshop.DataLayer.AppDbContext db = new Koshop.DataLayer.AppDbContext();
+    var modulelist = db.Modules.Where(x => x.IsActive == true && x.ModulePage.Any(y => y.Menu.PageName == "LogInMenu")).ToList();
+}
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <h1>ورود کاربران</h1>
+    <p>درصورتی که ثبت نام نکرده اید؟ <a href="/account/register">ثبت نام کنید</a></p>
+
+    <hr>
+    @Html.ValidationSummary(true, "", new { @class = "text-warning" })
+
+    <div class="form-group">
+        @Html.TextBoxFor(model => model.UserName, null, new { @class = "an-form-control light ltr", @placeholder = "موبایل" })
+        @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-warning" })
+    </div><!-- /.form-group -->
+
+    <div class="form-group">
+        @Html.TextBoxFor(model => model.password, null, new { @class = "an-form-control light ltr", @placeholder = "رمز عبور", @type = "password" })
+        @Html.ValidationMessageFor(model => model.password, "", new { @class = "text-warning" })
+    </div><!-- /.form-group -->
+
+    <div class="form-group">
+        <div class="">
+            @Html.CheckBoxFor(model => model.Remember)
+            مرا به خاطر بسپار
+            @Html.ValidationMessageFor(model => model.Remember, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <div class="all-center text-capitalize">
+            <div class="g-recaptcha" data-sitekey="6LcBpoAUAAAAAGUVrtDi4LWBcoOojKe11yZ_Ja_D"></div>
+        </div>
+        <label class="text-warning">@ViewBag.Message</label>
+    </div>
+
+
+    <div class="form-group ">
+        <button type="submit" class="an-btn an-btn-default large-padding btn-lg" name="signup" value="Sign up">
+            <i class="icon-check"></i>
+            ورود
+        </button>
+    </div><!-- /.form-group -->
+
+    <hr>
+    <p><i class="ion-refresh"></i> رمز عبور را فراموش کرده اید؟<a href="/account/forgotPassword"> بازیابی رمز عبور </a></p>
+    @*<p><i class="ion-ios-keypad"></i> ورود با<a href="/account/Logdispose">  یکبار رمز </a></p>*@
+    <p><i class="ion-home"></i> بازگشت به<a href="/">  صفحه اصلی </a></p>
+}
+
+@section Script{
+
+}
+
+@section Head{
+    <title>سایت ایرمان کابینت - ورود</title>
+}

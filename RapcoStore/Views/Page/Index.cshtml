@@ -1,0 +1,42 @@
+﻿@model Koshop.DomainClasses.Menu
+@{
+    Koshop.DataLayer.AppDbContext db = new Koshop.DataLayer.AppDbContext();
+}
+<div class="an-inner-banner">
+    <div class="container">
+        <div class="an-title-container center">
+            <h1 class="an-title">@Model.MenuTitle</h1>
+            <br /><br /><br /><br /><br />
+        </div> <!-- end title container -->
+    </div> <!-- end cotnainer -->
+</div> <!-- an-header-banner -->
+
+
+<div class="an-page-content">
+    <div class="an-contact-us-content">
+        <div class="container">
+            <div class="row">
+                @if (Model.PageType == "1")
+                {
+                    @Html.Raw(Model.Description)
+                }
+            </div>
+        </div>
+    </div>
+</div><!-- end an-page-content -->
+<div id="positionbottom1">
+    @foreach (var item in db.Modules.Where(x => x.PositionId == 8 && x.ModulePage.Any(y => y.MenuId == Model.MenuId)).OrderBy(z=>z.DisplayOrder))
+    {
+        @Html.Action(item.Component.ActionName, item.Component.ControllerName, new { @id = item.ModuleId })
+    }
+</div>
+
+@section Head{
+    <title>کوشاپ | koshop.ir </title>
+    <link rel="stylesheet" href="~/content/ol/ol.css" type="text/css">
+    <script src="~/content/ol/ol.js"></script>
+}
+
+@section footer{
+    @Html.Partial("_footer")
+}

@@ -1,0 +1,235 @@
+﻿@model Koshop.DomainClasses.User
+
+
+
+<div id="sidebar">
+    <div class="sidebar-top">
+        <div class="search-box">
+            <form class="search-form" action="#" method="GET">
+                <div class="input-group">
+                    <input type="text" class="form-control placeholder-light" placeholder="جستجو..." name="key">
+                    <span class="input-group-btn">
+                        <button type="submit" class="btn btn-round submit">
+                            <i class="icon-magnifier"></i>
+                        </button>
+                    </span>
+                </div>
+            </form>
+        </div><!-- /.search-box -->
+        @*<div class="user-box">
+            <a href="#">
+                <img src="~/Content/Upload/Profile/thumbnail/@Model.Profile" alt="عکس پروفایل" width="48" class="img-circle img-responsive">
+            </a>
+            <div class="user-details">
+                <h4>@Model.moblie</h4>
+                <p class="role">مدیر</p>
+                <div class="dropdown user-login">
+                    <button class="btn btn-xs btn-status dropdown-toggle btn-round" type="button" data-toggle="dropdown" data-hover="dropdown">
+                        <i class="fa fa-circle text-success"></i>
+                        <span>دردسترس</span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-status">
+                        <li>
+                            <a href="#" class="busy">
+                                <i class="fa fa-circle text-success"></i>
+                                <span>دردسترس</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="busy">
+                                <i class="fa fa-circle text-danger"></i>
+                                <span>مشغول</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fa fa-circle text-gray"></i>
+                                <span>مخفی</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fa fa-circle text-warning"></i>
+                                <span>سایر</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div><!-- /dropdown -->
+            </div><!-- /.user-details -->
+        </div><!-- /.user-box -->*@
+    </div><!-- /.sidebar-top -->
+    <div class="side-menu-container">
+        <ul class="metismenu" id="side-menu">
+            <li class="">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <i class="icon-home"></i>
+                    <span>پیشخوان</span>
+                </a>
+                <ul>
+                    <li>
+                        <a href="/admin/default">
+                            <i class="icon-home"></i>
+                            <span>پیشخوان</span>
+                        </a>
+                    </li>
+
+                </ul>
+            </li>
+            <li>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <i class="icon-menu"></i>
+                    <span>منوها</span>
+                </a>
+                <ul>
+                    <li>
+                        <a href="/admin/MenuGroups" class="">
+                            <i class="icon-menu"></i>
+                            <span>لیست منوها</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <i class="icon-user"></i>
+                    <span>کاربران</span>
+                </a>
+                <ul>
+                    <li>
+                        <a href="/admin/users" class="">
+                            <i class="icon-list"></i>
+                            <span>لیست کاربران</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/admin/users/create" class="">
+                            <i class="icon-user-follow"></i>
+                            <span>افزودن کاربر</span>
+                        </a>
+                    </li>
+
+                </ul>
+            </li>
+            <li>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <i class="icon-basket"></i>
+                    <span>فروشگاه</span>
+                </a>
+                <ul>
+                    <li>
+                        <a href="/admin/productGroup" class="">
+                            <i class="icon-grid"></i>
+                            <span>گروه محصولات</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/admin/product" id="product" class="">
+                            <i class="icon-list"></i>
+                            <span>لیست محصولات</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/admin/product/create" class="">
+                            <i class="icon-plus"></i>
+                            <span>افزودن محصول جدید</span>
+                        </a>
+                    </li>
+                    <li>
+                    <a href="/admin/AttributGrps" class="">
+                        <i class="icon-diamond"></i>
+                        <span>فیلتر های کالا</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/DetailGroups" class="">
+                        <i class="icon-info"></i>
+                        <span>خصوصیات کالا</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/Orders" class="">
+                        <i class="icon-wallet"></i>
+                        <span> سفارشات</span>
+                    </a>
+                </li>
+
+                </ul>
+            </li>
+            <li>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <i class="icon-globe"></i>
+                    <span>مطالب</span>
+                </a>
+                <ul>
+                    <li>
+                        <a href="/admin/NewsGroup" class="">
+                            <i class="icon-grid"></i>
+                            <span>گروه مطالب</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/admin/News" class="">
+                            <i class="icon-list"></i>
+                            <span>لیست مطالب</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/admin/News/Create" class="">
+                            <i class="icon-plus"></i>
+                            <span>افزودن مطلب جدید</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/admin/NewsComment" class="">
+                            <i class="icon-pencil"></i>
+                            <span>نظرات</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <i class="icon-social-dropbox"></i>
+                    <span>کامپوننت ها</span>
+                </a>
+                <ul>
+                    <li>
+                        <a href="/admin/Modules" class="">
+                            <i class="icon-layers"></i>
+                            <span>لیست ماژول ها</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <i class="icon-envelope"></i>
+                    <span>مدیریت پیام ها</span>
+                </a>
+                <ul>
+                    <li>
+                        <a href="/admin/Messages" class="">
+                            <i class="icon-list"></i>
+                            <span class="badge badge-gray pull-left">@Model.Messages.Count(x => x.ISRead == false)</span>
+                            <span>لیست پیام ها  </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/admin/Messages/SendEmail" class="">
+                            <i class="icon-pencil"></i>
+                            <span>ارسال ایمیل</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/admin/Messages/SendSMS" class="">
+                            <i class="icon-pencil"></i>
+                            <span class="badge badge-gray pull-left"></span>
+                            <span>ارسال پیامک</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul><!-- /#side-menu -->
+    </div><!-- /.side-menu-container -->
+</div><!-- /#sidebar -->

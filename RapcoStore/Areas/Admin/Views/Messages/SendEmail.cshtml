@@ -1,0 +1,89 @@
+﻿@model Koshop.DomainClasses.Message
+
+@using (Html.BeginForm("SendEmail", "Messages", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.Hidden("Mobile")
+    <div class="portlet box border shadow">
+        <div class="portlet-heading">
+            <h2 class="col-md-10">ارسال @Html.DisplayNameFor(model => model)</h2>
+            <div class="form-group form-actions">
+                <button type="submit" class="btn btn-info btn-round">
+                    <i class="icon-check"></i>
+                    ارسال
+                </button>
+                <a href="/admin/Messages/Index" class="btn btn-warning btn-round">
+                    <i class="icon-close"></i>
+                    بازگشت
+                </a>
+            </div>
+        </div>
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="row">
+                <br />
+                <div class="col-md-10">
+                    <div class="form-group col-md-12">
+                        @Html.LabelFor(model => model.Subject, new { @class = "control-label" })
+                        <div class="col-md-12">
+                            @Html.TextBoxFor(model => model.Subject, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Subject, null, new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-10">
+                    <div class="form-group col-md-12">
+                        @Html.LabelFor(model => model.Email, new { @class = "control-label" })
+                        <div class="col-md-12">
+                            @Html.TextBoxFor(model => model.Email, new { @class = "form-control ltr text-left" })
+                            @Html.ValidationMessageFor(model => model.Email, null, new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-8 ">
+                    <div class="form-group pull-left col-md-12">
+                            <input type="checkbox" name="SendToAll" id="SendToAll" /> ارسال به همه
+                    </div>
+                </div>
+                <div class="col-md-10">
+                    <div class="form-group col-md-12">
+                        @Html.LabelFor(model => model.ContentMessage, new { @class = "control-label" })
+                        <div class="col-md-12">
+                            @Html.TextAreaFor(model => model.ContentMessage, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.ContentMessage, null, new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class=" col-md-2 pull-left">
+
+
+
+                    <br />
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Script{
+
+    <script src="~/content/ckeditor/ckeditor.js"></script>
+    <script src="~/content/ckeditor/adapters/jquery.js"></script>
+    <script>
+        $(function () {
+            $('#ContentMessage').ckeditor();
+        });
+    </script>
+
+    <script>
+        $(function () {
+            $('#Email').val('@ViewBag.Email')
+        });
+         $(function () {
+            $('#Mobile').val('@ViewBag.Mobile')
+        });
+    </script>
+}
+
+

@@ -1,0 +1,66 @@
+﻿@model Koshop.DomainClasses.NewsGroup
+
+@{
+    ViewBag.Title = "Create";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal" style="padding:9px">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.GroupTitle, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-9">
+                @Html.TextBoxFor(model => model.GroupTitle, null, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.GroupTitle, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.AliasName, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-9">
+                @Html.TextBoxFor(model => model.AliasName, null, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.AliasName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.ParentId, new { @class = "control-label col-md-3" })
+            <div class="col-md-9">
+                <select class="form-control" data-val="true" data-val-required="لطفا والد گروه را انتخاب کنید" id="ParentId" name="ParentId">
+                    <option value=""></option>
+                    <option value="0">--ریشه گروه--</option>
+                    @Html.Action("GrouposOfNews", "NewsGroup", new { area = "admin" })
+                </select>
+                @Html.ValidationMessageFor(model => model.ParentId, null, new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.IsActive, new { @class = "control-label col-md-3" })
+            <div class="col-md-9">
+                @Html.DropDownListFor(model => model.IsActive, new[] {
+    new SelectListItem() { Text = "فعال", Value = bool.TrueString },
+    new SelectListItem() { Text = "غیر فعال", Value = bool.FalseString },
+    }, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.IsActive, null, new { @class = "text-danger" })
+            </div>
+            <br />
+        </div>
+        <div class="form-actions text-left">
+            <button type="submit" class="btn btn-info btn-round">
+                <i class="icon-check"></i>
+                ذخیره
+            </button>
+            <a data-dismiss="modal" class="btn btn-warning btn-round">
+                <i class="icon-close"></i>
+                بازگشت
+            </a>
+        </div>
+    </div>
+}
+
+<script type="text/javascript" language=javascript>
+    $.validator.unobtrusive.parse(document);
+</script>
+
+

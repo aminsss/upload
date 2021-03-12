@@ -1,0 +1,12 @@
+﻿@model Koshop.DomainClasses.Module
+<div class="newsletter-content">
+
+    <p>@Html.Raw(Model.HtmlModule.HtmlText)</p>
+
+    <form class="newsletter-form" data-toggle="validator">
+        <input type="email" class="input-newsletter" placeholder="آدرس ایمیل خود را وارد کنید" name="EMAIL" required autocomplete="off">
+
+        <button type="submit">مشترک شوید</button>
+        <div id="validator-newsletter" class="form-result"></div>
+    </form>
+</div>

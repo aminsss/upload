@@ -1,0 +1,68 @@
+﻿@model PagedList.IPagedList<Koshop.DomainClasses.News>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@section Head{
+    <title>ایرمان کابینت | IrmanCabinet </title>
+}
+
+@{
+    Koshop.DataLayer.AppDbContext db = new Koshop.DataLayer.AppDbContext();
+    var modulelist = db.Modules.Where(x => x.IsActive == true && x.ModulePage.Any(y => y.Menu.PageName == "blogGroups")).ToList();
+}
+
+@foreach (var item in modulelist.Where(x => x.Position.PositionName == "Slider").OrderBy(z => z.DisplayOrder))
+{
+    @Html.Action(item.Component.ActionName, item.Component.ControllerName, new { @id = item.ModuleId })
+}
+
+@foreach (var item in modulelist.Where(x => x.Position.PositionName == "Top").OrderBy(z => z.DisplayOrder))
+{
+    @Html.Action(item.Component.ActionName, item.Component.ControllerName, new { @id = item.ModuleId })
+}
+
+<section class="blog-area ptb-100">
+    <div class="container">
+        <div class="row">
+
+            @foreach (var item in Model)
+            {
+                <div class="col-lg-4 col-md-6 col-sm-6">
+                    <div class="single-blog-post">
+                        <div class="post-image">
+                            <a href="/Blog/Contents/@item.AliasName"><img src="~/Content/Upload/NewsImages/Images/@item.NewsImage" alt="image"></a>
+                        </div>
+
+                        <div class="post-content">
+                            <h3><a href="/Blog/Contents/@item.AliasName"> @item.NewsTitle</a></h3>
+                            <p>@item.NewsContent</p>
+                            <a href="/Blog/Contents/@item.AliasName" class="read-more-btn">ادامه خواندن <i class="flaticon-left-chevron"></i></a>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <div class="col-lg-12 col-md-12">
+                <div class="pagination-area">
+                    @Html.PagedListPager(Model, page => Url.Action("Groups",
+                             new { page, pageSize = Model.PageSize ,group = ViewBag.group }))
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+@foreach (var item in modulelist.Where(x => x.Position.PositionName == "Bottom").OrderBy(z => z.DisplayOrder))
+{
+    @Html.Action(item.Component.ActionName, item.Component.ControllerName, new { @id = item.ModuleId })
+}
+
+@section footer{
+    @Html.Partial("_footer")
+}
+
+@section script{
+}

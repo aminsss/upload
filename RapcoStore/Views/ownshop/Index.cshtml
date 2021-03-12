@@ -1,0 +1,472 @@
+﻿@model Koshop.DomainClasses.Store
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+<div style="display: none;">
+    <div class="overlay" id="vienna"></div>
+    <div id="markervienna"><img src="~/content/Koshop/assets/img/location.png" /></div>
+    <div id="popup"></div>
+</div>
+@{
+    Koshop.DataLayer.AppDbContext db = new Koshop.DataLayer.AppDbContext();
+    var user = db.Users.Where(x => x.UserStore.Any(u => u.StoreId == Model.StoreId)).FirstOrDefault();
+    bool authenticated = false;
+    if (User.Identity.IsAuthenticated)
+    { authenticated = true; }
+
+
+}
+<div class="an-inner-banner has-bg" style="background: url('~/content/Koshop/assets/img/slider5.jpg') center center no-repeat;background-size: cover;">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="an-agency-single an-agent-single">
+            <div class="left">
+                <div class="image" style="background: url('/Content/Upload/StoreImage/Images/no-photo.png') center center no-repeat; background-size: cover; background-color:#FFF">
+                    @*<a class="edit-btn" href="#"><i class="ion-ios-gear"></i>ویرایش</a>*@
+                    <img class="image backgrstore" src="/Content/Upload/StoreImage/thumbnail/@Model.StoreIcon" />
+                </div>
+                <div class="name">
+                    <div class="an-title-container center">
+                        <h1 class="an-title"><a>@Model.StoreName</a></h1>
+                    </div> <!-- end title container -->
+                    <ul class="list-inline category-list-alter">
+                        @*<li><span class="an-badge bg-hotel">هتل &amp; مسافرت</span></li>*@
+                        <li><span class="an-badge bg-property">@Model.Favorite</span></li>
+                    </ul>
+                </div>
+                <div class="listing-meta">
+                    <span><i class="ion-android-call"></i>@Model.PhoneNo</span>
+                    <span><i class="typcn typcn-location"></i>@Model.Cities.State.StateName | @Model.Cities.CityName</span>
+                    <span><i class="ion-android-mail"></i>@user.Email</span>
+                </div>
+                <div class="listing-count">
+                    <a class="an-btn an-btn-default icon-right" id="followclick">دنبال کردن</a>
+                    <a class="an-btn an-btn-default icon-right" id="messageclick">ارسال پیام <i class="ion-paper-airplane"></i></a>
+                </div>
+            </div>
+        </div> <!-- end agency-single -->
+    </div> <!-- end cotnainer -->
+</div> <!-- an-header-banner -->
+
+<div class="an-page-content" style="background-color:#f5f5f5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 col-md-push-9">
+                <div class="an-sidebar">
+                    <div class="widget-contact-details no-margin">
+                        <div id="map" class="contact-map-content">
+                        </div>
+                        <div class="contact-info">
+                            <h3>@Model.Cities.CityName - @Model.Cities.State.StateName</h3>
+                            <br />
+                            <p><i class="typcn typcn-location">  @Model.StoreAddress</i></p>
+                            <p><i class="ion-android-call">  @Model.PhoneNo</i></p>
+                            @if (Model.SiteAddress != null)
+                            {
+                                <p><i class="ion-ios-redo"></i>  <a href="http://@Model.SiteAddress">@Model.SiteAddress</a></p>
+                            }
+                        </div>
+                    </div> <!-- end widget-contact-details -->
+                    <div class="widget-opening-hours no-margin">
+                        <h4>ساعت کار</h4>
+                        @foreach (var item in db.StoreTimes.Where(x => x.StoreId == Model.StoreId))
+                        {
+                            <div class="hours-list-single">
+                                <span>@item.Days</span>
+                                <span>@item.fromTime - @item.toTime</span>
+                            </div>
+                        }
+                    </div>
+                    <div class="widget-author">
+                        <div class="an-testimonial">
+                            <div class="testimonial-single">
+                                <img src="/Content/Upload/Profile/@user.Profile" class="image backgrprofile" />
+                                <p class="accents">مدیریت</p>
+                                <a href="">@user.Name</a>
+                                @*<p class="position">@user.chartPost</p>*@
+                                <p><i class="ion-android-call"></i>@user.phoneNo</p>
+                                <p><i class="typcn typcn-location"></i>@user.Adress</p>
+                                @*<p><i class="ion-ios-redo"></i> <a href="httP://@user.Email">@user.Email</a></p>*@
+
+                                <a class="an-link-icon-btn" href="#"><i class="ion-ios-paperplane"></i></a>
+                            </div> <!-- end testimonial-single -->
+                        </div>
+                    </div> <!-- end and-widget-author -->
+                </div> <!-- end an-sidebar -->
+            </div> <!-- end col-md-3 -->
+            <div class="col-md-9 col-md-pull-3" style="padding:0">
+                <div class="content-body">
+                    <div class="an-section-container">
+                        <div class="">
+                            <div class="content">
+                                <div class="an-tab-container">
+                                    <div class="tab-nav">
+                                        <div class="row">
+                                        </div>
+                                        <div class="row">
+                                            <ul class="nav nav-tabs" role="tablist">
+                                                <li role="presentation" class="active"><a href="#all" aria-controls="all" role="tab" data-toggle="tab" aria-expanded="true">فروشگاه</a></li>
+                                                <li role="presentation" class=""><a href="#popular" aria-controls="popular" role="tab" data-toggle="tab" aria-expanded="false">درباره ما</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <!-- Tab panes -->
+                                    <div class="tab-content">
+                                        <div role="tabpanel" class="tab-pane fade active in" id="all">
+
+                                            <div id="dvContent">
+                                                @{
+                                                    @Html.Action("_productList", new { @id = Model.StoreId });
+                                                }
+                                            </div>
+                                            <div id="dvscript"></div>
+                                        </div>
+                                        <div role="tabpanel" class="tab-pane fade" id="popular">
+                                            <h3>درباره ما</h3>
+
+                                            <p class="an-quote">
+                                                @Model.Descriptions
+                                            </p>
+                                            <h3>امکانات</h3>
+
+                                            <div class="an-listing-features-list">
+                                                <ul>
+                                                    <li class="available"><i class="ion-checkmark"></i>استخر</li>
+                                                    <li class="available"><i class="ion-checkmark"></i>ساحل دریا</li>
+                                                    <li class="available"><i class="ion-checkmark"></i>رستوران</li>
+                                                    <li class="available"><i class="ion-checkmark"></i>شومینه</li>
+                                                    <li class="available"><i class="ion-checkmark"></i>وای فای</li>
+                                                    <li class="available"><i class="ion-checkmark"></i>تهویه هوا</li>
+                                                    <li class="available"><i class="ion-checkmark"></i>تخت 3 نفره</li>
+                                                    <li class="available"><i class="ion-checkmark"></i>گاراژ اختصاصی</li>
+                                                    <li class="unavailable"><i class="ion-close"></i>اینترنت رایگان</li>
+                                                    <li class="available"><i class="ion-checkmark"></i>بالکون</li>
+                                                    <li class="available"><i class="ion-checkmark"></i>ماهواره</li>
+                                                    <li class="available"><i class="ion-checkmark"></i>تلویزیون کابلی</li>
+                                                    <li class="unavailable"><i class="ion-close"></i>اتاق خصوصی</li>
+                                                    <li class="available"><i class="ion-checkmark"></i>درمانگاه</li>
+                                                    <li class="available"><i class="ion-checkmark"></i>آیفون تصویری</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div role="tabpanel" class="tab-pane fade" id="highest-price">
+
+                                        </div>
+                                    </div> <!-- end tab-content -->
+                                </div>
+                            </div> <!-- end content -->
+                        </div>
+                    </div> <!-- end an-section-container -->
+                </div> <!-- end content-body -->
+            </div>
+
+        </div>
+    </div>
+</div> <!-- end an-page-content -->
+<!-- Modal -->
+<div id="ModalLogin" class="modal  fade" role="dialog">
+    <div class="modal-dialog" style="width:300px">
+        <div class="modal-content">
+            <div class="an-login-register-content" style="padding:0;min-height:100%">
+                <div class="overlay"></div>
+                <div class="content">
+                    <div id="senddiv" style="display:block">
+                        <p>ورود سریع با یکبار رمز</p>
+                        <div id="validationForget"></div>
+
+                        <hr />
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <input id="UserMobile" type="text" class="an-form-control light ltr" placeholder="موبایل ">
+                                <div id="validmobileNum"><small class="color-job"></small></div>
+                                <p>
+                                    <button id="btnsendsms" class="an-btn an-btn-default ladda-button" data-style="slide-left" style="float:left">
+                                        ارسال
+                                    </button>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="Confirmdiv" style="display:none">
+                        <h4>تایید شماره موبایل</h4>
+                        <p> رمز یکبارمصرف به شماره <span id="mobilechecker"></span> ارسال شد</p>
+                        <hr />
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="activeline">
+                                    <input id="activatecode" type="text" class="activatequickInput" maxlength="6">
+                                    <div class="dash-line"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="rep-payam-containar">
+                            <div class="rep-payam">
+                                <div class="form-group">
+                                    <button id="sendAgain" class="an-btn an-btn-light" style="display:block">
+                                        <i class="ion-refresh"></i>
+                                        ارسال مجدد
+                                    </button>
+                                    <button id="timerdiv" class="an-btn an-btn-light" style="display:none">
+                                        <span id="timer"></span>
+                                        <i class="ion-ios-clock-outline"></i>
+                                    </button>
+                                </div>
+                                <div class="form-group ">
+                                    <button id="btnquicklogin" class="an-btn an-btn-default ladda-button" data-style="slide-left" name="signup" value="Sign up">
+                                        <i class="icon-check"></i>
+                                        تایید
+                                    </button>
+                                </div><!-- /.form-group -->
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="ModalMessage" class="modal  fade" role="dialog">
+    <div class="modal-dialog" style="width:400px">
+        <div class="modal-content">
+            <div style="background-color:rgba(5, 13, 13, 0.7);padding:20px">
+                <div class="contact-details">
+                    <h4 class="an-small-title">ارسال پیام</h4>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <input class="an-form-control light" type="text" id="subjM" placeholder="موضوع">
+                        </div>
+                        <div class="col-sm-6">
+                            <input class="an-form-control light" type="text" id="emailM" placeholder="ایمیل">
+                        </div>
+                        <div class="col-sm-12">
+                            <textarea class="an-form-control light" id="contentM" placeholder="متن خود را اینجا بنویسید"></textarea>
+                        </div>
+                        <div class="col-sm-12">
+                            <button id="SendM" class="an-btn an-btn-default">ارسال پیام</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Script{
+    <script src="~/content/assets/plugins/ladda/dist/spin.min.js"></script>
+    <script src="~/content/assets/plugins/ladda/dist/ladda.min.js"></script>
+    <script src="~/content/assets/js/pages/ladda.js"></script>
+    <script src="~/content/Koshop/assets/js/login.js"></script>
+    <script>
+        $(document).ready(function () {
+            var contactForm = $("#contactForm");
+            //We set our own custom submit function
+            contactForm.on("submit", function (e) {
+                //Prevent the default behavior of a form
+                e.preventDefault();
+                //Get the values from the form
+                var email = $("#email").val();
+                var password = $("#password").val();
+                //Our AJAX POST
+                $.ajax({
+                    url: "/Account/loginA",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: 'application/x-www-form-urlencoded; charset=utf-8',
+                    data: {
+                        email: email,
+                        password: password,
+                        //THIS WILL TELL THE FORM IF THE USER IS CAPTCHA VERIFIED.
+                        //captcha: grecaptcha.getResponse(),
+                        __RequestVerificationToken: gettoken()
+                    },
+                    success: function (result) {
+                        if (result == false) {
+                            alert("نام و رمز عبور را به درستی وارد کنید");
+                        }
+                        else if (result == true) {
+                            window.location.reload();
+                        }
+                        else if (result == "captcha") {
+                            alert(result);
+                        }
+                        else if (result == "nactive") {
+                            alert("حساب کاربری شما فعال نمیباشد! ابتدا حساب خود را فعال کنید");
+                            window.location.replace("/account/RegisteredActivate");
+                        }
+
+                    },
+                    error: function () {
+                        alert("error");
+                    }
+                })
+            });
+        });
+    </script>
+
+    <script>
+
+        $(document).ready(function () {
+            if ('@authenticated' == "True") {
+                if ('@Model.StoreFollower.Any(x=> x.User.moblie == User.Identity.Name)' == 'True')
+                    changefollowicon("an-btn-default");
+            }
+        });
+
+        $("#messageclick").on("click", function () {
+            if ('@authenticated' != "True") {
+                $('#ModalLogin').modal('show');
+            }
+            else {
+                $('#ModalMessage').modal('show');
+            }
+        });
+
+        $("#SendM").on("click", function (e) {
+            e.preventDefault();
+            $('#ModalMessage').modal('toggle');
+            $.ajax({
+                url: "/ownshop/SendMessage",
+                dataType: "json",
+                type: "POST",
+                contentType: 'application/x-www-form-urlencoded; charset=utf-8',
+                data: {
+                    storeid: '@Model.StoreId',
+                    subject: $("#subjM").val(),
+                    Email: $("#emailM").val(),
+                    Message: $("#contentM").val(),
+                    __RequestVerificationToken: gettoken()
+                },
+                async: true,
+                cache: false,
+                success: function (result) {
+                    if (result == true) {
+                        alert("پیام شما با موفقیت ارسال شد");
+                    }
+                    else if (result == false) {
+                        alert("ناموفق در ارسال");
+                    }
+                },
+                error: function () {
+                    alert("ناموفق در ارسال");
+                },
+                beforeSend: function () {
+                },
+            });
+        });
+
+        $("#followclick").on("click", function () {
+            if ('@authenticated' != "True") {
+                $('#ModalLogin').modal('show');
+            }
+            else {
+                var status = false;
+                if ($("#followclick").hasClass("an-btn-light")) {
+                    status = true;
+                    changefollowicon("an-btn-light");
+                }
+                else { changefollowicon("an-btn-default");}
+                $.ajax({
+                    url: "/ownshop/followRequest",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: 'application/x-www-form-urlencoded; charset=utf-8',
+                    data: {
+                        storeid: '@Model.StoreId',
+                        status: status,
+                        __RequestVerificationToken: gettoken()
+                    },
+                    async: true,
+                    cache: false,
+                    success: function (result) {
+                        if (result == true) {
+                            changefollowicon();
+                        }
+                        else if (result == false) {
+                            followerror();
+                        }
+                    },
+                    error: function () {
+                        followerror();
+                    },
+                    beforeSend: function () {
+                    },
+                });
+            }
+        });
+
+        function followerror() {
+            if ($("#followclick").hasClass("an-btn-light")) {
+                changefollowicon("an-btn-light");
+            }
+            else if ($("#followclick").hasClass("an-btn-default")) {
+                changefollowicon("an-btn-default");
+            }
+        }
+
+        function changefollowicon(id) {
+            if (id == "an-btn-default") {
+                $("#followclick").addClass("an-btn-light")
+                $("#followclick").removeClass("an-btn-default")
+                $("#followclick").text("دنبال میکنم")
+            }
+            else if (id == "an-btn-light") {
+                $("#followclick").addClass("an-btn-default")
+                $("#followclick").removeClass("an-btn-light")
+                $("#followclick").text("دنبال کردن")
+            }
+        }
+
+        var view = new ol.View({
+            center: ol.proj.fromLonLat([@Model.StoreInfo.lngitute, @Model.StoreInfo.latitute]),
+            zoom: 16,
+            maxZoom: 19,
+            minZoom: 5,
+
+        });
+
+
+        var map = new ol.Map({
+            target: 'map',
+            view: view,
+            layers: [
+                new ol.layer.Tile({
+                    preload: 3,
+                    source: new ol.source.OSM(),
+                })
+            ],
+            loadTilesWhileAnimating: true,
+        });
+
+        var pos = new ol.proj.fromLonLat([@Model.StoreInfo.lngitute, @Model.StoreInfo.latitute]);
+        var markervienna = new ol.Overlay({
+            position: pos,
+            positioning: 'bottom-center',
+            element: document.getElementById('markervienna'),
+            stopEvent: false
+        });
+        map.addOverlay(markervienna);
+
+    </script>
+    <script type="text/javascript">
+    function gettoken() {
+                var token = '@Html.AntiForgeryToken()';
+                token = $(token).val();
+                return token;
+            }
+    </script>
+}
+
+@section Head{
+    <title>@Model.StoreName</title>
+    <link href="~/content/assets/plugins/ladda/dist/ladda-themeless.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="~/content/ol/ol.css" type="text/css">
+    <script src="~/content/ol/ol.js"></script>
+}
+
+@section footer{
+    @Html.Partial("_footer")
+}

@@ -1,0 +1,81 @@
+﻿@{ 
+    Koshop.DataLayer.AppDbContext db = new Koshop.DataLayer.AppDbContext();
+
+}
+
+<footer class="an-footer">
+    <div class="container">
+        <div class="an-footer-top">
+            <div class="row">
+                <div class="col-md-10">
+                     @foreach (var item in db.Modules.Where(x=>x.PositionId == 13))
+                    {
+                        @Html.Action(item.Component.ActionName,item.Component.ControllerName , new { @id = item.ModuleId})
+                    }
+                  
+                </div>
+                <div class="col-md-2 ">
+                    @foreach (var item in db.Modules.Where(x=>x.PositionId == 14))
+                    {
+                        @Html.Action(item.Component.ActionName,item.Component.ControllerName, new { @id = item.ModuleId})
+                    }
+                    
+                </div>
+            </div>
+        </div>
+
+        <div class="an-footer-bottom">
+            <div class="row">
+                <div class="col-md-3 col-sm-6">
+                    <div class="an-widget">
+                         @foreach (var item in db.Modules.Where(x=>x.PositionId == 15))
+                    {
+                        @Html.Action(item.Component.ActionName,item.Component.ControllerName, new { @id = item.ModuleId})
+                    }
+
+
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="an-widget">
+                    
+                    @foreach (var item in db.Modules.Where(x=>x.PositionId == 16))
+                    {
+                        @Html.Action(item.Component.ActionName,item.Component.ControllerName, new { @id = item.ModuleId})
+                    }
+
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="an-widget">
+                    
+                    @foreach (var item in db.Modules.Where(x=>x.PositionId == 17))
+                    {
+                        @Html.Action(item.Component.ActionName,item.Component.ControllerName, new { @id = item.ModuleId})
+                    }
+
+                    </div>
+                </div>
+              
+                <div class="col-md-3 col-sm-6">
+
+
+                    <div class="an-widget ">
+                         @foreach (var item in db.Modules.Where(x=>x.PositionId == 18))
+                    {
+                        @Html.Action(item.Component.ActionName,item.Component.ControllerName, new { @id = item.ModuleId})
+                    }
+                        
+
+                    </div>
+                </div>
+                <div class="col-md-12 text-center copyrights">
+                     @foreach (var item in db.Modules.Where(x=>x.PositionId == 19))
+                    {
+                        @Html.Action(item.Component.ActionName,item.Component.ControllerName, new { @id = item.ModuleId})
+                    }
+                </div>
+            </div>
+        </div>
+    </div> <!-- end container -->
+</footer> <!-- end an-footer -->

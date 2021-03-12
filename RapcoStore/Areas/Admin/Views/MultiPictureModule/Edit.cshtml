@@ -1,0 +1,331 @@
+﻿@model Koshop.ViewModels.MultiPictureModuleViewModel
+<div class="portlet box border shadow">
+    @{
+        int? componentid = ViewBag.componentid;
+    }
+    @using (Html.BeginForm("Edit", "MultiPictureModule", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.ModuleId)
+        @Html.Hidden("ModuleImage", Model.ModuleImage);
+        @Html.Hidden("pastPosition", Model.PositionId)
+        @Html.Hidden("pastDisOrder", Model.DisplayOrder)
+        <div>
+            <div class="portlet-heading">
+                <h2 class="col-md-10">افزودن @Html.DisplayNameFor(model => model)</h2>
+                <div class="form-group form-actions">
+                    <button type="submit" class="btn btn-info btn-round">
+                        <i class="icon-check"></i>
+                        ذخیره
+                    </button>
+                    <a href="/admin/Modules/Index" class="btn btn-warning btn-round">
+                        <i class="icon-close"></i>
+                        بازگشت
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <ul class="nav nav-tabs curve">
+            <li class="active">
+                <a data-toggle="tab" href="#tab1">ماژول</a>
+            </li>
+            <li>
+                <a data-toggle="tab" href="#tab2">صفحات انتخابی</a>
+            </li>
+            <li>
+                <a data-toggle="tab" href="#tab3">فیلدهای ماژول</a>
+            </li>
+            <li>
+                <a data-toggle="tab" href="#tab4">فیلدهای اسلایدر</a>
+            </li>
+        </ul>
+        <div class="tab-content ">
+            <div id="tab1" class="tab-pane fade active in">
+                <div class="row">
+                    <br />
+                    <div class="col-md-8">
+                        <div class="form-group col-md-10">
+                            @Html.LabelFor(model => model.ModuleTitle, new { @class = "control-label" })
+                            <div class="col-md-12">
+                                @Html.TextBoxFor(model => model.ModuleTitle, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.ModuleTitle, null, new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class=" col-md-4 pull-left">
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.IsActive, new { @class = "control-label" })
+                            <div class="col-md-12">
+                                @Html.DropDownListFor(model => model.IsActive, new[] {
+new SelectListItem() { Text = "فعال", Value = bool.TrueString },
+new SelectListItem() { Text = "غیر فعال", Value = bool.FalseString },
+}, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.IsActive, null, new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.PositionId, new { @class = "control-label" })
+                            <div class="col-md-12">
+                                @Html.DropDownList("PositionId", null, htmlAttributes: new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.PositionId, null, new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.DisplayOrder, new { @class = "control-label " })
+                            <div class="col-md-12">
+                                @Html.Action("DisplayOrder", "Modules", new { id = Model.PositionId })
+                                @Html.ValidationMessageFor(model => model.DisplayOrder, null, new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <br />
+                    </div>
+                </div>
+            </div>
+            <div id="tab2" class="tab-pane fade">
+                <div class="row">
+                    @Html.Action("ModulePageShow", "Modules")
+
+                </div>
+            </div>
+            <div id="tab3" class="tab-pane fade">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group col-md-10">
+                            @Html.LabelFor(model => model.Title, new { @class = "control-label" })
+                            <div class="col-md-12">
+                                @Html.TextBoxFor(model => model.Title, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Title, null, new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group col-md-10">
+                            @Html.LabelFor(model => model.TitleBold, new { @class = "control-label" })
+                            <div class="col-md-12">
+                                @Html.TextBoxFor(model => model.TitleBold, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.TitleBold, null, new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group col-md-10">
+                            @Html.LabelFor(model => model.Cover, new { @class = "control-label" })
+                            <div class="col-md-12">
+                                @Html.TextBoxFor(model => model.Cover, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Cover, null, new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group col-md-10">
+                            @Html.LabelFor(model => model.Link, new { @class = "control-label" })
+                            <div class="col-md-12">
+                                @Html.TextBoxFor(model => model.Link, new { @class = "form-control ltr" })
+                                @Html.ValidationMessageFor(model => model.Link, null, new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group col-md-10">
+                            @Html.LabelFor(model => model.LinkMore, new { @class = "control-label" })
+                            <div class="col-md-12">
+                                @Html.TextBoxFor(model => model.LinkMore, new { @class = "form-control ltr" })
+                                @Html.ValidationMessageFor(model => model.LinkMore, null, new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group  col-md-12">
+                            @Html.LabelFor(model => model.Description, new { @class = "control-label" })
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.Description, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Description, null, new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <br />
+
+                        <div class="form-group col-lg-10 col-md-10 col-sm-12 col-xs-12">
+                            <img id="imgprdctlogo" src="~/Content/Modules/Images/thumbnail/@Model.ModuleImage" width="250" height="250" class="thumbnail pull-left" />
+                        </div>
+                        <br />
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <div class="file-upload">
+                                    <div class="fileinput input-group fileinput-new" data-provides="fileinput">
+
+                                        <span class="input-group-addon btn btn-default btn-file">
+                                            <span class="fileinput-new">انتخاب تصویر</span>
+                                            <span class="fileinput-exists">تغییر تصویر</span>
+                                            <input type="file" name="Image" id="Image" />
+                                            <input id="File_Content" name="File.Content" type="hidden" value="">
+                                        </span>
+                                        <a id="CleanImage" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">حذف</a>
+                                        <div class="form-control text-left" data-trigger="fileinput">
+                                            <i class="fa fa-file-picture-o pull-lefte fileinput-exists"></i>
+                                            <span class="fileinput-filename"></span>
+                                            <input id="File_Name" name="File.Name" type="hidden" value="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="field-validation-valid text-danger" data-valmsg-for="File.Name" data-valmsg-replace="true"></span>
+                                <span class="field-validation-valid text-danger" data-valmsg-for="File.Content" data-valmsg-replace="true"></span>
+                                <span class="field-validation-valid text-danger" data-valmsg-for="File" data-valmsg-replace="true"></span>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="col-md-6">
+                                <a id="SendIcon" data-style="slide-right" class="col-md-12 btn btn-info ">
+                                    <i class="icon-paper-plane"></i>
+                                    ارسال تصویر
+                                </a>
+
+                            </div>
+                            <div class="col-md-6">
+                                <a id="deleteIcon" data-style="slide-right" class="col-md-12 btn btn-danger">
+                                    <i class="icon-close"></i>
+                                    بدون تصویر
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="tab4" class="tab-pane fade">
+                <br />
+                <div class="row">
+                    <div class="col-sm-4 m-b-20">
+                        <a id="btnAdd" class="btn btn-success btn-round pull-right" href="#" data-style="slide-right">افزودن ماژول</a>
+                    </div><!-- /.col-sm-4 -->
+                </div>
+                <div id="ModuleItems"></div>
+            </div>
+        </div>
+    }
+</div>
+
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 id="myModalLabel" class="myModalLabel">تیتر مودال</h4>
+            </div>
+            <div id="bodyModal" class="bodyModal"></div>
+        </div>
+    </div>
+</div>
+
+@section Script{
+    <script src="~/content/ckeditor/ckeditor.js"></script>
+    <script src="~/content/ckeditor/adapters/jquery.js"></script>
+    <script src="~/content/assets/plugins/ladda/dist/spin.min.js"></script>
+    <script src="~/content/assets/plugins/ladda/dist/ladda.min.js"></script>
+    <script src="~/content/assets/js/pages/ladda.js"></script>
+
+    <script src="~/content/Scripts/textbox/jasny-bootstrap.js"></script>
+    <script src="~/content/Scripts/textbox/jasny-bootstrap.min.js"></script>
+
+    <script>
+        $(function () {
+            $('#IsActive').val('@Model.IsActive')
+            $('#DisplayOrder').val('@Model.DisplayOrder')
+            $('#PositionId').val('@Model.PositionId')
+        });
+
+        $("#btnAdd").on("click", function (e) {
+            e.preventDefault();
+            var l = Ladda.create(document.querySelector('#btnAdd'));
+            l.start();
+            $.ajax({
+                url: "/admin/MultiPictureModule/CreateItems",
+                type: "Get",
+                data: { moduleId : '@Model.ModuleId'}
+            }).done(function (result) {
+                $('#myModal').modal('show');
+                $('#myModalLabel').html('افزودن آیتم جدید');
+                $('#bodyModal').html(result);
+                l.stop();
+            });
+        });
+
+        $(document).ready(function () {
+            getItems(@Model.ModuleId);
+        });
+
+        function getItems(id) {
+            $.ajax({
+                url: "/admin/MultiPictureModule/ItemsList/" + id,
+                type: "Get",
+                data: {}
+            }).done(function (result) {
+                $('#ModuleItems').html(result);
+            });
+        }
+
+        $('#SendIcon').on('click',
+            function (e) {
+                e.preventDefault();
+                var l = Ladda.create(document.querySelector('#SendIcon'));
+                l.start();
+                var file = $('#Image').get(0).files[0],
+                    formData = new FormData();
+                formData.append('file', file);
+                console.log(file);
+                $.ajax({
+                    url: '/admin/MultiPictureModule/UploadFile',
+                    type: 'POST',
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    data: formData,
+                    xhr: function () {
+                        var jqXHR = null;
+                        if (window.ActiveXObject) {
+                            jqXHR = new window.ActiveXObject("Microsoft.XMLHTTP");
+                        } else {
+                            jqXHR = new window.XMLHttpRequest();
+                        }
+
+                        return jqXHR;
+                    },
+                    success: function (res) {
+                        $("#imgprdctlogo").attr("src", res.src);
+                        $("#ModuleImage").val(res.ImageName);
+                        $('#CleanImage').click();
+                        l.stop();
+                    },
+                    error: function (res) {
+                        l.stop();
+                    },
+                });
+            });
+
+        $('#deleteIcon').on('click',
+            function (e) {
+                e.preventDefault();
+                $("#ModuleImage").val("no-photo.jpg");
+                $("#imgprdctlogo").attr("src", "/Content/Modules/Images/thumbnail/no-photo.jpg");
+                $('#CleanImage').click();
+            });
+
+        $(".activity").on("click", function (e) {
+            e.preventDefault();
+            var id = this.id;
+            (".content").hide();
+            $(id).show();
+        });
+        function activity(id) {
+
+        }
+
+        function gettoken() {
+            var token = '@Html.AntiForgeryToken()';
+            token = $(token).val();
+            return token;
+        }
+    </script>
+}
+
+@section Head{
+    <link href="~/content/assets/plugins/ladda/dist/ladda-themeless.min.css" rel="stylesheet">
+}
+
+

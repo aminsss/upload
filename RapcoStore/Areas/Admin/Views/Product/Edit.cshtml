@@ -1,0 +1,416 @@
+﻿@model Koshop.DomainClasses.Product
+
+@{
+    ViewBag.Title = "ویرایش " + Server.HtmlDecode(Html.DisplayNameFor(model => model).ToString());
+}
+
+@using (Html.BeginForm("Edit", "Product", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+
+
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.ProductId)
+    @Html.HiddenFor(model => model.AddedDate)
+    @Html.HiddenFor(x => x.ProductImage)
+
+    <div class="hide">
+        @Html.Hidden("ProductGalleriesName", "");
+        @Html.HiddenFor(model => model.ProductImage)
+    </div>
+    <div class="table-responsive portlet box border shadow">
+        <div class="portlet-heading">
+            <h2 class="col-md-8">افزودن @Html.DisplayNameFor(model => model)</h2>
+            <div class="form-group form-actions">
+
+                <button type="submit" class="btn btn-info btn-round">
+                    <i class="icon-check"></i>
+                    ذخیره
+                </button>
+                <a href="/Product/search/?SearchString=@Model.AliasName" target="_blank" class="btn btn-success btn-round">
+                    <i class="icon-eye"></i>
+                    مشاهده
+                </a>
+                <a href="/admin/product/create" class="btn btn-white btn-round">
+                    <i class="icon-plus"></i>
+                    جدید
+                </a>
+                <a href="/admin/product/index" class="btn btn-warning btn-round">
+                    <i class="icon-close"></i>
+                    بستن
+                </a>
+            </div>
+        </div>
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <select class="form-control" data-val="true" data-val-required="لطفا گروه محصول را انتخاب کنید" id="ProductGroupId" name="ProductGroupId">
+                            <option value="">-لطفا گروه محصول را انتخاب کنید-</option>
+                            @Html.Action("GroupsOfProduct", "ProductGroup", new { area = "admin" })
+                        </select>
+                        @Html.ValidationMessageFor(model => model.ProductGroupId, null, new { @class = " text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-12">
+                        @Html.TextBoxFor(model => model.ProductName, new { @class = "form-control", @placeholder = "نام محصول انگلیسی" })
+                        @Html.ValidationMessageFor(model => model.ProductName, null, new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-12">
+                        @Html.TextBoxFor(model => model.ProductTitle, new { @class = "form-control", @placeholder = "عنوان محصول فارسی" })
+                        @Html.ValidationMessageFor(model => model.ProductTitle, null, new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-12">
+                        @Html.TextBoxFor(model => model.AliasName, new { @class = "form-control", @placeholder = "نام مستعار بدون فاصله و با - از هم جدا کنید" })
+                        @Html.ValidationMessageFor(model => model.AliasName, null, new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <input placeholder="کلمات کلیدی ، با - از هم جدا کنید" type="text" id="tags" name="tags" value="@ViewBag.tag" class="form-control col-md-12" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div id="Detailsinp"></div>
+                </div>
+
+            </div>
+            <div class="col-md-6">
+                <div class="form-group col-lg-10 col-md-10 col-sm-12 col-xs-12">
+                    <img id="imgprdctlogo" width="250" height="250" src="/Content/Upload/productImages/thumbnail/@Model.ProductImage" class="thumbnail pull-left" />
+                </div>
+                <br />
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <div class="file-upload">
+                            <div class="fileinput input-group fileinput-new" data-provides="fileinput">
+
+                                <span class="input-group-addon btn btn-default btn-file">
+                                    <span class="fileinput-new">انتخاب تصویر</span>
+                                    <span class="fileinput-exists">تغییر تصویر</span>
+                                    <input type="file" name="PrImage" id="PrImage" />
+                                    <input id="File_Content" name="File.Content" type="hidden" value="">
+                                </span>
+                                <a id="cleanImage" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">حذف</a>
+                                <div class="form-control text-left" data-trigger="fileinput">
+                                    <i class="fa fa-file-picture-o pull-lefte fileinput-exists"></i>
+                                    <span class="fileinput-filename"></span>
+                                    <input id="File_Name" name="File.Name" type="hidden" value="">
+                                </div>
+                            </div>
+                        </div>
+                        <span class="field-validation-valid text-danger" data-valmsg-for="File.Name" data-valmsg-replace="true"></span>
+                        <span class="field-validation-valid text-danger" data-valmsg-for="File.Content" data-valmsg-replace="true"></span>
+                        <span class="field-validation-valid text-danger" data-valmsg-for="File" data-valmsg-replace="true"></span>
+                    </div>
+                </div>
+                <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-md-6">
+                        <a id="SendIcon" data-style="slide-right" class="col-md-12 btn btn-info ">
+                            <i class="icon-paper-plane"></i>
+                            ارسال تصویر
+                        </a>
+
+                    </div>
+                    <div class="col-md-6">
+                        <a id="deleteIcon" data-style="slide-right" class="col-md-12 btn btn-danger">
+                            <i class="icon-close"></i>
+                            بدون تصویر
+                        </a>
+                    </div>
+                </div>
+                <div></div>
+                <div class="col-md-12 text-center badge-inverse text-white small-padding" style="margin:45px 0 10px">
+                    <p> گالری</p>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-12">
+
+                        @foreach (var galery in Model.ProductGallery)
+                        {
+                            <div class="col-md-6" id="image_@(galery.ProductGalleryId)">
+                                <img src="/Content/Upload/productImages/thumbnail/@galery.ImageName" class="thumbnail " style="width:200px;height:112px; object-fit: contain; ">
+                                <a class="btn btn-block btn-danger" style="width:200px;margin-bottom:20px" onclick="deleteImage(@galery.ProductGalleryId)">حذف</a>
+                            </div>
+                        }
+                        <div id="gallerypic-Check">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <div class="file-upload">
+                            <div class="fileinput input-group fileinput-new" data-provides="fileinput">
+                                <span class="input-group-addon btn btn-default btn-file">
+                                    <span class="fileinput-new">گالری تصاویر</span>
+                                    <span class="fileinput-exists">تغییر تصاویر</span>
+                                    <input type="file" name="ProductGallery" id="ProductGallery" multiple="multiple" />
+                                    <input id="File_Content" name="File.Content" type="hidden" value="">
+                                </span>
+                                <a id="CleanGallery" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">حذف</a>
+                                <div class="form-control text-left" data-trigger="fileinput">
+                                    <i class="fa fa-file-picture-o pull-left fileinput-exists"></i>
+                                    <span class="fileinput-filename"></span>
+                                    <input id="File_Name" name="File.Name" type="hidden" value="">
+                                </div>
+                            </div>
+                        </div>
+                        <span class="field-validation-valid text-danger" data-valmsg-for="File.Name" data-valmsg-replace="true"></span>
+                        <span class="field-validation-valid text-danger" data-valmsg-for="File.Content" data-valmsg-replace="true"></span>
+                        <span class="field-validation-valid text-danger" data-valmsg-for="File" data-valmsg-replace="true"></span>
+
+                    </div>
+                </div>
+                <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-md-12">
+                        <a id="SendGallery" data-style="slide-right" class="col-md-12 btn btn-info ">
+                            <i class="icon-paper-plane"></i>
+                            ارسال گالری عکس
+                        </a>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="form-group ">
+                <div class="col-md-12">
+                    <div id="attribute"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Script{
+    <script src="~/content/ckeditor/ckeditor.js"></script>
+    <script src="~/content/ckeditor/adapters/jquery.js"></script>
+    <script src="~/content/assets/plugins/ladda/dist/spin.min.js"></script>
+    <script src="~/content/assets/plugins/ladda/dist/ladda.min.js"></script>
+    <script src="~/content/assets/js/pages/ladda.js"></script>
+
+    <script src="~/content/Scripts/textbox/jasny-bootstrap.js"></script>
+    <script src="~/content/Scripts/textbox/jasny-bootstrap.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#SendIcon').on('click',
+                function (e) {
+                    e.preventDefault();
+                    var l = Ladda.create(document.querySelector('#SendIcon'));
+                    l.start();
+                    var file = $('#PrImage').get(0).files[0],
+                        formData = new FormData();
+                    formData.append('file', file);
+                    console.log(file);
+                    $.ajax({
+                        url: '/admin/Product/UploadFile',
+                        type: 'POST',
+                        contentType: false,
+                        cache: false,
+                        processData: false,
+                        data: formData,
+                        xhr: function () {
+                            var jqXHR = null;
+                            if (window.ActiveXObject) {
+                                jqXHR = new window.ActiveXObject("Microsoft.XMLHTTP");
+                            } else {
+                                jqXHR = new window.XMLHttpRequest();
+                            }
+
+                            return jqXHR;
+                        },
+                        success: function (res) {
+                            $("#imgprdctlogo").attr("src", res.src);
+                            $("#ProductImage").val(res.ImageName);
+                            $('#cleanImage').click();
+                            l.stop();
+                        },
+                        error: function (res) {
+                            l.stop();
+                        },
+                    });
+                });
+
+            $('#SendGallery').on('click',
+                function (e) {
+                    e.preventDefault();
+                    var fi = document.getElementById('ProductGallery');
+                    var l = Ladda.create(document.querySelector('#SendGallery'));
+                    l.start();
+                    if (fi.files.length == 0)
+                        return false;
+                    var formData = new FormData();
+                    for (var i = 0; i < fi.files.length; i++) {
+                        var files = fi.files[i];
+                        formData.append('files', files);
+                    }
+                    console.log(files);
+                    $.ajax({
+                        url: '/admin/Product/Uploadgallery',
+                        type: 'POST',
+                        contentType: false,
+                        cache: false,
+                        processData: false,
+                        data: formData,
+                        xhr: function () {
+                            var jqXHR = null;
+                            if (window.ActiveXObject) {
+                                jqXHR = new window.ActiveXObject("Microsoft.XMLHTTP");
+                            } else {
+                                jqXHR = new window.XMLHttpRequest();
+                            }
+
+                            return jqXHR;
+                        },
+                        success: function (res) {
+                            if (res.status == "Done") {
+                                $("#ProductGalleriesName").val($("#ProductGalleriesName").val() + res.ImagesName);
+                                shownewGallery(res.ImagesName);
+                                $('#CleanGallery').click();
+                            }
+                            l.stop();
+                        },
+                        error: function (res) {
+                            l.stop();
+                        },
+                    });
+                });
+
+            $('#deleteIcon').on('click',
+                function (e) {
+                    e.preventDefault();
+                    $("#ProductImage").val("no-photo.jpg");
+                    $("#imgprdctlogo").attr("src", "/Content/Upload/productImages/thumbnail/no-photo.jpg");
+                    $('#cleanImage').click();
+                });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $.ajax({
+                url: "/admin/Product/DetailInputsEdit/" + @Url.RequestContext.RouteData.Values["id"],
+                type: "Get",
+                 data: {
+                    grpid : @Model.ProductGroupId,
+                },
+            }).done(function (result) {
+                    $('#Detailsinp').html(result);
+                });
+
+            $.ajax({
+                url: "/admin/Product/AttributeSelectorEdit/" + @Url.RequestContext.RouteData.Values["id"],
+                type: "Get",
+                data: {
+                    grpid: @Model.ProductGroupId,
+                },
+                beforeSend: function () {
+                    $('#loadingIndicator').fadeIn();
+                },
+            }).done(function (result) {
+                $('#attribute').html(result);
+            });
+        })
+    </script>
+
+    <script>
+        //$(function () {
+        //    $('#ProductDescription').ckeditor();
+        //});
+
+        $(function () {
+            //Set the value of your TypeId <select> list to the element with value '33'
+            $('#ProductGroupId').val('@Model.ProductGroupId');
+        });
+
+        @*$(function () {
+            //Set the value of your TypeId <select> list to the element with value '33'
+            $('#GroupModel').val('@Model.GroupModel');
+        });*@
+
+        function deleteImage(id) {
+            $.ajax({
+                url: "/Admin/Product/deleteGalery/" + id,
+                type: "Get",
+                data: {},
+            }).done(function (result) {
+                $('#image_' + id).hide(700);
+            })
+        }
+
+        function removeImage(id) {
+            var deletedS = $("#ProductGalleriesName").val();
+            deletedS = deletedS.replace(id + ",", "")
+            $("#ProductGalleriesName").val(deletedS);
+            $("#image_" + id.replace(".jpg", "")).hide(700);
+        }
+
+        function shownewGallery(id) {
+            $.ajax({
+                url: "/admin/Product/galleryshowpics",
+                type: "Get",
+                data: {
+                    allpics: id,
+                },
+            }).done(function (result) {
+                $('#gallerypic-Check').append(result);
+            });
+        }
+    </script>
+
+    <script>
+        function getListAtrib() {
+
+            $(document).ready(function () {
+                $.ajax({
+                    url: "/admin/Product/DetailInputsEdit/" + @Url.RequestContext.RouteData.Values["id"],
+                    type: "Get",
+                    data: {},
+                }).done(function (result) {
+                    $('#Detailsinp').html(result);
+                });
+                $.ajax({
+                    url: "/admin/Product/AttributeSelectorEdit/" + @Url.RequestContext.RouteData.Values["id"],
+                    type: "Get",
+                    data: {
+                        grpid: @Model.ProductGroupId,
+                    },
+                    beforeSend: function () {
+                        $('#loadingIndicator').fadeIn();
+                    },
+                }).done(function (result) {
+                    $('#attribute').html(result);
+                });
+            })
+
+        }
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('#ProductGroupId').change(function (e) {
+                e.preventDefault();
+                getListAtrib();
+            });
+        });
+
+
+    </script>
+}
+
+@section Head{
+    <link href="~/content/assets/plugins/ladda/dist/ladda-themeless.min.css" rel="stylesheet">
+}
+

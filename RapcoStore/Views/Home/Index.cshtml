@@ -1,0 +1,56 @@
+﻿@model Koshop.DomainClasses.Menu
+
+@section Head{
+    <title>فروشگاه راپکو | RAPCO STORE </title>
+    <meta name="keywords" content="@Model.Description">
+}
+
+@{
+    if (Model.PageType == "1")
+    {
+        foreach (var item in Model.ModulePage.Where(y => y.MenuId == Model.MenuId && y.Module.Position.PositionName == "Slider" && y.Module.IsActive == true).OrderBy(z => z.Module.DisplayOrder))
+        {
+            @Html.Action(item.Module.Component.ActionName, item.Module.Component.ControllerName, new { @id = item.ModuleId })
+        }
+
+        foreach (var item in Model.ModulePage.Where(y => y.MenuId == Model.MenuId && y.Module.Position.PositionName == "Top" && y.Module.IsActive == true).OrderBy(z => z.Module.DisplayOrder))
+        {
+            @Html.Action(item.Module.Component.ActionName, item.Module.Component.ControllerName, new { @id = item.ModuleId })
+        }
+
+        <div class="col-md-3">
+            @foreach (var item in Model.ModulePage.Where(y => y.MenuId == Model.MenuId && y.Module.Position.PositionName == "Side" && y.Module.IsActive == true).OrderBy(z => z.Module.DisplayOrder))
+            {
+                @Html.Action(item.Module.Component.ActionName, item.Module.Component.ControllerName, new { @id = item.ModuleId })
+            }
+        </div>
+
+        <div class="col-md-9">
+            @foreach (var item in Model.ModulePage.Where(y => y.MenuId == Model.MenuId && y.Module.Position.PositionName == "Content" && y.Module.IsActive == true).OrderBy(z => z.Module.DisplayOrder))
+            {
+                @Html.Action(item.Module.Component.ActionName, item.Module.Component.ControllerName, new { @id = item.ModuleId })
+            }
+        </div>
+
+        foreach (var item in Model.ModulePage.Where(y => y.MenuId == Model.MenuId && y.Module.Position.PositionName == "Bottom" && y.Module.IsActive == true).OrderBy(z => z.Module.DisplayOrder))
+        {
+            @Html.Action(item.Module.Component.ActionName, item.Module.Component.ControllerName, new { @id = item.ModuleId })
+        }
+
+        @section footer{
+            @Html.Partial("_footer", Model)
+        }
+
+        @section script{
+
+        }
+    }
+    else if (Model.PageType == "2") // product
+    {
+
+    }
+    if (Model.PageType == "3") // blog
+    {
+        @Html.Action("Groups", "Blog", new { @id = Model.PageContetnt })
+    }
+}

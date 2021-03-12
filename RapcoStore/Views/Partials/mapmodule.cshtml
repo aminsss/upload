@@ -1,0 +1,55 @@
+﻿@model Koshop.DomainClasses.Module
+
+
+
+
+<div style="display: none;">
+    @Html.Raw(Model.HtmlModule.HtmlText)
+    <div class="overlay" id="vienna"></div>
+    <div id="markervienna"><img src="~/content/Koshop/assets/img/location.png" /></div>
+    <div id="popup"></div>
+</div>
+<div class="an-page-content">
+    <div class="an-contact-us-content">
+        <div id="map" class="contact-map-content">
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+            var lan = document.getElementsByClassName("lan")[0].value;
+            var lat = document.getElementsByClassName("lat")[0].value;
+            var view = new ol.View({
+                center: ol.proj.fromLonLat([parseFloat(lan), parseFloat(lat)]),
+                zoom: 15,
+                maxZoom: 19,
+                minZoom: 5,
+
+            });
+
+
+            var map = new ol.Map({
+                target: 'map',
+                view: view,
+                layers: [
+                    new ol.layer.Tile({
+                        preload: 3,
+                        source: new ol.source.OSM(),
+                    })
+                ],
+                loadTilesWhileAnimating: true,
+            });
+
+            /**/
+            var pos = new ol.proj.fromLonLat([parseFloat(lan), parseFloat(lat)]);
+            /**/
+            var markervienna = new ol.Overlay({
+                position: pos,
+                positioning: 'bottom-center',
+                element: document.getElementById('markervienna'),
+                stopEvent: false
+            });
+            map.addOverlay(markervienna);
+</script>

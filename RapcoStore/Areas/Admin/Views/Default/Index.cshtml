@@ -1,0 +1,39 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<!-- BEGIN PAGE CONTENT -->
+        <!-- BEGIN BREADCRUMB -->
+        <div class="col-md-12">
+            <div class="breadcrumb-box border shadow">
+                <ul class="breadcrumb">
+                    <li><a href="/admin/default/index">پیشخوان</a></li>
+                </ul>
+                <div class="breadcrumb-left">
+                    @DateTime.Now.ToString("dddd - yyyy/MM/dd")                               <i class="icon-calendar"></i>
+                </div><!-- /.breadcrumb-left -->
+            </div><!-- /.breadcrumb-box -->
+        </div><!-- /.col-md-12 -->
+        <!-- END BREADCRUMB -->
+
+        <div class="col-md-12">
+            <div class="row">
+                @Html.Action("UserCount", "partial")
+                @Html.Action("GetGeneralStatistics", "Statistics")
+            </div><!-- /.row -->
+            <div class="row">
+                @{ Html.RenderAction("BrowserTable", "Statistics"); }
+                @{ Html.RenderAction("OsTable", "Statistics"); }
+                @{ Html.RenderAction("CountryTable", "Statistics"); }
+            </div>
+            <div class="row">
+                @*@{ Html.RenderAction("Subdetails", "Statistics"); }*@
+            </div>
+            <div class="row">
+                @{ Html.RenderAction("PageView", "Statistics"); }
+                @{ Html.RenderAction("Referrer", "Statistics"); }
+            </div>
+
+        </div><!-- /.col-md-12 -->
+            <!-- END PAGE CONTENT -->

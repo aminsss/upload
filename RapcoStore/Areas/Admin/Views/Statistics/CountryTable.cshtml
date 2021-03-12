@@ -1,0 +1,35 @@
+﻿
+<div class="col-md-12 col-xs-12">
+    <div class="portlet box border shadow">
+        <div class="portlet-heading">
+            <div class="portlet-title">
+                <h3 class="title">
+                    <i class="icon-flag"></i>
+                    نمایش آمار بازدیدها به تفکیک کشور
+                </h3>
+            </div><!-- /.portlet-title -->
+        </div><!-- /.portlet-heading -->
+        <div class="portlet-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped table-hover">
+                    <tbody>
+
+                        @{
+                            foreach (var country in Model)
+                            {
+                                var flag = $"../Content/Images/flags/{country.CountryCode}.png";
+                                <tr>
+                                    <td><img src="@flag" style="width: 35px; height: 20px" /></td>
+                                    <td>@country.CountryName</td>
+                                    <td><span class="badge">@country.ViewCount</span></td>
+                                </tr>
+
+                            }
+
+                        }
+                    </tbody>
+                </table>
+            </div><!-- /.table-responsive -->
+        </div><!-- /.portlet-body -->
+    </div><!-- /.portlet -->
+</div><!-- /.col-md-12 -->

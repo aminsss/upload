@@ -1,0 +1,133 @@
+﻿@model Koshop.DomainClasses.MultiPictureItems
+
+<form id="form">
+    <div class="row">
+        <br />
+        <div class="form-group">
+            <div class="col-md-12">
+                <div class="file-upload">
+                    <div class="fileinput input-group fileinput-new" data-provides="fileinput">
+
+                        <span class="input-group-addon btn btn-default btn-file">
+                            <span class="fileinput-new">انتخاب تصویر</span>
+                            <span class="fileinput-exists">تغییر تصویر</span>
+                            <input type="file" name="ItemImage" id="ItemImage" />
+                            <input id="File_Content" name="File.Content" type="hidden" value="">
+                        </span>
+                        <a id="CleanImage" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">حذف</a>
+                        <div class="form-control text-left" data-trigger="fileinput">
+                            <i class="fa fa-file-picture-o pull-lefte fileinput-exists"></i>
+                            <span class="fileinput-filename"></span>
+                            <input id="File_Name" name="File.Name" type="hidden" value="">
+                        </div>
+                    </div>
+                </div>
+                <span class="field-validation-valid text-danger" data-valmsg-for="File.Name" data-valmsg-replace="true"></span>
+                <span class="field-validation-valid text-danger" data-valmsg-for="File.Content" data-valmsg-replace="true"></span>
+                <span class="field-validation-valid text-danger" data-valmsg-for="File" data-valmsg-replace="true"></span>
+            </div>
+        </div>
+        <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="col-md-6">
+                <a id="SendItemPic" data-style="slide-right" class="col-md-12 btn btn-info ">
+                    <i class="icon-paper-plane"></i>
+                    ارسال تصویر
+                </a>
+
+            </div>
+            <div class="col-md-6">
+                <a id="deleteItemPic" data-style="slide-right" class="col-md-12 btn btn-danger">
+                    <i class="icon-close"></i>
+                    بدون تصویر
+                </a>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+    $('#SendItemPic').on('click',
+        function (e) {
+            e.preventDefault();
+            var l = Ladda.create(document.querySelector('#SendItemPic'));
+            l.start();
+            var file = $('#ItemImage').get(0).files[0],
+                formData = new FormData();
+            formData.append('file', file);
+            console.log(file);
+            $.ajax({
+                url: '/admin/MultiPictureModule/UploadFile',
+                type: 'POST',
+                contentType: false,
+                cache: false,
+                processData: false,
+                data: formData,
+                xhr: function () {
+                    var jqXHR = null;
+                    if (window.ActiveXObject) {
+                        jqXHR = new window.ActiveXObject("Microsoft.XMLHTTP");
+                    } else {
+                        jqXHR = new window.XMLHttpRequest();
+                    }
+
+                    return jqXHR;
+                },
+                success: function (res) {
+                    $("#imgItemlogo").attr("src", res.src);
+                    $('#CleanImage').click();
+                    l.stop();
+                    $.ajax({
+                        url: "/admin/MultiPictureModule/UploadImage/"+@Model.MultiPictureItemsId,
+                        type: "POST",
+                        dataType: 'json',
+                        data: {
+                            imageName: res.ImageName,
+                        },
+                        success: function (result) {
+                            $("#myModal").modal('toggle');
+                            getItems(@Model.ModuleId);
+                        },
+                        error: function (xhr, resp, text) {
+                            console.log(xhr, resp, text);
+                        }
+                    });
+                },
+                error: function (res) {
+                    l.stop();
+                },
+            });
+        });
+
+    $('#deleteItemPic').on('click',
+        function (e) {
+            e.preventDefault();
+            $("#ItemImage").val("no-photo.jpg");
+            $("#imgItemlogo").attr("src", "/Content/Modules/Images/thumbnail/no-photo.jpg");
+            $('#CleanImage').click();
+        });
+
+
+    $("#submit").on('click', function () {
+
+    });
+
+    @*function saveImage(id) {
+        $.ajax({
+            url: "/admin/MultiPictureModule/UploadImage",
+            dataType: "json",
+            type: "POST",
+            data: {
+                Image = id,
+                MultiPictureItemsId: @Model.MultiPictureItemsId,
+            },
+            success: function (result) {
+                $("#myModal").modal('toggle');
+                //l.stop();
+                getItems(@Model.ModuleId);
+            },
+            error: function (xc) {
+                //l.stop();
+            }
+        });
+    }*@
+</script>

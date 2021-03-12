@@ -1,0 +1,17 @@
+﻿@model IEnumerable<Koshop.DomainClasses.User>
+
+@foreach (var User in Model.Where(x => x.RoleId == 1 && x.ISActive == true))
+{
+    <div class="col-md-3">
+        <br />
+        @if (User.ContactPersons.Any(x => x.UserId == User.UserId && x.ContactModuleId == ViewBag.ModuleId))
+        {
+            <input class="form-control" id="User[@User.UserId]" name="User[@User.UserId]" type="checkbox" checked="checked" /> @User.Name
+        }
+        else
+        {
+            <input class="form-control" id="User[@User.UserId]" name="User[@User.UserId]" type="checkbox" /> @User.Name
+        }
+    </div>
+}
+

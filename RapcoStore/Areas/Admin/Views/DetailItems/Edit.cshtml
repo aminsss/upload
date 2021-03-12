@@ -1,0 +1,51 @@
+﻿@model Koshop.DomainClasses.DetailItem
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.DetailItemId)
+
+    <div class="form-horizontal" style="padding:10px">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.DetailTitle, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.DetailTitle, null, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.DetailTitle, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.DetailGroupId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("DetailGroupId", null, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.DetailGroupId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-actions text-left">
+            <button type="submit" class="btn btn-info btn-round">
+                <i class="icon-check"></i>
+                ذخیره
+            </button>
+            <a data-dismiss="modal" class="btn btn-warning btn-round">
+                <i class="icon-close"></i>
+                بازگشت
+            </a>
+        </div>
+    </div>
+}
+
+<script type="text/javascript" language=javascript>
+    $.validator.unobtrusive.parse(document);
+</script>
+
+<script>
+     $(function () {
+            //Set the value of your TypeId <select>
+         $('#DetailGrpID').val('@Model.DetailGroupId');
+    });
+</script>
+

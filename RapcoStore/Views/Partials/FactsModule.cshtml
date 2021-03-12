@@ -1,0 +1,21 @@
+﻿@model Koshop.DomainClasses.MultiPictureModule
+
+@if (Model.MultiPictureItems.Any())
+{
+<section class="fun-facts-area ptb-100 pt-0">
+    <div class="container">
+        <div class="row">
+            @foreach (var item in Model.MultiPictureItems)
+            {
+                <div class="col-lg-3 col-6 col-md-3 col-sm-3">
+                    <div class="single-fun-facts">
+                        <h3><span style="direction: ltr;" class="odometer" data-count="@item.Description">00</span>+</h3>
+                        <p>@item.Title</p>
+                        <div class="back-text">@item.TitleBold</div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+}

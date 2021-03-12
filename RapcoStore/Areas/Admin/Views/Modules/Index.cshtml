@@ -1,0 +1,187 @@
+﻿@model IEnumerable<Koshop.DomainClasses.Module>
+
+<div class="table-responsive portlet box border shadow">
+    <div class="portlet-heading">
+        <h2 class="col-md-10">@ViewBag.Title</h2>
+        <br />
+    </div>
+    @using (Html.BeginForm("Index", "Modules", FormMethod.Get))
+    {
+        <div class="row">
+            <div class="col-sm-4 m-b-20">
+                <a id="btnAdd" class="btn btn-success btn-round pull-right" href="#" data-style="slide-right" onclick="Create()">افزودن ماژول</a>
+            </div><!-- /.col-sm-4 -->
+            <div class="col-sm-4 m-b-20"></div><!-- /.col-sm-4 -->
+            <div class="col-sm-4 m-b-20">
+                <form role="form">
+                    <div class="input-group round">
+                        @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control", @placeholder = "جستجو بر اساس نام کاربری..." })
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="submit">
+                                <i class="icon-magnifier"></i>
+                                <div class="paper-ripple"></div><div class="paper-ripple"><div class="paper-ripple__background"></div><div class="paper-ripple__waves"></div></div>
+                            </button>
+                        </span>
+                    </div><!-- ./input-group -->
+                </form>
+            </div><!-- /.col-sm-4 -->
+        </div>
+    }
+    <table class="table table-bordered table-hover table-striped text-center" id="data-table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.ModuleTitle)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IsActive)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Accisibility)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Component.ComponentName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Position.PositionTitle)
+                </th>
+                <th>
+                    عملیات
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr id="Item_@item.ModuleId">
+                    <td>
+                        @Html.ActionLink(item.ModuleTitle, item.Component.AdminAction + "Edit", new { id = item.ModuleId, Controller = item.Component.AdminController })
+                    </td>
+                    <td>
+                        @if (item.IsActive == true)
+                        {
+                            <label class="label-success">فعال</label>
+                        }
+                        else
+                        {
+                            <label class="label-danger">غیر فعال</label>
+                        }
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Accisibility)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Component.ComponentName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Position.PositionTitle)
+                    </td>
+                    <td>
+                        @Html.ActionLink("ویرایش", item.Component.AdminAction + "Edit", item.Component.AdminController, new { id = item.ModuleId }, new { @class = "btn btn-info btn-round" })
+                        <a class="btn btn-danger btn-round" onclick="Delete(@item.ModuleId)">حذف</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <br />
+
+</div>
+
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 id="myModalLabel" class="myModalLabel">تیتر مودال</h4>
+            </div>
+            <div id="bodyModal" class="bodyModal">
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Script{
+    <script src="~/content/assets/plugins/ladda/dist/spin.min.js"></script>
+    <script src="~/content/assets/plugins/ladda/dist/ladda.min.js"></script>
+    <script src="~/content/assets/js/pages/ladda.js"></script>
+
+    <script>
+            $("#btnAdd").on("click", function (e) {
+                e.preventDefault();
+                var l = Ladda.create(document.querySelector('#btnAdd'));
+                l.start();
+                $.ajax({
+                    url: "/admin/modules/componentList",
+                    type: "Get",
+                    data: {}
+                }).done(function (result) {
+                    $('#myModal').modal('show');
+                    $('#myModalLabel').html('افزودن گروه جدید');
+                    $('#bodyModal').html(result);
+                    l.stop();
+                });
+            });
+
+            function Delete(id) {
+            swal({
+                title: 'آیا اطمینان دارید؟',
+                text: "این عملیات برگشت پذیر نیست...",
+                type: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#f44336',
+                cancelButtonColor: '#777',
+                confirmButtonText: 'بله، حذف شود. '
+            }).then(function (result) {
+                $.ajax({
+                    url: "/admin/Modules/Delete",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: 'application/x-www-form-urlencoded; charset=utf-8',
+                    data: {
+                        __RequestVerificationToken: gettoken(),
+                         id: id
+                    },
+                    async: true,
+                    cache: false,
+                    success: function (result) {
+                        swal(
+                            'انتخاب شما حذف کردن بود.',
+                            'گروه فیلتر با موفقیت حذف شد.',
+                            'success'
+                        ).then($("#Item_" + id).hide(700))
+
+                    },
+                    error: function (xc) {
+                        swal(
+                            'خطا در پردازش.',
+                            'گروه فیلتر به دلایلی قابل حذف نمیباشد.',
+                            'error'
+                        );
+                    }
+                })
+            }, function (dismiss) {
+                if (dismiss == 'cancel') {
+                    swal(
+                        'لغو گردید',
+                        'گروه فیلتر همچنان وجود دارد.',
+                        'error'
+                    ).catch(swal.noop);;
+                }
+            }).catch(swal.noop);
+        }
+
+        function gettoken() {
+            var token = '@Html.AntiForgeryToken()';
+            token = $(token).val();
+            return token;
+        }
+
+    </script>
+
+}
+
+@section Head{
+    <link href="~/content/assets/plugins/noty/css/flat.css" rel="stylesheet">
+    <link href="~/content/assets/plugins/ladda/dist/ladda-themeless.min.css" rel="stylesheet">
+}

@@ -1,0 +1,47 @@
+﻿@*@model IEnumerable<Koshop.DomainClasses.ShowShoppingCart>
+
+@{
+    ViewBag.Title = "فهرست " + Server.HtmlDecode(Html.DisplyModelPluralName(model => model).ToString());
+}
+
+<h2>@ViewBag.Title</h2>
+
+@(Html.Kendo().Grid(Model)
+                      .Name("Grid")
+                      .Columns(columns =>
+                          {
+                              columns.Bound(model => model.ProductTitle);
+                              columns.Bound(model => model.ProductCount);
+                              columns.Bound(model => model.productPrice);
+                              columns.Bound(model => model.Sum);
+                              columns.Bound(item => @item.ProductID).Title("دستورات").Filterable(false).Groupable(false)
+                              .Template(@<text>
+
+                                <a href="/ShoppingCart/CountUp/@item.ProductID" class="btn btn-xs btn-success">
+                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                </a>
+                                <a href="/ShoppingCart/CountDown/@item.ProductID" class="btn btn-xs btn-warning">
+                                    <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+                                </a>
+                                <a href="/ShoppingCart/Remove/@item.ProductID" class="btn btn-xs btn-danger">
+                                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                </a>
+
+                            </text>).Width(200);
+                                })
+                        .ToolBar(toolbar =>
+                                    {
+                                        toolbar.Custom().Action("Save", "ShoppingCart").Text("تایید و پرداخت");
+                                    }
+                        )
+                        .Groupable()
+                        .Pageable()
+                        .Sortable()
+                        .Scrollable()
+                        .Filterable()
+                        .DataSource(dataSource => dataSource
+                                                    .Server()
+
+                                                    .Model(model => model.Id(item => item.ProductID))
+                                    )
+)*@

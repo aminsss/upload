@@ -1,0 +1,15 @@
+﻿@model IEnumerable<Koshop.DomainClasses.ProductGroup>
+
+<div class="list-group">
+    <a href="#" class="list-group-item list-group-item-action active text-center">
+        گروه محصولات
+    </a>
+    @foreach (var item in Model)
+    {
+        <a href="/Product/showProductByGroup/@item.AliasName" class="list-group-item list-group-item-action">
+            @item.GroupTitle
+            <label class="label label-danger pull-left">@item.Products.Count</label>
+        </a>
+    }
+
+</div>

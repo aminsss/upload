@@ -1,0 +1,41 @@
+﻿@model Koshop.ViewModels.StatisticsViewModel
+
+<div class="col-md-3 col-xs-6 xxs-full-width">
+    <div class="stat-box bg-orange shadow">
+        <a href="#">
+            <div class="stat">
+                <div class="counter-down" data-value=" @Model.TodayVisits "></div>
+                <div class="h3">بازدید امروز</div>
+            </div><!-- /.stat -->
+            <div class="visual">
+                <i class="fa fa-eye"></i>
+            </div><!-- /.visual -->
+        </a>
+    </div><!-- /.stat-box -->
+</div><!-- /.col-md-3 -->
+<div class="col-md-3 col-xs-6 xxs-full-width">
+    <div class="stat-box bg-purple shadow">
+        <a href="#">
+            <div class="stat">
+                <div class="counter-down" data-value="@Model.TotallVisits"></div>
+                <div class="h3">بازدید کل</div>
+            </div><!-- /.stat -->
+            <div class="visual">
+                <i class="fa fa-eye"></i>
+            </div><!-- /.visual -->
+        </a>
+    </div><!-- /.stat-box -->
+</div><!-- /.col-md-3 -->
+<div class="col-md-3 col-xs-6 xxs-full-width">
+    <div class="stat-box bg-red shadow">
+        <a href="#">
+            <div class="stat">
+                <div class="counter-down" data-value="@Model.UniquVisitors نفر"></div>
+                <div class="h3">بازدید یونیک</div>
+            </div><!-- /.stat -->
+            <div class="visual">
+                <i class="fa fa-eye"></i>
+            </div><!-- /.visual -->
+        </a>
+    </div><!-- /.stat-box -->
+</div><!-- /.col-md-3 -->

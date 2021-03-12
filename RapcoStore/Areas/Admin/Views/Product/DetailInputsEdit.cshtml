@@ -1,0 +1,36 @@
+﻿@model IEnumerable<Koshop.DomainClasses.DetailGroup>
+@{
+    Koshop.DataLayer.AppDbContext db = new Koshop.DataLayer.AppDbContext();
+    int? productid = Convert.ToInt16(Url.RequestContext.RouteData.Values["id"]);
+}
+@foreach (var grp in Model)
+{
+    <div class="col-md-12">
+        <br />
+        <lable class="badge-inverse text-white text-center table-responsive col-md-12" style="width:100%">
+            @grp.Name را وارد کنید
+        </lable>
+        <table class="table table-bordered table-striped table-responsive text-center">
+
+            @foreach (var attr in grp.DetailItem)
+            {
+                string s = "";
+                if (db.ProductDetails.Any(v => v.ProductId == productid && v.DetailItemId == attr.DetailItemId))
+                {
+                    s = db.ProductDetails.Where(v => v.ProductId == productid && v.DetailItemId == attr.DetailItemId).FirstOrDefault().Value;
+                }
+                <tr>
+                    <td>
+                        @attr.DetailTitle
+                    </td>
+                    <td>
+                        <textarea class="ltr" name="detItem_@attr.DetailItemId" rows="3">@s</textarea>
+                    </td>
+
+                </tr>
+            }
+        </table>
+    </div>
+}
+
+

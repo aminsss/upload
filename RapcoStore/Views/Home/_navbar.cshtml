@@ -1,0 +1,127 @@
+﻿@model IEnumerable<Koshop.DomainClasses.Menu>
+@{
+    Koshop.DataLayer.AppDbContext db = new Koshop.DataLayer.AppDbContext();
+}
+
+<div class="navbar-header">
+    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+    </button>
+    <a class="navbar-brand" href="/"><img src="~/content/Koshop/assets/img/logo-final-white.png" alt=""></a>
+</div>
+
+
+<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+    <ul id="citychooser" class="nav navbar-nav">
+        @MenuTree(Model.Where(s => s.Depth == 0 && s.MenuGroup.MenuType == "MainMenu"))
+        @*<li class="nav-item ">
+                @if (!User.Identity.IsAuthenticated)
+                {
+                    <a href="/Account/Login" class="nav-link"><img src="/zovio/assets/fonts/user.svg" style="height: 24px;"></a>
+                }
+                else
+                {
+                    <a href="#" class="nav-link"><img src="/zovio/assets/fonts/user.svg" style="height: 24px;"></a>
+                    <ul class="dropdown-menu">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            var user = db.Users.Where(x => x.UserName == User.Identity.Name).FirstOrDefault();
+                            <li class="nav-item">
+                                <a href="/Account/Profile" class="nav-link"><img src="~/Content/Upload/Profile/@user.Profile" style="height: 24px;" class="img-circle img-responsive" /> @user.Name</a>
+                            </li>
+                            if (user.RoleId == 1)
+                            {
+                                <li class="nav-item">
+                                    <a href="/Admin" class="nav-link"><img src="~/zovio/assets/fonts/star.svg" style="height: 18px" class="img-circle img-responsive" /> ورود به پنل مدیریت</a>
+                                </li>
+                            }
+                            <li class="nav-item">
+                                <a href="/Account/SignOut" class="nav-link"><img src="~/zovio/assets/fonts/logout.svg" style="height: 18px" class="img-circle img-responsive" /> خروج از حساب کاربری</a>
+                            </li>
+                        }
+                    </ul>
+                }
+            </li>*@
+    </ul>
+    <ul class="nav navbar-nav navbar-left">
+
+        <li><a class="an-btn an-btn-default" href="/account/register"><i class="typcn typcn-location-outline"></i><span>ثبت نام</span></a></li>
+        <li><a class="sign-up-link" href="/admin"><i class="typcn typcn-user"></i><span>ورود به مدیریت</span></a></li>
+    </ul>
+</div><!-- /.navbar-collapse -->
+
+
+@helper MenuTree(IEnumerable<Koshop.DomainClasses.Menu> menu)
+{
+    foreach (var item in menu.OrderBy(x => x.DisplayOrder).Where(y => y.IsActive == true))
+    {
+        <li class="dropdown ">
+            @if (item.PageType == "4")
+            {
+                <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="ion-android-laptop color-moto"></i>@item.MenuTitle<span class="caret"></span></a>
+            }
+            else
+            {
+                <a href="@item.PageContetnt" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="ion-android-laptop color-moto"></i>@item.MenuTitle<span class="caret"></span></a>
+            }
+            @if (Model.Any(s => s.ParentId == item.MenuId))
+            {
+                <ul class="dropdown-menu">
+                    <li>
+                        @foreach (var item2 in Model.Where(s => s.ParentId == item.MenuId))
+                        {
+                            <div class="lisline">
+                                <ul class="droplist">
+                                    <li class="boldmenu">
+                                        @if (item2.PageType == "4")
+                                        {
+                                            <a>@item2.MenuTitle</a>
+                                        }
+                                        else if (item2.PageType == "2")
+                                        {
+                                            <a href="/Product/search?SlctGrpFilt=@item2.PageContetnt"> @item2.MenuTitle</a>
+                                        }
+                                        else
+                                        {
+                                            <a href="@item2.PageContetnt"> @item2.MenuTitle</a>
+                                        }
+                                    </li>
+                                    @if (Model.Any(s => s.ParentId == item2.MenuId))
+                                    {
+                                        foreach (var item3 in Model.Where(s => s.ParentId == item2.MenuId))
+                                        {
+                                            <li>
+                                                @if (item3.PageType == "4")
+                                                {
+                                                    <a>@item3.MenuTitle</a>
+                                                }
+                                                else if (item3.PageType == "2")
+                                                {
+                                                    <a href="/Product/search?SlctGrpFilt=@item3.PageContetnt"> @item3.MenuTitle</a>
+                                                }
+                                                else
+                                                {
+                                                    <a href="@item3.PageContetnt"> @item3.MenuTitle</a>
+                                                }
+                                            </li>
+                                        }
+
+                                    }
+
+                                </ul>
+                            </div>
+                        }
+
+                    </li>
+                    @*<li>
+                            <img class="menulaptopimage" src="~/content/Koshop/assets/img/laptopmenu.png" alt="لپ تاپ Laptop">
+                        </li>*@
+                </ul>
+            }
+
+        </li>
+    }
+}

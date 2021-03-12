@@ -1,0 +1,57 @@
+﻿@model Koshop.DomainClasses.MenuGroup
+
+@{
+    ViewBag.Title = "Create";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal" style="padding:9px">
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(model => model.MenuTitile, htmlAttributes: new { @class = "control-label col-md-3" })
+        <div class="col-md-9">
+            @Html.TextBoxFor(model => model.MenuTitile, null, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.MenuTitile, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.IsActive, new { @class = "control-label col-md-3" })
+        <div class="col-md-9">
+            @Html.DropDownListFor(model => model.IsActive, new[] {
+    new SelectListItem() { Text = "فعال", Value = bool.TrueString },
+    new SelectListItem() { Text = "غیر فعال", Value = bool.FalseString },
+    }, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.IsActive, null, new { @class = "text-danger" })
+        </div>
+        <br />
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.MenuType, htmlAttributes: new { @class = "control-label col-md-3" })
+        <div class="col-md-9">
+            @Html.DropDownList("MenuType", new SelectList(new Dictionary<string,string> {
+               {  "MainMenu" ,"منوی اصلی" },
+               { "" , "منوی دیگر" },
+           },"Key" , "Value" , false),
+                    new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.MenuType, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-actions text-left">
+        <button type="submit" class="btn btn-info btn-round">
+            <i class="icon-check"></i>
+            ذخیره
+        </button>
+        <a data-dismiss="modal" class="btn btn-warning btn-round">
+            <i class="icon-close"></i>
+            بازگشت
+        </a>
+    </div>
+</div>
+}
+
+<script type="text/javascript" language=javascript>
+    $.validator.unobtrusive.parse(document);
+</script>

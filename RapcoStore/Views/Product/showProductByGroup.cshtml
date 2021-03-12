@@ -1,0 +1,31 @@
+﻿@model IEnumerable<Koshop.DomainClasses.Product>
+
+@foreach (var item in Model)
+{
+    <div class="col-sm-6 col-md-4">
+        <div class="thumbnail">
+            <img src="~/Content/Upload/productImages/thumbnail/@item.ProductImage" alt="...">
+            <div class="caption">
+                <h3>@item.ProductTitle</h3>
+                @*<p>@item.productPrice.ToString("0,#تومان")</p>*@
+                <p><a href="#" class="btn btn-primary" onclick="addToBasket(@item.ProductId)" role="button">خرید</a> <a href="~/Product/ShowProduct/@item.AliasName" class="btn btn-default" role="button">جزئیات</a></p>
+            </div>
+        </div>
+    </div>
+}
+<script src="~/content/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/content/Scripts/bootstrap.min.js"></script>
+<script>
+    function addToBasket(id) {
+        $(document).ready(function () {
+            $.ajax({
+                url: "/Api/Shop",
+                type: "Get",
+                data: { productid: id }
+
+            }).done(function (result) {
+                $('#CountShopCart').html(result)
+            });
+        })
+    }
+</script>

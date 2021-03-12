@@ -1,0 +1,215 @@
+﻿@model PagedList.IPagedList<Koshop.DomainClasses.Message>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = " فهرست پیام ها";
+    string classread = "";
+    string s = ViewBag.Email;
+}
+
+<div class="table-responsive portlet box border shadow">
+    <div class="portlet-heading">
+        <h2 class="col-md-10">@ViewBag.Title</h2>
+        <br />
+    </div>
+
+    @using (Html.BeginForm("Index", "Messages", FormMethod.Get))
+    {
+        <div class="row">
+            <div class="col-sm-4 m-b-20">
+                نوع پیام
+                @Html.DropDownList("type", new SelectList(new Dictionary<string, string> { { "Contact", "پیام کاربران" }, { "Email", "ایمیل" }, { "SMS", "پیامک" } }, "Key", "Value"), new { @class = "input-sm round", id = "type" })
+
+            </div><!-- /.col-sm-4 -->
+            <div class="col-sm-4 m-b-20">
+                تعداد در صفحه
+                @Html.DropDownList("_pageSize", new SelectList(new Dictionary<string, int> { { "5", 5 }, { "10", 10 }, { "20", 20 }, { "50", 50 }, { "100", 100 } }, "Key", "Value", Model.PageSize), new { @class = "input-sm round", id = "pagesizelist" })
+            </div><!-- /.col-sm-4 -->
+            <div class="col-sm-4 m-b-20">
+                <form role="form">
+                    <div class="input-group round">
+                        @Html.TextBox("searchString", ViewBag.CurrentFilter as string, new { @class = "form-control", @placeholder = "جستجو بر اساس نام کاربری..." })
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="submit">
+                                <i class="icon-magnifier"></i>
+                                <div class="paper-ripple"></div><div class="paper-ripple"><div class="paper-ripple__background"></div><div class="paper-ripple__waves"></div></div>
+                            </button>
+                        </span>
+                    </div><!-- ./input-group -->
+                </form>
+            </div><!-- /.col-sm-4 -->
+        </div>
+    }
+    <table class="table table-bordered table-hover table-striped text-center" id="data-table">
+        <thead>
+            <tr>
+                <th>
+                    <i class="icon-energy"></i>
+                </th>
+                <th>
+                    فرستنده
+                </th>
+
+                <th>
+                    موضوع پیام
+                </th>
+                <th>
+                    تاریخ
+                </th>
+                <th>
+                    عملیات
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                classread = "";
+                if (item.ISRead == false)
+                {
+                    classread = "text-info Bold";
+                }
+                <tr id="item_@item.MessageId" class="@classread">
+                            <td>
+                                @if(item.ToUser != null)
+                                {
+                                <i class="fa fa-arrow-down"></i>
+                                }
+                                else
+                                {
+                                <i class="fa fa-arrow-up"></i>
+                                }
+                            </td>
+                            <td class="text-right">
+                                @if (item.FromUser == null)
+                                {
+                                    <span>
+                                        @Html.DisplayFor(modelitem => item.SenderName)
+                                    </span>
+                                }
+                                else
+                                {
+                                    <img class="img-person img-circle" src="~/Content/Upload/Profile/thumbnail/@item.UsersFrom.Profile">
+                                    <span>
+                                        @Html.DisplayFor(modelitem => item.UsersFrom.UserName)
+                                    </span>
+                                }
+                            </td>
+                    <td>
+                        @Html.DisplayFor(modelitem => item.Subject)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelitem => item.AddedDate)
+                    </td>
+                    <td>
+                        @Html.ActionLink("مشاهده", "MessageContent", new { id = item.MessageId }, new { @class = "btn btn-success btn-round" })
+                        <a id="btnDelete_@item.MessageId" class="btn btn-danger btn-round" href="#" onclick="Delete(@item.MessageId)">حذف</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <br />
+    <div class="row">
+        <div class="col-md-6">
+            صفحه @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) از @Model.PageCount
+        </div>
+        <div class="ltr col-md-6">
+            @Html.PagedListPager(Model, page => Url.Action("Index",
+                                        new { page, type = ViewBag.type , _pageSize = Model.PageSize, searchString = ViewBag.searchString,  }))
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 id="myModalLabel" class="myModalLabel">تیتر مودال</h4>
+            </div>
+            <div id="bodyModal" class="bodyModal">
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Script{
+
+
+    <script type="text/javascript">
+
+        function Delete(id) {
+            swal({
+                title: 'آیا اطمینان دارید؟',
+                text: "این عملیات برگشت پذیر نیست...",
+                type: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#f44336',
+                cancelButtonColor: '#777',
+                confirmButtonText: 'بله، حذف شود. '
+            }).then(function (result) {
+                $.ajax({
+                    url: "/admin/Messages/Delete",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: 'application/x-www-form-urlencoded; charset=utf-8',
+                    data: {
+                        __RequestVerificationToken: gettoken(),
+                         id: id
+                    },
+                    async: true,
+                    cache: false,
+                    success: function (result) {
+                        swal(
+                            'انتخاب شما حذف کردن بود.',
+                            'منو با موفقیت حذف شد.',
+                            'success'
+                        ).then($("#item_" + id).hide(700))
+
+                    },
+                    error: function (xc) {
+                        swal(
+                            'خطا در پردازش.',
+                            'منو به دلایلی قابل حذف نمیباشد.',
+                            'error'
+                        );
+                    }
+                })
+            }, function (dismiss) {
+                if (dismiss == 'cancel') {
+                    swal(
+                        'لغو گردید',
+                        'منو همچنان وجود دارد.',
+                        'error'
+                    ).catch(swal.noop);;
+                }
+            }).catch(swal.noop);
+        }
+
+        function gettoken() {
+            var token = '@Html.AntiForgeryToken()';
+            token = $(token).val();
+            return token;
+        }
+    </script>
+    <script type="text/javascript">
+
+        $("#pagesizelist").change(function (event) {
+            var form = $(event.target).parents("form");
+            form.submit();
+        });
+        $("#type").change(function (event) {
+            var form = $(event.target).parents("form");
+            form.submit();
+        });
+    </script>
+}
+
+@section Head{
+    <link href="~/content/assets/plugins/noty/css/flat.css" rel="stylesheet">
+    <link href="~/content/assets/plugins/ladda/dist/ladda-themeless.min.css" rel="stylesheet">
+}

@@ -1,0 +1,80 @@
+﻿@model IEnumerable<Koshop.DomainClasses.AttributGrp>
+
+<div class="an-accordion">
+    @foreach (var grp in Model)
+    {
+        <div class="" id="accordion_@grp.AttributGrpId" role="tablist" aria-multiselectable="true">
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="heading_@grp.AttributGrpId">
+                    <div class="an-tab-container">
+                        <div class="panel-title">
+                            <h4 class="no-margin" >
+                                <a class="colapsflex collapsed" id="linkcolapse_@grp.AttributGrpId"  role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse_@grp.AttributGrpId" aria-expanded="false" aria-controls="collapse_@grp.AttributGrpId" >
+                                    <span><i id="isfiltercheck_@grp.AttributGrpId" style="display:none" class="ion-android-checkbox-outline"></i> @grp.Name</span>
+                                    <span>
+                                        <i class="ion-android-arrow-dropdown color-primary"  />
+                                    </span>
+                                </a>
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+                <div id="collapse_@grp.AttributGrpId" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading_@grp.AttributGrpId" aria-expanded="false" style="height: 0px;">
+                    <div class="panel-body" >
+                        <div class="group-body" id="Filter_@grp.AttributGrpId" @*name="Filter_@grp.AttrGrpID"*@>
+                            <a class="linkdeletfilt" role="button" onclick="delfilters(@grp.AttributGrpId)"></a>
+                            <span class="an-custom-checkbox radio dark-text " >
+                                <input id="deltfilter_@grp.AttributGrpId"  type="radio" checked disabled>
+                                <label for="deltfilter_@grp.AttributGrpId">همه</label>
+                            </span>
+                            @foreach (var attr in grp.AttributItem)
+                            {
+                                <span class="an-custom-checkbox dark-text">
+                                    <input type="checkbox" id="checked-@attr.idfilter" onchange="filterGroup(@grp.AttributGrpId,'@attr.idfilter')">
+                                    <label for="checked-@attr.idfilter">@attr.Name <span class="valuefilter">@attr.value</span></label>
+                                </span>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        var thishref = getUrlVars();
+        if (thishref["filt"] != undefined && thishref["filt"] != '') {
+            var pastfilters = thishref["filt"].split('_');
+            for (var i = 0; i < pastfilters.length; i++) {
+                var PastfiltGrp = pastfilters[i].split('~');
+                $("#collapse_" + PastfiltGrp[0]).removeAttr("style").addClass("in").attr("aria-expanded", "true");
+                $("#linkcolapse_" + PastfiltGrp[0]).removeClass("collapsed").attr("aria-expanded", "true");
+                $("#isfiltercheck_" + PastfiltGrp[0]).removeAttr("style");
+                $("#deltfilter_" + PastfiltGrp[0]).removeAttr("checked");
+                var Pastfilt = PastfiltGrp[1].split('*');
+                for (var j = 0; j < Pastfilt.length; j++) {
+                    $("#checked-" + Pastfilt[j]).prop("checked", true);
+                }
+            }
+        }
+        if (thishref["yadf"] != undefined && thishref["yadf"] != '') {
+            var pastfilters = thishref["yadf"].split('_');
+            for (var i = 0; i < pastfilters.length; i++) {
+                var PastfiltGrp = pastfilters[i].split('~');
+                $("#collapse_" + PastfiltGrp[0]).removeAttr("style").addClass("in").attr("aria-expanded", "true");
+                $("#linkcolapse_" + PastfiltGrp[0]).removeClass("collapsed").attr("aria-expanded", "true");
+                $("#isfiltercheck_" + PastfiltGrp[0]).removeAttr("style");
+                $("#deltfilter_" + PastfiltGrp[0]).removeAttr("checked");
+                var Pastfilt = PastfiltGrp[1].split('*');
+                for (var j = 0; j < Pastfilt.length; j++) {
+                    $("#checked-" + Pastfilt[j]).prop("checked", true);
+                }
+            }
+        }
+    });
+
+   
+</script>

@@ -1,0 +1,13 @@
+﻿@{ 
+    string allpics = ViewBag.allpics;
+    string[] eachpics = allpics.Split(',');
+}
+
+    @for (int i = 0; i < eachpics.Length -1; i++)
+    {
+
+    <div class="col-md-6" id="image_@eachpics[i].Replace(".jpg","")">
+        <img src="/Content/Upload/productImages/thumbnail/@eachpics[i]" class="thumbnail " style="object-fit: contain;width:200px;height:112px">
+        <a class="btn btn-block btn-danger" style="width:200px;margin-bottom:20px" onclick="removeImage('@eachpics[i]')">حذف</a>
+    </div>
+    }

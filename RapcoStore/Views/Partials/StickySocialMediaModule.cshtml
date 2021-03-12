@@ -1,0 +1,15 @@
+﻿@model Koshop.DomainClasses.MultiPictureModule
+ 
+<div class="sticky-container">
+    <ul class="sticky">
+        @foreach (var item in Model.MultiPictureItems)
+        {
+            <li id="item_@item.MultiPictureItemsId">
+                <a target="_blank" href="http://@item.Link">
+                    <img width="32" height="32" title="" alt="" src="/Content/Modules/Images/@item.Image" />
+                    <p>@item.TitleBold</p>
+                </a>
+            </li>
+        }
+    </ul>
+</div>

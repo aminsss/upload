@@ -1,0 +1,98 @@
+﻿@model IEnumerable<Koshop.DomainClasses.Options>
+
+<div class="portlet box border shadow">
+    @using (Html.BeginForm("Edit", "Options"))
+    {
+        <div>
+            <div class="portlet-heading">
+                <h2 class="col-md-10">افزودن </h2>
+                <div class="form-group form-actions">
+                    <button type="submit" class="btn btn-info btn-round">
+                        <i class="icon-check"></i>
+                        ذخیره
+                    </button>
+                    <a href="/admin" class="btn btn-warning btn-round">
+                        <i class="icon-close"></i>
+                        بازگشت
+                    </a>
+                </div>
+            </div>
+        </div>
+
+
+        <ul class="nav nav-tabs curve">
+            <li class="active">
+                <a data-toggle="tab" href="#tab1">تنظیمات کلی</a>
+            </li>
+            <li>
+                <a data-toggle="tab" href="#tab2">پنل پیامک</a>
+            </li>
+            <li>
+                <a data-toggle="tab" href="#tab3">پنل ایمیل</a>
+            </li>
+        </ul>
+        <div class="tab-content ">
+            <div id="tab1" class="tab-pane fade active in">
+                <div class="row">
+                    <br />
+                    @foreach (var item in Model.Where(x => x.Group == "General"))
+                    {
+                        <div class="col-md-12">
+                            <div class="form-group col-md-10">
+                                <label class="control-label" for="@item.Name"> @item.Title</label>
+                                <div class="col-md-12">
+                                    <input class="form-control " id="@item.Name" name="@item.Name" value="@item.Value" />
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div id="tab2" class="tab-pane fade">
+                <div class="row">
+                    <br />
+                    @foreach (var item in Model.Where(x => x.Group == "SMSConnection"))
+                    {
+                        <div class="col-md-12">
+                            <div class="form-group col-md-10">
+                                <label class="control-label" for="@item.Name"> @item.Title</label>
+                                <div class="col-md-12">
+                                    <input class="form-control " id="@item.Name" name="@item.Name" value="@item.Value" />
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+            </div>
+            <div id="tab3" class="tab-pane fade">
+                <div class="row">
+                    <br />
+                    @foreach (var item in Model.Where(x => x.Group == "EmailConnection"))
+                    {
+                        <div class="col-md-12">
+                            <div class="form-group col-md-10">
+                                <label class="control-label" for="@item.Name"> @item.Title</label>
+                                <div class="col-md-12">
+                                    <input class="form-control " id="@item.Name" name="@item.Name" value="@item.Value" />
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Script{
+   
+}
+
+@section Head{
+    <link href="~/content/assets/plugins/ladda/dist/ladda-themeless.min.css" rel="stylesheet">
+}
+
+
+

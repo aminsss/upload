@@ -1,0 +1,186 @@
+﻿@model Koshop.DomainClasses.News
+
+@{
+    ViewBag.Title = "ویرایش " + Server.HtmlDecode(Html.DisplayNameFor(model => model).ToString());
+}
+
+@using (Html.BeginForm("Edit", "News", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+
+
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true,"",new  { @class="text-danger"})
+    @Html.HiddenFor(model => model.NewsId)
+    @Html.HiddenFor(model => model.AddedDate)
+    <div class="hide">
+        @Html.HiddenFor(model => model.NewsImage)
+    </div>
+    <div class="table-responsive portlet box border shadow">
+        <div class="portlet-heading">
+            <h2 class="col-md-10">افزودن @Html.DisplayNameFor(model => model)</h2>
+            <div class="form-group form-actions">
+                <button type="submit" class="btn btn-info btn-round">
+                    <i class="icon-check"></i>
+                    ذخیره
+                </button>
+                <a href="/admin/News/index" class="btn btn-warning btn-round">
+                    <i class="icon-close"></i>
+                    بازگشت
+                </a>
+            </div>
+        </div>
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.NewsGroupId, new { @class = "control-label col-md-2" })
+                <div class="col-md-4">
+                    <select class="form-control" data-val="true" data-val-required="لطفا گروه خبری را انتخاب کنید" id="NewsGroupId" name="NewsGroupId">
+                        <option value="">--لطفا یک گروه انتخاب کنید--</option>
+                        @Html.Action("GrouposOfNews", "NewsGroup", new { area = "admin" })
+                    </select>
+                    @Html.ValidationMessageFor(model => model.NewsGroupId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.NewsTitle, new { @class = "control-label col-md-2" })
+                <div class="col-md-4">
+                    @Html.TextBoxFor(model => model.NewsTitle, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.NewsTitle, "", new { @class = "text-danger" })
+                </div>
+
+                @Html.LabelFor(model => model.AliasName, new { @class = "control-label col-md-2" })
+                <div class="col-md-4">
+                    @Html.TextBoxFor(model => model.AliasName, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.AliasName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.NewsContent, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.NewsContent, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.NewsContent, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group ">
+                @Html.LabelFor(model => model.NewsDescription, new { @class = "control-label col-md-2" })
+                <div class="col-md-10 ">
+                    @Html.EditorFor(model => model.NewsDescription, new { @class = "form-control col-md-5" })
+                    @Html.ValidationMessageFor(model => model.NewsDescription, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            @*<div class="form-group">
+            @Html.LabelFor(model => model.NewsImage, new { @class = "control-label col-md-2 " })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.productPrice, new { @class = "form-control col-md-5 num" })
+                @Html.ValidationMessageFor(model => model.productPrice)
+            </div>
+        </div>*@
+
+            <div class="form-group">
+                <label class="control-label col-md-2 " for="Tags">کلمات کلیدی</label>
+                <div class="col-md-10">
+                    <input type="text" id="tags" name="tags" value="@ViewBag.tag" class="form-control col-md-5" />
+                    <p class="help-block col-md-7">کلمات کلید را با - از هم جدا کنید</p>
+                </div>
+            </div>
+            <label class="control-label col-md-2">تصویر محصول</label>
+            <div class="form-group">
+                <div class="col-md-6">
+                    <div class="file-upload">
+                        <div class="fileinput input-group fileinput-new" data-provides="fileinput">
+
+                            <span class="input-group-addon btn btn-default btn-file">
+                                <span class="fileinput-new">انتخاب تصویر</span>
+                                <span class="fileinput-exists">تغییر تصویر</span>
+                                <input type="file" name="newsImages" id="newsImages" />
+                                <input id="File_Content" name="File.Content" type="hidden" value="">
+                            </span>
+                            <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">حذف</a>
+                            <div class="form-control text-left" data-trigger="fileinput">
+                                <i class="fa fa-file-picture-o pull-left fileinput-exists"></i>
+                                <span class="fileinput-filename"></span>
+                                <input id="File_Name" name="File.Name" type="hidden" value="">
+                            </div>
+                        </div>
+                    </div>
+                    <span class="field-validation-valid text-danger" data-valmsg-for="File.Name" data-valmsg-replace="true"></span>
+                    <span class="field-validation-valid text-danger" data-valmsg-for="File.Content" data-valmsg-replace="true"></span>
+                    <span class="field-validation-valid text-danger" data-valmsg-for="File" data-valmsg-replace="true"></span>
+                    <br />
+                    <img src="~/Content/Upload/NewsImages/thumbnail/@Model.NewsImage" class="thumbnail" />
+                </div>
+            </div>
+
+            <label class="control-label col-md-2">گالری تصاویر</label>
+            <div class="form-group">
+                <div class="col-md-6">
+                    <div class="file-upload">
+                        <div class="fileinput input-group fileinput-new" data-provides="fileinput">
+
+                            <span class="input-group-addon btn btn-default btn-file">
+                                <span class="fileinput-new">انتخاب تصویر</span>
+                                <span class="fileinput-exists">تغییر تصویر</span>
+                                <input type="file" name="newsGalleryPost" id="newsGalleryPost" multiple="multiple" />
+                                <input id="File_Content" name="File.Content" type="hidden" value="">
+                            </span>
+                            <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">حذف</a>
+                            <div class="form-control text-left" data-trigger="fileinput">
+                                <i class="fa fa-file-picture-o pull-left fileinput-exists"></i>
+                                <span class="fileinput-filename"></span>
+                                <input id="File_Name" name="File.Name" type="hidden" value="">
+                            </div>
+                        </div>
+                    </div>
+                    <span class="field-validation-valid text-danger" data-valmsg-for="File.Name" data-valmsg-replace="true"></span>
+                    <span class="field-validation-valid text-danger" data-valmsg-for="File.Content" data-valmsg-replace="true"></span>
+                    <span class="field-validation-valid text-danger" data-valmsg-for="File" data-valmsg-replace="true"></span>
+                </div>
+            </div>
+            <div class="form-group ">
+                <label class="control-label col-md-2" for="newsGalleryPost"></label>
+                <div class="col-md-10">
+                    @foreach (var galery in Model.NewsGallery)
+                    {
+                        <div class="col-md-3" id="image_@(galery.NewsGalleryId)">
+                            <img src="~/Content/Upload/NewsImages/thumbnail/@galery.ImageName" class="thumbnail" style="width:150px; height:150px">
+                            <a class="btn btn-block btn-danger" style="width:150px" onclick="deleteImage(@galery.NewsGalleryId)">حذف</a>
+                        </div>
+                    }
+                </div>
+            </div>
+
+        </div>
+    </div>
+}
+
+@section Script{
+    <script src="~/content/ckeditor/ckeditor.js"></script>
+    <script src="~/content/ckeditor/adapters/jquery.js"></script>
+    <script>
+        $(function () {
+            $('#NewsDescription').ckeditor();
+        });
+
+         $(function () {
+            //Set the value of your TypeId <select> list to the element with value '33'
+             $('#NewsGroupId').val('@Model.NewsGroup.NewsGroupId');
+        });
+
+        function deleteImage(id) {
+            $.ajax({
+                url: "/Admin/News/deleteGalery/" + id,
+                type: "Get",
+                data: {},
+            }).done(function (result) {
+                $('#image_' + id).hide(700);
+            })
+        }
+    </script>
+}
+

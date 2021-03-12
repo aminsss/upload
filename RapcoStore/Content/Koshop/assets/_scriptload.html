@@ -1,0 +1,26 @@
+﻿
+<script>
+$(document).ready(function () {
+    $('#myPager').on('click', 'a', function (e) {
+        e.preventDefault();
+        var url = this.href;
+        $.ajax({
+            url: url,
+            type: 'GET',
+            cache: false,
+            success: function (result, status, xhr) {
+                //$("#counter").html(xhr.getResponseHeader("Counter"));
+                ChangeUrl("", url);
+                $('#dvContent').html(result);
+                $('#loadingIndicator').hide();
+            },
+            beforeSend: function () {
+                $('html, body').animate({ scrollTop: 0 }, 'slow');
+                $('#loadingIndicator').fadeIn();
+            },
+
+        });
+        return false;
+    });
+});
+</script>

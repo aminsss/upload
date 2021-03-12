@@ -1,0 +1,178 @@
+﻿@model IEnumerable<Koshop.DomainClasses.Menu>
+
+@{
+    ViewBag.Title = " فهرست " + Server.HtmlDecode(Html.DisplyModelPluralName(model => model).ToString());
+    // Layout = null;
+}
+
+<div class="table-responsive portlet box border shadow">
+    <div class="portlet-heading">
+        <h2 class="col-md-10">@ViewBag.Title</h2>
+        <br />
+    </div>
+    @using (Html.BeginForm("Index", "Menu", FormMethod.Get))
+    {
+        <div class="row">
+            <div class="col-sm-4 m-b-20">
+                <a href="/admin/Menus/Create/@Url.RequestContext.RouteData.Values["id"]" class="btn btn-success btn-round">
+                    <i class="icon-plus"></i>
+                    افزودن
+                </a>
+            </div><!-- /.col-sm-4 -->
+            <div class="col-sm-4 m-b-20"></div><!-- /.col-sm-4 -->
+            <div class="col-sm-4 m-b-20">
+                <form role="form">
+                    <div class="input-group round">
+                    </div><!-- ./input-group -->
+                </form>
+            </div><!-- /.col-sm-4 -->
+        </div>
+    }
+    <table class="table table-bordered table-hover table-striped text-center" id="data-table">
+        <thead>
+            <tr>
+                <th>
+                    عنوان منو
+                </th>
+                <th>
+                    سطح
+                </th>
+                <th>
+                    ترتیب
+                </th>
+                <th>
+                    وضعیت منو
+                </th>
+                <th>
+                    عملیات
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @ShowTree(Model.Where(s => s.Depth == 0).OrderBy(x => x.DisplayOrder))
+        </tbody>
+    </table>
+    <br />
+</div>
+
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 id="myModalLabel" class="myModalLabel">تیتر مودال</h4>
+            </div>
+            <div id="bodyModal" class="bodyModal">
+                <p>...</p>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@helper ShowTree(IEnumerable<Koshop.DomainClasses.Menu> Menutree)
+{
+
+    foreach (var item in Menutree)
+    {
+        <tr>
+
+            <td style="text-align:right">
+                @string.Concat(Enumerable.Repeat(" ┊ ", Convert.ToInt32(item.Depth))) @Html.DisplayFor(modelItem => item.MenuTitle)
+            </td>
+            <td>
+                <label class="label-info">@item.Depth</label>
+            </td>
+            <td>
+                <label class="label-warning">@item.DisplayOrder</label>
+            </td>
+            <td>
+                @if (item.IsActive == true)
+                {
+                    <label class="label-success">فعال</label>
+                }
+                else
+                {
+                    <label class="label-danger">غیر فعال</label>
+                }
+            </td>
+            <td>
+                @Html.ActionLink("ویرایش", "Edit", new { id = item.MenuId }, new { @class = "btn btn-info btn-round" })
+                <a class="btn btn-danger btn-round" href="#" onclick="Delete(@item.MenuId)">حذف</a>
+            </td>
+        </tr>
+        if (Model.Any(s => s.ParentId == item.MenuId))
+        {
+            @ShowTree(Model.Where(s => s.ParentId == item.MenuId).OrderBy(x => x.DisplayOrder));
+        }
+    }
+}
+
+@section Script{
+    <script src="~/content/assets/plugins/ladda/dist/spin.min.js"></script>
+    <script src="~/content/assets/plugins/ladda/dist/ladda.min.js"></script>
+    <script src="~/content/assets/js/pages/ladda.js"></script>
+
+    <script>
+       function Delete(id) {
+            swal({
+                title: 'آیا اطمینان دارید؟',
+                text: "این عملیات برگشت پذیر نیست...",
+                type: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#f44336',
+                cancelButtonColor: '#777',
+                confirmButtonText: 'بله، حذف شود. '
+            }).then(function (result) {
+                $.ajax({
+                    url: "/admin/Menus/Delete",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: 'application/x-www-form-urlencoded; charset=utf-8',
+                    data: {
+                        __RequestVerificationToken: gettoken(),
+                         id: id
+                    },
+                    async: true,
+                    cache: false,
+                    success: function (result) {
+                        swal(
+                            'انتخاب شما حذف کردن بود.',
+                            'منو با موفقیت حذف شد.',
+                            'success'
+                        ).then(location.reload())
+
+                    },
+                    error: function (xc) {
+                        swal(
+                            'خطا در پردازش.',
+                            'منو به دلایلی قابل حذف نمیباشد.',
+                            'error'
+                        );
+                    }
+                })
+            }, function (dismiss) {
+                if (dismiss == 'cancel') {
+                    swal(
+                        'لغو گردید',
+                        'منو همچنان وجود دارد.',
+                        'error'
+                    ).catch(swal.noop);;
+                }
+            }).catch(swal.noop);
+        }
+
+        function gettoken() {
+            var token = '@Html.AntiForgeryToken()';
+            token = $(token).val();
+            return token;
+        }
+    </script>
+
+
+}
+
+@section Head{
+    <link href="~/content/assets/plugins/noty/css/flat.css" rel="stylesheet">
+    <link href="~/content/assets/plugins/ladda/dist/ladda-themeless.min.css" rel="stylesheet">
+}

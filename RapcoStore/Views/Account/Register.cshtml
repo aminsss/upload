@@ -1,0 +1,127 @@
+﻿@model Koshop.ViewModels.RegisterViewModel
+
+@{
+    Layout = "~/Views/Shared/_LayoutAccount.cshtml";
+    Koshop.DataLayer.AppDbContext db = new Koshop.DataLayer.AppDbContext();
+    var modulelist = db.Modules.Where(x => x.IsActive == true && x.ModulePage.Any(y => y.Menu.PageName == "RegisterMenu")).ToList();
+}
+
+@foreach (var item in modulelist.Where(x => x.Position.PositionName == "Slider").OrderBy(z => z.DisplayOrder))
+{
+    @Html.Action(item.Component.ActionName, item.Component.ControllerName, new { @id = item.ModuleId })
+}
+
+@foreach (var item in modulelist.Where(x => x.Position.PositionName == "Top").OrderBy(z => z.DisplayOrder))
+{
+    @Html.Action(item.Component.ActionName, item.Component.ControllerName, new { @id = item.ModuleId })
+}
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div>
+        <section class="checkout-area ptb-100">
+            <div class="container">
+                <div class="row">
+                    <div class=" col-md-6" >
+                        <div class="billing-details" style="text-align:right">
+                            <h3 class="title">ثبت نام </h3>
+                            @Html.ValidationSummary(false, "", new { @class = "text-warning" })
+
+                            <div class="row">
+                                <div class=" col-md-12">
+                                    <div class="form-group">
+                                        <label>نام کاربری <span class="required">*</span></label>
+                                        @Html.TextBoxFor(model => model.UserName, null, new { @class = "form-control light  ", @placeholder = "نام کاربری برای خود انتخاب کنید..." })
+                                        @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-warning rtl" })
+                                    </div>
+                                </div>
+                                <div class=" col-md-6">
+                                    <div class="form-group">
+                                        <label>رمز عبور <span class="required">*</span></label>
+                                        @Html.TextBoxFor(model => model.Pass, null, new { @class = "form-control light ", @type = "password" })
+                                        @Html.ValidationMessageFor(model => model.Pass, "", new { @class = "text-warning" })
+                                    </div>
+                                </div>
+                                <div class=" col-md-6">
+                                    <div class="form-group">
+                                        <label>تکرار رمز عبور <span class="required">*</span></label>
+                                        @Html.TextBoxFor(model => model.RePass, null, new { @class = "form-control light ", @type = "password" })
+                                        @Html.ValidationMessageFor(model => model.RePass, "", new { @class = "text-warning rtl" })
+                                    </div>
+                                </div>
+                                <div class=" col-md-6">
+                                    <div class="form-group">
+                                        <label>نام  <span class="required">*</span></label>
+                                        @Html.TextBoxFor(model => model.FirstName, null, new { @class = "form-control light rtl", @placeholder = "نام خود را وارد کنید..." })
+                                        @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-warning" })
+                                    </div>
+                                </div>
+                                <div class=" col-md-6">
+                                    <div class="form-group">
+                                        <label>نام خانوادگی <span class="required">*</span></label>
+                                        @Html.TextBoxFor(model => model.LastName, null, new { @class = "form-control light rtl", @placeholder = "نام خانوادگی را وارد کنید..." })
+                                        @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-warning" })
+                                    </div>
+                                </div>
+                                <div class=" col-md-6">
+                                    <div class="form-group">
+                                        <label>شماره موبایل <span class="required">*</span></label>
+                                        @Html.TextBoxFor(model => model.Moblie, null, new { @class = "form-control light ", @placeholder = "شماره موبایل خود را وارد کنید..." })
+                                        @Html.ValidationMessageFor(model => model.Moblie, "", new { @class = "text-warning" })
+                                    </div>
+                                </div>
+                                <div class=" col-md-6">
+                                    <div class="form-group">
+                                        <label>ایمیل <span class="required">*</span></label>
+                                        @Html.TextBoxFor(model => model.Email, null, new { @class = "form-control light ", @placeholder = "ایمیل خود را وارد کنید..." })
+                                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-warning" })
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6" style="margin-left:50%">
+                                    <div class="form-group">
+                                        <div class="all-center text-capitalize">
+                                            <div class="g-recaptcha" data-sitekey="6LcBpoAUAAAAAGUVrtDi4LWBcoOojKe11yZ_Ja_D"></div>
+                                        </div>
+                                        <label class="text-warning">@ViewBag.Message</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <button id="btn_submit" type="submit" href="#" class="default-btn">ثبت نام<span></span></button>
+                                </div><!-- /.form-group -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6" style="margin-right:25%">
+                        <div class="user-actions">
+                            <i class="fas fa-lock"></i>
+                            <span>عضو هستید؟ <a href="/Account/LogIn">وارد شوید</a></span>
+                            <br />
+                            <br />
+                            <i class="fas fa-home"></i>
+                            <span>بازگشت به <a href="/">صفحه اصلی</a></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+}
+
+@foreach (var item in modulelist.Where(x => x.Position.PositionName == "Bottom").OrderBy(z => z.DisplayOrder))
+{
+    @Html.Action(item.Component.ActionName, item.Component.ControllerName, new { @id = item.ModuleId })
+}
+
+@section Script{
+
+}
+
+@section Head{
+    <title>سایت ایرمان کابینت - ثبت نام</title>
+}

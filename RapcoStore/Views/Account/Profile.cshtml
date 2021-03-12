@@ -1,0 +1,116 @@
+﻿@model Koshop.DomainClasses.User
+
+@{
+    Koshop.DataLayer.AppDbContext db = new Koshop.DataLayer.AppDbContext();
+    var modulelist = db.Modules.Where(x => x.IsActive == true && x.ModulePage.Any(y => y.Menu.PageName == "ProfileMenu")).ToList();
+}
+
+@foreach (var item in modulelist.Where(x => x.Position.PositionName == "Slider").OrderBy(z => z.DisplayOrder))
+{
+    @Html.Action(item.Component.ActionName, item.Component.ControllerName, new { @id = item.ModuleId })
+}
+
+@foreach (var item in modulelist.Where(x => x.Position.PositionName == "Top").OrderBy(z => z.DisplayOrder))
+{
+    @Html.Action(item.Component.ActionName, item.Component.ControllerName, new { @id = item.ModuleId })
+}
+
+
+@using (Html.BeginForm("Profile", "Account", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div>
+        <section class="checkout-area ptb-100">
+            <div class="container">
+                <div class="row">
+                    <div class=" col-md-12">
+                        <div class="billing-details" style="text-align:right">
+                            <h3 class="title">اطلاعات کاربری</h3>
+                            @Html.ValidationSummary(false, "", new { @class = "text-warning" })
+                            @Html.Hidden("UserId", Model.UserId)
+                            <div class="row">
+
+                                <div class=" col-md-6">
+                                    <div class="form-group">
+                                        <label>نام<span class="required">*</span></label>
+                                        @Html.TextBoxFor(model => model.Name, null, new { @class = "form-control light rtl", })
+                                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-warning" })
+                                    </div>
+                                </div>
+                                <div class=" col-md-6">
+                                    <div class="form-group">
+                                        <label>نام کاربری<span class="required">*</span></label>
+                                        @Html.TextBoxFor(model => model.UserName, null, new { @class = "form-control light ", })
+                                        @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-warning" })
+                                    </div>
+                                </div>
+                                <div class=" col-md-6">
+                                    <div class="form-group">
+                                        <label>شماره موبایل <span class="required">*</span></label>
+                                        @Html.TextBoxFor(model => model.moblie, null, new { @class = "form-control light ", })
+                                        @Html.ValidationMessageFor(model => model.moblie, "", new { @class = "text-warning" })
+                                    </div>
+                                </div>
+                                <div class=" col-md-6">
+                                    <div class="form-group">
+                                        <label>ایمیل <span class="required">*</span></label>
+                                        @Html.TextBoxFor(model => model.Email, null, new { @class = "form-control light ", })
+                                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-warning" })
+                                    </div>
+                                </div>
+                                <div class=" col-md-6">
+                                    <div class="form-group">
+                                        <label>کد ملی <span class="required"></span></label>
+                                        @Html.TextBoxFor(model => model.MeliID, null, new { @class = "form-control light rtl", })
+                                        @Html.ValidationMessageFor(model => model.MeliID, "", new { @class = "text-warning" })
+                                    </div>
+                                </div>
+                                <div class=" col-md-6">
+                                    <div class="form-group">
+                                        <label>تاریخ تولد <span class="required"></span></label>
+                                        @Html.TextBoxFor(model => model.BirthDate, null, new { @class = "form-control light rtl", })
+                                        @Html.ValidationMessageFor(model => model.BirthDate, "", new { @class = "text-warning" })
+                                    </div>
+                                </div>
+                                <div class=" col-md-12">
+                                    <div class="form-group">
+                                        <label>آدرس <span class="required"></span></label>
+                                        @Html.TextAreaFor(model => model.Adress, new { @class = "form-control light rtl", rows = "4" })
+                                        @Html.ValidationMessageFor(model => model.Adress, "", new { @class = "text-warning" })
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6" style="margin-left:50%">
+                                    <div class="form-group">
+                                        <button id="btn_submit" type="submit" href="#" class="default-btn">ثبت تغییرات<span></span></button>
+                                    </div><!-- /.form-group -->
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+}
+
+@foreach (var item in modulelist.Where(x => x.Position.PositionName == "Bottom").OrderBy(z => z.DisplayOrder))
+{
+    @Html.Action(item.Component.ActionName, item.Component.ControllerName, new { @id = item.ModuleId })
+}
+
+
+@section footer{
+    @Html.Partial("_footer")
+}
+
+@section Script{
+
+}
+
+@section Head{
+    <title>سایت ایرمان کابینت - پروفایل</title>
+}
+

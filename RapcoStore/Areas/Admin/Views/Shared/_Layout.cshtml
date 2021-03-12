@@ -1,0 +1,416 @@
+﻿
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <title>قالب مدیریتی مدیران</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="قالب مدیریت ایرانی مدیران ">
+    <meta name="keywords" content="قالب مدیریت, قالب داشبورد, قالب ادمین, قالب مدیران, قالب مدیریت راستچین , قالب ایرانی مدیریت, پوسته مدیریت, قالب ادمین داشبورد سایت, قالب مدیریتی, مدیران, قالب مدیریت مدیران, پنل مدیریت, پنل مدیریت مدرن, قالب ادمین متریال, قالب مدیریت بوت استرپ, قالب ادمین بوتسترپ, قالب ادمین سایت, پوسته مدیریتی ایرانی, قالب مدیرتی مدیران ایرانی, بهترین قالب مدیریت, قالب مدیریت ریسپانسیو, قالب مدیریت ارزان, قالب admin">
+    <meta name="fontiran.com:license" content="NE29X">
+    <link rel="shortcut icon" href="/assets/images/favicon.png">
+    <!-- BEGIN CSS -->
+
+
+    <link href="~/content/assets/plugins/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/content/assets/plugins/bootstrap-rtl/dist/css/bootstrap-rtl.min.css" rel="stylesheet">
+    <link href="/Content/jasny-bootstrap.css" rel="stylesheet" />
+    <link href="/Content/jasny-bootstrap.min.css" rel="stylesheet" />
+    <link href="~/content/assets/plugins/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
+    <link href="~/content/assets/plugins/simple-line-icons/css/simple-line-icons.min.css" rel="stylesheet">
+    <link href="~/content/assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="~/content/assets/plugins/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css" rel="stylesheet">
+    <link href="~/content/assets/plugins/switchery/dist/switchery.min.css" rel="stylesheet">
+    <link href="~/content/assets/plugins/sweetalert2/dist/sweetalert2.min.css" rel="stylesheet">
+    <link href="~/content/assets/plugins/paper-ripple/dist/paper-ripple.min.css" rel="stylesheet">
+    <link href="~/content/assets/plugins/iCheck/skins/square/_all.css" rel="stylesheet">
+    <link href="~/content/assets/css/style.css" rel="stylesheet">
+    <link href="~/content/assets/css/colors.css" rel="stylesheet">
+    <!-- END CSS -->
+    @RenderSection("Head", false)
+
+</head>
+<body class="active-ripple theme-blue fix-header sidebar-extra">
+    <div id="allpage">
+        <!-- BEGIN LOEADING -->
+        <div id="loader">
+            <div class="spinner"></div>
+        </div><!-- /loader -->
+        <!-- END LOEADING -->
+        <!-- BEGIN HEADER -->
+        <div class="navbar navbar-fixed-top" id="main-navbar">
+            <div class="header-right">
+                <a href="dashboard.html" class="logo-con">
+                    <img src="~/content/assets/images/logo.png" class="img-responsive center-block" alt="لوگو قالب مدیران">
+                </a>
+            </div><!-- /.header-right -->
+            <div class="header-left">
+                <div class="top-bar">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="#" class="btn" id="toggle-sidebar">
+                                <span></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="btn open" id="toggle-sidebar-top">
+                                <i class="icon-user-following"></i>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-left">
+                        <li class="dropdown">
+                            <a href="#" class="btn" id="toggle-fullscreen">
+                                <i class="icon-size-fullscreen"></i>
+                            </a>
+                        </li>
+                        @*<li class="dropdown">
+                                <a href="#" class="dropdown-toggle btn" data-toggle="dropdown">
+                                    <i class="icon-envelope"></i>
+                                    <span class="badge badge-primary">
+                                        4
+                                    </span>
+                                </a>
+                                <ul class="dropdown-menu has-scrollbar">
+                                    <li class="dropdown-header clearfix">
+                                        <span class="pull-right">
+                                            <a href="#" rel="tooltip" title="خواندن همه" data-placement="left">
+                                                <i class="icon-eye"></i>
+                                            </a>
+                                            شما 4 پیام تازه دارید.
+                                        </span>
+                                    </li>
+                                    <li class="dropdown-body">
+                                        <ul class="dropdown-menu-list">
+                                            <li class="clearfix">
+                                                <a href="#">
+                                                    <p class="clearfix">
+                                                        <strong class="pul  l-right">
+                                                            <img src="~/content/assets/images/user/32.png" class="img-circle" alt="">
+                                                            سهراب سپهری
+                                                        </strong>
+                                                        <small class="pull-left text-muted">
+                                                            <i class="icon-clock"></i>
+                                                            پانزده دقیقه پیش
+                                                        </small>
+                                                    </p>
+                                                    <p>پیام پرمهرتان دریافت شد!</p>
+                                                </a>
+                                            </li>
+                                            <li class="clearfix">
+                                                <a href="#">
+                                                    <p class="clearfix">
+                                                        <strong class="pull-right">
+                                                            <img src="~/content/assets/images/user/32.png" class="img-circle" alt="">
+                                                            شفیعی کدکنی
+                                                        </strong>
+                                                        <small class="pull-left text-muted">
+                                                            <i class="icon-clock"></i>
+                                                            سی دقیقه پیش
+                                                        </small>
+                                                    </p>
+                                                    <p>بسته ارسالی شما به دستم رسید.</p>
+                                                </a>
+                                            </li>
+                                            <li class="clearfix">
+                                                <a href="#">
+                                                    <p class="clearfix">
+                                                        <strong class="pull-right">
+                                                            <img src="~/content/assets/images/user/32.png" class="img-circle" alt="">
+                                                            قیصر امین پور
+                                                        </strong>
+                                                        <small class="pull-left text-muted">
+                                                            <i class="icon-clock"></i>
+                                                            یک ساعت پیش
+                                                        </small>
+                                                    </p>
+                                                    <p>مجموعه آثار بنده را ببینید.</p>
+                                                </a>
+                                            </li>
+                                            <li class="clearfix">
+                                                <a href="#">
+                                                    <p class="clearfix">
+                                                        <strong class="pull-right">
+                                                            <img src="~/content/assets/images/user/32.png" class="img-circle" alt="">
+                                                            مهدی اخوان ثالث
+                                                        </strong>
+                                                        <small class="pull-left text-muted">
+                                                            <i class="icon-clock"></i>
+                                                            دو ساعت پیش
+                                                        </small>
+                                                    </p>
+                                                    <p>با تشکر...</p>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="dropdown-footer clearfix">
+                                        <a href="#">
+                                            <i class="icon-list fa-flip-horizontal"></i>
+                                            مشاهده همه پیام ها
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle btn" data-toggle="dropdown">
+                                    <i class="icon-bell"></i>
+                                    <span class="badge badge-warning">
+                                        5
+                                    </span>
+                                </a>
+                                <ul class="dropdown-menu has-scrollbar">
+                                    <li class="dropdown-header clearfix">
+                                        <span class="pull-right">
+                                            <a href="#" rel="tooltip" title="خواندن همه" data-placement="left">
+                                                <i class="icon-eye"></i>
+                                            </a>
+                                            <span>
+                                                شما 8 اعلان تازه دارید.
+                                            </span>
+                                        </span>
+                                    </li>
+                                    <li class="dropdown-body">
+                                        <ul class="dropdown-menu-list">
+                                            <li class="clearfix">
+                                                <a href="#">
+                                                    <p class="clearfix">
+                                                        <strong class="pull-right">عباس دوران</strong>
+                                                        <small class="pull-left text-muted">
+                                                            <i class="icon-clock"></i>
+                                                            21:30
+                                                        </small>
+                                                    </p>
+                                                    <p>بسته ارسالی شما به دستم رسید.</p>
+                                                </a>
+                                            </li>
+                                            <li class="clearfix">
+                                                <a href="#">
+                                                    <p class="clearfix">
+                                                        <strong class="pull-right">حسن باقری</strong>
+                                                        <small class="pull-left text-muted">
+                                                            <i class="icon-clock"></i>
+                                                            20:20
+                                                        </small>
+                                                    </p>
+                                                    <p>از محبت شما ممنونم.</p>
+                                                </a>
+                                            </li>
+                                            <li class="clearfix">
+                                                <a href="#">
+                                                    <p class="clearfix">
+                                                        <strong class="pull-right">مدیر کل</strong>
+                                                        <small class="pull-left text-muted">
+                                                            <i class="icon-clock"></i>
+                                                            19:20
+                                                        </small>
+                                                    </p>
+                                                    <p>سفارش شما ارسال گردید..</p>
+                                                </a>
+                                            </li>
+                                            <li class="clearfix">
+                                                <a href="#">
+                                                    <p class="clearfix">
+                                                        <strong class="pull-right">مدیر مالی</strong>
+                                                        <small class="pull-left text-muted">
+                                                            <i class="icon-clock"></i>
+                                                            17:40
+                                                        </small>
+                                                    </p>
+                                                    <p>درخواست فیش حقوقی</p>
+                                                </a>
+                                            </li>
+                                            <li class="clearfix">
+                                                <a href="#">
+                                                    <p class="clearfix">
+                                                        <strong class="pull-right">ابراهیم همت</strong>
+                                                        <small class="pull-left text-muted">
+                                                            <i class="icon-clock"></i>
+                                                            15:45
+                                                        </small>
+                                                    </p>
+                                                    <p>پیام های مرا دنبال کنید.</p>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="dropdown-footer clearfix">
+                                        <a href="#">
+                                            <i class="icon-list fa-flip-horizontal"></i>
+                                            مشاهده همه اعلانات
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>*@
+                        <li class="dropdown">
+                            <a href="/admin/Options" class=" btn">
+                                <i class="icon-settings"></i>
+                            </a>
+                        </li>
+                        <li class="dropdown dropdown-user">
+                            @Html.Action("UserOptionsNav", "Partial", new { area = "admin" })
+                        </li>
+                    </ul><!-- /.navbar-left -->
+                </div><!-- /.top-bar -->
+            </div><!-- /.header-left -->
+        </div><!-- /.navbar -->
+        <!-- END HEADER -->
+        <!-- BEGIN WRAPPER -->
+        <div id="wrapper">
+            <!-- BEGIN SIDEBAR -->
+            @Html.Action("Sidebar", "Partial", new { area = "admin" })
+            <!-- END SIDEBAR -->
+            <div id="page-content">
+                <div class="row">
+                    <div class="k-rtl col-md-12">
+                        @RenderBody()
+                    </div>
+                </div>
+                <div class="row footer-container">
+                    <div class="col-md-12">
+                        <div class="copyright">
+                            <p class="pull-right">
+                                کلیه حقوق محفوظ می باشد و کپی برداری از آن به هیچ عنوان جایز نیست.
+                            </p>
+                            <p class="pull-left ltr tahoma">
+                                <span>©</span>
+                                <a href="http://Tarahsaz.ir">Tarahsaz.ir</a>
+                            </p>
+                        </div><!-- /.copyright -->
+                    </div><!-- /.col-md-12 -->
+                </div><!-- /.row -->
+            </div>
+        </div><!-- /#wrapper -->
+    </div>
+    <!-- END WRAPPER -->
+    <!-- BEGIN SETTING -->
+    <div class="settings hidden-xs">
+        <a href="#" class="btn" id="toggle-setting">
+            <i class="icon-settings"></i>
+        </a>
+        <h3 class="text-center">تنظیمات</h3>
+
+        <div class="fix-header-box">
+            <p class="h6">
+                هدر ثابت:
+                <span class="pull-left">
+                    <input type="checkbox" class="fix-header-switch normal" checked>
+                </span>
+            </p>
+        </div><!-- /.fix-header-box -->
+        <hr class="light">
+        <div class="toggle-sidebar-box">
+            <p class="h6">
+                جمع کردن سایدبار:
+                <span class="pull-left">
+                    <input type="checkbox" class="toggle-sidebar-switch normal">
+                </span>
+            </p>
+        </div><!-- /.toggle-sidebar-box -->
+        <hr class="light">
+        <div class="toggle-sidebar-box">
+            <p class="h6">
+                سایدبار خلاقانه:
+                <span class="pull-left">
+                    <input type="checkbox" class="creative-sidebar-switch normal">
+                </span>
+            </p>
+        </div><!-- /.toggle-sidebar-box -->
+        <hr class="light">
+        <div class="theme-colors">
+            <p class="h6">رنگ قالب : </p>
+            <a class="btn btn-round btn-blue ripple-effect active" data-color="blue"></a>
+            <a class="btn btn-round btn-red ripple-effect" data-color="red"></a>
+            <a class="btn btn-round btn-green ripple-effect" data-color="green"></a>
+            <a class="btn btn-round btn-orange ripple-effect" data-color="orange"></a>
+            <a class="btn btn-round btn-darkblue ripple-effect" data-color="darkblue"></a>
+            <a class="btn btn-round btn-purple ripple-effect" data-color="purple"></a>
+        </div><!-- /.theme-colors -->
+        <div class="theme-code ltr text-left">
+            <code></code>
+        </div><!-- /.theme-code -->
+    </div><!-- /.settings -->
+    <!-- END SETTING -->
+    <!-- BEGIN CODE MODAL -->
+    <div class="modal fade" id="code-modal" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn btn-default btn-round btn-icon pull-right" id="btn-copy"><i class="fa fa-copy"></i></button>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">کپی کردن کدها</h4>
+                </div>
+                <div class="modal-body"></div>
+            </div> <!-- /.modal-content -->
+        </div> <!-- /.modal-dialog -->
+    </div> <!-- /.modal -->
+    <!-- END CODE MODAL -->
+    <!-- BEGIN JS -->
+    <script src="~/content/assets/js/jquery-1.12.4.min.js"></script>
+    <script src="~/content/assets/plugins/jquery-migrate/jquery-migrate-1.2.1.min.js"></script>
+    <script src="~/content/assets/js/holder.js"></script>
+    <script src="~/content/assets/plugins/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="~/content/assets/plugins/metisMenu/dist/metisMenu.min.js"></script>
+    <script src="~/content/assets/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js"></script>
+    <script src="~/content/assets/plugins/paper-ripple/dist/PaperRipple.min.js"></script>
+    <script src="~/content/assets/plugins/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="~/content/assets/plugins/sweetalert2/dist/sweetalert2.min.js"></script>
+    <script src="~/content/assets/plugins/screenfull/dist/screenfull.min.js"></script>
+    <script src="~/content/assets/plugins/iCheck/icheck.min.js"></script>
+    <script src="~/content/assets/plugins/switchery/dist/switchery.js"></script>
+    <script src="~/content/assets/js/core.js"></script>
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="~/content/assets/js/html5shiv.js"></script>
+        <script src="~/content/assets/js/respond.min.js"></script>
+        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!-- END JS -->
+    <!-- BEGIN PAGE JAVASCRIPT -->
+    <script src="~/content/assets/plugins/chart.js/dist/Chart.bundle.min.js"></script>
+    <script src="~/content/assets/plugins/jquery-incremental-counter/jquery.incremental-counter.min.js"></script>
+    <script src="~/content/assets/plugins/ammap3/ammap/ammap.js"></script>
+    <script src="~/content/assets/plugins/ammap3/ammap/maps/js/iranHighFa.js"></script>
+    <script src="~/content/assets/js/pages/dashboard2.js"></script>
+    <script src="~/content/Scripts/textbox/fileupload.js"></script>
+    <script src="~/content/Scripts/textbox/jasny-bootstrap.js"></script>
+    <script src="~/content/Scripts/textbox/jasny-bootstrap.min.js"></script>
+    <script src="~/content/Scripts/textbox/respond.js"></script>
+    <script src="~/content/Scripts/textbox/respond.min.js"></script>
+    <script src="@Url.Content("~/content/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/content/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+    <!-- END PAGE JAVASCRIPT -->
+    @RenderSection("Script", false)
+
+    <script type="text/javascript">
+
+        $(function () {
+            // this will get the full URL at the address bar
+            var url = window.location.href;
+
+            // passes on every "a" tag
+            $(".side-menu-container a").each(function () {
+                // checks if its the same on the address bar
+                if (url.replace("#", "") == (this.href)) {
+                    $(this).closest("a").addClass("current");
+                    //for making parent of submenu active
+                    $(this).closest("a").parent().parent().addClass("collapse in").attr("aria-expanded", "true");
+                    $(this).closest("a").parent().parent().parent().addClass("active open");
+                }
+
+            });
+
+        });
+    </script>
+    <script type="text/javascript">
+    $(function () {
+        $(document).ajaxError(function (e, xhr, settings) {
+            if (xhr.status == 401) {
+                location = '@Url.Action( "login", "Account" , new { area = ""})';
+            }
+        });
+    });
+    </script>
+</body>
+</html>

@@ -1,0 +1,92 @@
+﻿@model Koshop.DomainClasses.MultiPictureItems
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<form id="form">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.Hidden("MultiPictureItemsId", Model.MultiPictureItemsId)
+        @Html.Hidden("ModuleId", Model.ModuleId)
+        @Html.Hidden("Image", Model.Image)
+        <div class="form-horizontal" style="padding:10px">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.Title, null, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.TitleBold, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.TitleBold, null, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.TitleBold, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Link, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.Link, null, new { @class = "form-control ltr" })
+                    @Html.ValidationMessageFor(model => model.Link, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.LinkMore, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.LinkMore, null, new { @class = "form-control ltr" })
+                    @Html.ValidationMessageFor(model => model.LinkMore, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Description, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Description, new { @class = "form-control ", style = "Width:50px" })
+                    @Html.ValidationMessageFor(model => model.Description, null, new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-actions text-left">
+                <a id="submit" class="btn btn-info btn-round">
+                    <i class="icon-check"></i>
+                    ذخیره
+                </a>
+                <a data-dismiss="modal" class="btn btn-warning btn-round">
+                    <i class="icon-close"></i>
+                    بازگشت
+                </a>
+            </div>
+        </div>
+    }
+</form>
+
+<script type="text/javascript" language=javascript>
+    $.validator.unobtrusive.parse(document);
+
+    $(document).ready(function () {
+        $("#Description").attr("cols","65").attr("rows","8");
+        var l = Ladda.create(document.querySelector('#submit'));
+        l.start();
+        $("#submit").on('click', function () {
+            $.ajax({
+                url: '/admin/MultiPictureModule/EditItems',
+                type: "POST",
+                dataType: 'json',
+                data: $("#form").serialize(),
+                success: function (result) {
+                    $("#myModal").modal('toggle');
+                    getItems(@Model.ModuleId);
+                },
+                error: function (xhr, resp, text) {
+                    console.log(xhr, resp, text);
+                }
+            })
+        });
+        l.stop();
+    });
+
+
+</script>
+

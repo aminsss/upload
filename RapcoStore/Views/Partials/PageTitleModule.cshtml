@@ -1,0 +1,19 @@
+﻿@model Koshop.DomainClasses.MultiPictureModule
+
+
+<div class="page-title-area jarallax" data-jarallax='{"speed": 0.3}'>
+    <div class="d-table">
+        <div class="d-table-cell">
+            <div class="container">
+                <div class="page-title-content">
+                    <h2>@Model.Title</h2>
+                    <p>@Model.Description</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <script>
+    document.getElementsByClassName("page-title-area")[0].setAttribute("style", "background-image:url(/Content/Modules/Images/@Model.Image");
+    </script>

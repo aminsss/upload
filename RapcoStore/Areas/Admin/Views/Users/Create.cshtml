@@ -1,0 +1,177 @@
+﻿@model Koshop.DomainClasses.User
+
+@{
+
+    ViewBag.Title = "افزودن " + Server.HtmlDecode(Html.DisplayNameFor(model => model).ToString());
+}
+
+@using (Html.BeginForm("Create", "Users", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="portlet box border shadow">
+        <div class="row">
+            <div class="portlet-heading">
+                <h2 class="col-md-10">افزودن @Html.DisplayNameFor(model => model)</h2>
+                <div class="form-group form-actions">
+                    <button type="submit" class="btn btn-info btn-round">
+                        <i class="icon-check"></i>
+                        ذخیره
+                    </button>
+                    <a href="/admin/users/index" class="btn btn-warning btn-round">
+                        <i class="icon-close"></i>
+                        بازگشت
+                    </a>
+                </div>
+            </div>
+            <form id="validate-form" role="form" action="" method="get">
+
+
+                <div class=" col-md-6">
+                    <fieldset>
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+                        <div class="form-group">
+                            <label for="moblie">نام کاربری<small>(ضروری و حداقل 3 کاراکتر)</small></label>
+                            <div>
+                                @Html.TextBoxFor(model => model.UserName, new { @class = "form-control" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.UserName, null, new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group">
+                            <label for="moblie">نام <small></small></label>
+                            <div>
+                                @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.Name, null, new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group">
+                            <label for="RoleID">نقش کاربر</label>
+                            <div>
+                                @Html.DropDownList("RoleId", null, new { @class = "form-control" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.RoleId, null, new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Password">رمز عبور <small>(ضروری، حداقل سه و حداکثر 10 کاراکتر)</small></label>
+                            <div>
+                                @Html.PasswordFor(model => model.Password, new { @class = "form-control" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.Password, null, new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group">
+                            <label for="moblie">موبایل<small>(ضروری و حداقل 3 کاراکتر)</small></label>
+                            <div>
+                                @Html.TextBoxFor(model => model.moblie, new { @class = "form-control" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.moblie, null, new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Email">ایمیل<small>(ضروری)</small></label>
+                            <div>
+                                @Html.TextBoxFor(model => model.Email, new { @class = "form-control", data_val_email = "لطفا آدرس ایمیل معتبری وارد نمایید" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.Email, null, new { @class = "text-danger" })
+                        </div>
+                        <div>
+                            <div>
+                                <label for="ISActive">وضعیت ثبت نام</label>
+                                @Html.DropDownListFor(model => model.ISActive, new[] {
+                                                                        new SelectListItem() { Text = "فعال", Value = bool.TrueString },
+                                                                        new SelectListItem() { Text = "غیر فعال", Value = bool.FalseString },
+                                                                        }, "انتخاب کنید", new { @class = "form-control" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.ISActive, null, new { @class = "text-danger" })
+                            <br />
+                        </div>
+                        <div class="form-group">
+                            <label for="Email">شماره ملی<small>(ضروری)</small></label>
+                            <div>
+                                @Html.TextBoxFor(model => model.MeliID, new { @class = "form-control"})
+                            </div>
+                            @Html.ValidationMessageFor(model => model.MeliID, null, new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group">
+                            <label for="Email">تاریخ تولد<small>(ضروری)</small></label>
+                            <div>
+                                @Html.TextBoxFor(model => model.BirthDate, new { @class = "form-control"})
+                            </div>
+                            @Html.ValidationMessageFor(model => model.BirthDate, null, new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group">
+                            <label for="Email">آدرس<small>(ضروری)</small></label>
+                            <div>
+                                @Html.TextAreaFor(model => model. Adress, new { @class = "form-control" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.Adress, null, new { @class = "text-danger" })
+                        </div>
+                    </fieldset>
+
+                </div>
+                <div class=" col-md-4 pull-left">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <div class="col-md-12 pull-left">
+                                <img src="~/Content/Upload/Profile/no-photo.png" width="250" height="250" />
+                            </div>
+                            <div class="file-upload">
+                                <div class="fileinput input-group fileinput-new" data-provides="fileinput">
+
+                                    <span class="input-group-addon btn btn-default btn-file">
+                                        <span class="fileinput-new">انتخاب تصویر</span>
+                                        <span class="fileinput-exists">تغییر تصویر</span>
+                                        <input type="file" name="file" id="profilePic" />
+                                        <input id="File_Content" name="File.Content" type="hidden" value="">
+                                    </span>
+                                    <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">حذف</a>
+                                    <div class="form-control text-left" data-trigger="fileinput">
+                                        <i class="fa fa-file-picture-o pull-left fileinput-exists"></i>
+                                        <span class="fileinput-filename"></span>
+                                        <input id="File_Name" name="File.Name" type="hidden" value="">
+                                    </div>
+                                </div>
+                            </div>
+                            <span class="field-validation-valid text-danger" data-valmsg-for="File.Name" data-valmsg-replace="true"></span>
+                            <span class="field-validation-valid text-danger" data-valmsg-for="File.Content" data-valmsg-replace="true"></span>
+                            <span class="field-validation-valid text-danger" data-valmsg-for="File" data-valmsg-replace="true"></span>
+                        </div>
+
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+}
+
+@section Script{
+    <script type="text/javascript">
+
+        $.validator.setDefaults({
+            highlight: function (element) {
+                $(element).closest('.form-group').addClass('has-error').removeClass("has-success");
+            },
+            unhighlight: function (element) {
+                $(element).closest('.form-group').removeClass('has-error').addClass("has-success");
+            },
+            errorElement: 'span',
+            errorClass: 'help-block',
+            errorPlacement: function (error, element) {
+                if (element.parent('.input-group').length) {
+                    error.insertAfter(element.parent());
+                } else {
+                    error.insertAfter(element);
+                }
+            }
+        });
+        $("#validate-form").validate();
+    </script>
+
+
+
+}

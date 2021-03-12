@@ -1,0 +1,187 @@
+﻿@model IEnumerable<Koshop.DomainClasses.ProductGroup>
+
+@{
+                /**/
+
+                ViewBag.Title = " فهرست " + Server.HtmlDecode(Html.DisplyModelPluralName(model => model).ToString());
+                // Layout = null;
+}
+
+<div class="table-responsive portlet box border shadow">
+    <div class="portlet-heading">
+        <h2 class="col-md-10">@ViewBag.Title</h2>
+        <a id="btnAdd" class="btn btn-success btn-round pull-left" data-style="slide-right" onclick="Create()">افزودن گروه </a>
+
+        <br />
+    </div>
+
+    <table class="table table-bordered table-hover table-striped text-center" id="data-table">
+        <thead>
+            <tr>
+                <th>
+                    عنوان گروه
+                </th>
+                <th>
+                    سطح
+                </th>
+                <th>
+                    وضعیت گروه
+                </th>
+                <th>
+                    عملیات
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @ShowTree(Model.Where(s => s.Depth == 0))
+        </tbody>
+    </table>
+    <br />
+
+</div>
+
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 id="myModalLabel" class="myModalLabel">تیتر مودال</h4>
+            </div>
+            <div id="bodyModal" class="bodyModal">
+            </div>
+        </div>
+    </div>
+</div>
+
+@helper ShowTree(IEnumerable<Koshop.DomainClasses.ProductGroup> product_Groups)
+{
+                    /**/
+
+                    foreach (var item in product_Groups)
+                    {
+                        <tr>
+
+                            <td style="text-align:right">
+                                @string.Concat(Enumerable.Repeat(" ┊ ", Convert.ToInt32(item.Depth))) @Html.DisplayFor(modelItem => item.GroupTitle)
+                            </td>
+                            <td>
+                                <label class="label-info">@item.Depth</label>
+                            </td>
+                            <td>
+                                @if (item.IsActive == true)
+                                {
+                                    <label class="label-success">فعال</label>
+                                }
+                                else
+                                {
+                                    <label class="label-danger">غیر فعال</label>
+                                }
+                            </td>
+                            <td>
+                                <a id="btnEdit_@item.ProductGroupId" data-style="slide-right" class="btn btn-info btn-round" href="#" onclick="Edit(@item.ProductGroupId)">ویرایش</a>
+                                <a class="btn btn-danger btn-round" href="#" onclick="Delete(@item.ProductGroupId)">حذف</a>
+                            </td>
+                        </tr>
+                        if (Model.Any(s => s.ParentId == item.ProductGroupId))
+                        {
+                            @ShowTree(Model.Where(s => s.ParentId == item.ProductGroupId));
+                        }
+                    }
+}
+@section Script{
+    <script src="~/content/assets/plugins/ladda/dist/spin.min.js"></script>
+    <script src="~/content/assets/plugins/ladda/dist/ladda.min.js"></script>
+    <script src="~/content/assets/js/pages/ladda.js"></script>
+
+    <script>
+        function Create() {
+            var l = Ladda.create(document.querySelector('#btnAdd'));
+            l.start();
+            $.ajax({
+                url: "/admin/ProductGroup/Create",
+                type: "Get",
+                data: {}
+            }).done(function (result) {
+                $('#myModal').modal('show');
+                $('#myModalLabel').html('افزودن گروه جدید');
+                $('#bodyModal').html(result);
+                l.stop();
+            });
+        }
+
+        function Edit(id) {
+            var l = Ladda.create(document.querySelector('#btnEdit_' + id));
+            l.start();
+            $.ajax({
+                url: "/admin/ProductGroup/Edit/" + id,
+                type: "Get",
+                data: {}
+            }).done(function (result) {
+                $('#myModal').modal('show');
+                $('#myModalLabel').html('ویرایش گروه');
+                $('#bodyModal').html(result);
+                l.stop();
+            });
+        }
+
+        function Delete(id) {
+            swal({
+                title: 'آیا اطمینان دارید؟',
+                text: "این عملیات برگشت پذیر نیست...",
+                type: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#f44336',
+                cancelButtonColor: '#777',
+                confirmButtonText: 'بله، حذف شود. '
+            }).then(function (result) {
+                $.ajax({
+                    url: "/admin/ProductGroup/Delete",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: 'application/x-www-form-urlencoded; charset=utf-8',
+                    data: {
+                        __RequestVerificationToken: gettoken(),
+                        id: id
+                    },
+                    async: true,
+                    cache: false,
+                    success: function (result) {
+                        swal(
+                            'انتخاب شما حذف کردن بود.',
+                            'گروه کالا با موفقیت حذف شد.',
+                            'success'
+                        ).then(location.reload())
+
+                    },
+                    error: function (xc) {
+                        swal(
+                            'خطا در پردازش.',
+                            'گروه کالا به دلایلی قابل حذف نمیباشد.',
+                            'ممکن است کالایی با این گروه وجود داشته باشد',
+                            'error'
+                        );
+                    }
+                })
+            }, function (dismiss) {
+                if (dismiss == 'cancel') {
+                    swal(
+                        'لغو گردید',
+                        'گروه کالا همچنان وجود دارد.',
+                        'error'
+                    ).catch(swal.noop);;
+                }
+            }).catch(swal.noop);
+        }
+
+        function gettoken() {
+            var token = '@Html.AntiForgeryToken()';
+            token = $(token).val();
+            return token;
+        }
+    </script>
+}
+
+@section Head{
+    <link href="~/content/assets/plugins/noty/css/flat.css" rel="stylesheet">
+    <link href="~/content/assets/plugins/ladda/dist/ladda-themeless.min.css" rel="stylesheet">
+}

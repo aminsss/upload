@@ -1,0 +1,18 @@
+﻿@model IEnumerable<Koshop.DomainClasses.Menu>
+
+@{Layout = null; }
+<option value="0">--ریشه گزینه منو--</option>
+@ShowTree(Model.Where(s => s.Depth == 0).OrderBy(x=>x.DisplayOrder))
+
+@helper ShowTree(IEnumerable<Koshop.DomainClasses.Menu> Menu)
+    {
+        foreach (var item in Menu)
+        {
+            <option value="@item.MenuId">@string.Concat(Enumerable.Repeat(" - ", Convert.ToInt32(item.Depth))) @item.MenuTitle </option>
+            if (Model.Any(s => s.ParentId == item.MenuId))
+            {
+                @ShowTree(Model.Where(s => s.ParentId == item.MenuId).OrderBy(x=>x.DisplayOrder));
+            }
+        }
+}
+

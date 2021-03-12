@@ -1,0 +1,138 @@
+﻿@model PagedList.IPagedList<Koshop.DomainClasses.Product>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    Koshop.DataLayer.AppDbContext db = new Koshop.DataLayer.AppDbContext();
+    int? userID = ViewBag.UserID;
+    int jamkalaha = Convert.ToInt32(Model.PageCount * Model.Count());
+    //string yadak = "همه-قطعات";
+    //if (ViewBag.yadak != null && ViewBag.yadak != "")
+    //{
+    //    yadak = ViewBag.yadak;
+    //}
+}
+
+@*@Html.Hidden("yadak", yadak)*@
+<div id="all-e-map">
+    <div id="catdiv">
+        <div class="an-inner-banner ">
+            <div class="container">
+                <div class="an-search-container">
+                    <form action="#">
+                        <div class="search-fields">
+                            <div class="row">
+                                @*<div class="col-md-3">
+                                    <div class="an-default-select-wrapper location">
+                                        <select id="slcstateList">
+                                            @Html.Action("getstate", new { @id = ViewBag.state, @city = ViewBag.city })
+                                        </select>
+                                    </div>
+                                </div>*@
+                                <div class="col-md-3">
+                                    <div class="an-default-select-wrapper">
+                                        <select id="SlctGrpList">
+                                            @Html.Action("GroupsOfProduct", new { @id = ViewBag.SlctGrpFilt })
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-9">
+                                    @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "an-form-control", @placeholder = "جستجوی نام کالا", @autocomplete = "off" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="search-submit">
+                            <button class="an-btn an-btn-default" id="btnSearch" type="submit"><i class="ion-android-search"></i></button>
+                        </div>
+                    </form>
+                </div> <!-- end an-search-container -->
+            </div> <!-- end cotnainer -->
+        </div>
+    </div>   <!-- end an-cat-div-->
+
+    @using (Html.BeginForm("", "search", FormMethod.Get))
+    {
+        @Html.AntiForgeryToken()
+
+
+        <div id="productdiv" class="an-page-content back-pagesearch">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3  an-filterdiv">
+                        <div class="an-sidebar">
+                            <div id="slccitydiv"></div>
+
+                            <div id="OthFilter" class="an-form"></div>
+
+                            <div class="panel-swichbutton">
+                                <label class="switch">
+                                    <input id="onlyexist-check" type="checkbox" />
+                                    <span class="sliderexist round">
+                                    </span>
+                                </label>
+                                <span>
+                                    فقط کالاهای دارای فروشنده
+                                </span>
+                            </div>
+
+                            <div id="slcyadakdiv"></div>
+
+                            <div id="yadakFilter" class="an-form"></div>
+
+                        </div> <!-- end an-sidebar -->
+                    </div>
+                    <div class="col-md-9 no-padding">
+                        <div class="content-body">
+                            <div class=" full-width">
+                                <div class="an-tab-container">
+                                    <div class="tab-nav pdside-10">
+                                        <div class="row">
+                                            @*<ul class="nav nav-tabs" role="tablist">
+                                                    <li role="presentation" class="active"><a style="padding:5px" href="#lowest-detail" aria-controls="lowest-price" role="tab" data-toggle="tab" aria-expanded="false"><i class="ion-ios-grid-view-outline"></i></a></li>
+                                                    <li role="presentation" class=""><a style="padding:5px" href="#highest-detail" aria-controls="highest-price" role="tab" data-toggle="tab" aria-expanded="false"><i class="ion-android-list"></i></a></li>
+                                                </ul>*@
+                                            <h3>جستجوی <span id="titlegropsearch">کالا</span><span id="counter"> (@Response.Headers["Counter"] کالا ) </span></h3>
+                                        </div>
+                                        <div class="row">
+                                            <ul class="nav nav-tabs" id="sortoptionli" role="tablist">
+                                                <li role="presentation" id="newsrt"><a onclick="sortchange(1)" class="btn" role="tab" data-toggle="tab">جدیدترین</a></li>
+                                                <li role="presentation" id="favsrt"><a onclick="sortchange(2)" class="btn" role="tab" data-toggle="tab">محبوب ترین</a></li>
+                                                <li role="presentation" id="mostsrt"><a onclick="sortchange(3)" class="btn" role="tab" data-toggle="tab">پربازدیدترین</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <!-- Tab panes -->
+
+                                </div> <!-- an-tab-container -->
+                            </div> <!-- end listing-result-content -->
+                            <div id="dvContent">
+                                @{
+                                    @Html.Partial("_productList", Model);
+                                }
+                            </div>
+                            <div id="dvscript"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+</div>
+
+
+@section Script{
+
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/content/Koshop/assets/js/ks-productSearch.js"></script>
+}
+
+@section Head{
+    <title>کوشاپ - جستجوی کالا</title>
+}
+
+@section footer{
+    @Html.Partial("_footer")
+}
+

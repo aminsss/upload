@@ -1,0 +1,18 @@
+﻿@model IEnumerable<Koshop.DomainClasses.Component>
+
+@{
+    // Layout = null;
+}
+
+<table class="table text-info">
+    @foreach (var item in Model)
+    {
+
+        <tr>
+            <td>
+                @Html.ActionLink(item.ComponentName, item.AdminAction + "Create", item.AdminController , new {id = item.ComponentId } , htmlAttributes: new { @class = "text-info" }) @Html.ActionLink(item.Descroption, item.AdminAction + "Create/" + item.ComponentId, "Modules", new { @class = "text-warning" })
+            </td>
+        </tr>
+    }
+
+</table>

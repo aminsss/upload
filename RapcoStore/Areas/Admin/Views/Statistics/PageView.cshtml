@@ -1,0 +1,34 @@
+﻿@model List<Koshop.ViewModels.PageViewViewModel>
+
+
+
+<div class="col-md-12">
+    <div class="portlet box border shadow">
+        <div class="portlet-heading">
+            <div class="portlet-title">
+                <h3 class="title">
+                    <i class="fa fa-eye"></i>
+                    صفحات مشاهده شده
+                </h3>
+            </div><!-- /.portlet-title -->
+        </div><!-- /.portlet-heading -->
+        <div class="portlet-body">
+            <div class="table-responsive portlet box border shadow ltr">
+                <table class="table table-bordered table-hover table-striped ">
+                    <tbody>
+
+                        @{
+                            foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td><span class="badge">@item.PageViewCount</span></td>
+                                    <td><span class="referrerurl">@item.PageUrl</span></td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div><!-- /.table-responsive -->
+        </div><!-- /.portlet-body -->
+    </div><!-- /.portlet -->
+</div><!-- /.col-md-6 -->

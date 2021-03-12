@@ -1,0 +1,137 @@
+﻿@model Koshop.ViewModels.RegisterViewModel
+
+@{
+    Layout = "~/Views/Shared/_LayoutAccount.cshtml";
+}
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div>
+        <section class="checkout-area ptb-100">
+            <div class="container">
+                <div class="row">
+                    <div class=" col-md-6" style="margin-right:25%">
+                        <div class="billing-details">
+                            <h3 class="title">تاییدیه ثبت نام</h3>
+                            @Html.ValidationSummary(true, "", new { @class = "text-warning" })
+
+                            <div class="row">
+                                <div class=" col-md-12">
+                                    <div class="form-group">
+                                        <label>
+                                            @ViewBag.status
+                                        </label>
+                                        <label id="NumberDiv" style="display:block">
+                                            کد تائیدیه به شماره موبایل و ایمیل شما ارسال شد
+                                        </label>
+                                        <input id="activateCode" type="text" class="form-control " style="text-align:center;letter-spacing:10px" maxlength="6">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <button id="sendAgain" class="default-btn" style="display:block">
+                                        <i class="ion-refresh"></i>
+                                        ارسال مجدد
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 " style="margin-right:25%">
+                        <div class="user-actions">
+                            <i class="fas fa-home"></i>
+                            <span>بازگشت به <a href="/">صفحه اصلی</a></span>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+}
+
+@section Script{
+    <script src="~/content/assets/plugins/ladda/dist/spin.min.js"></script>
+    <script src="~/content/assets/plugins/ladda/dist/ladda.min.js"></script>
+    <script src="~/content/assets/js/pages/ladda.js"></script>
+
+    <script>
+        function submit() {
+            $.ajax({
+                url: "/Account/Activating/" + '@Model.UserName',
+                dataType: "json",
+                contentType: 'application/x-www-form-urlencoded; charset=utf-8',
+                type: "Post",
+                data: {
+                    activeCode: $("#activateCode").val(),
+                    __RequestVerificationToken: gettoken(),
+                },
+                async: true,
+                cache: false,
+                success: function (result) {
+                    if (result == true) {
+                        alert("حساب شما فعال شد! وارد شوید");
+                        window.location.href = "/Account/Profile/@Model.UserName";
+                    }
+                    else if (result != true)
+                        alert("کد وارد شده اشتباه میباشد!");
+                },
+                error: function (result) {
+                }
+            });
+        }
+
+        $("#activateCode").on('input', function () {
+            var value = $("#activateCode").val();
+            if (value.length == 6) {
+                submit();
+            }
+        });
+
+        $("#sendAgain").on("click", function (e) {
+            e.preventDefault();
+            $.ajax({
+                url: "/Account/sendAgain",
+                dataType: "json",
+                contentType: 'application/x-www-form-urlencoded; charset=utf-8',
+                type: "Post",
+                data: {
+                    __RequestVerificationToken: gettoken(),
+                    userName : '@Model.UserName',
+                },
+                async: true,
+                cache: false,
+                success: function (result) {
+                    if (result == true) {
+                    }
+                    else if (result == "Time")
+                        alert("لطفا منتظر بمانید تا پیامک ارسال گردد");
+                    else if (result != true)
+                        alert("خطایی رخ داد! با مدیریت تماس بگیرید");
+                },
+                error: function (result) {
+                    alert("خطایی رخ داد! لطفا دوباره امتحان کنید");
+                }
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+         function gettoken() {
+             var token = '@Html.AntiForgeryToken()';
+             token = $(token).val();
+             return token;
+        }
+    </script>
+}
+
+@section Head{
+    <link href="~/content/assets/plugins/ladda/dist/ladda-themeless.min.css" rel="stylesheet">
+    <title>سایت ایرمان کابینت - تایید ثبت نام</title>
+
+}

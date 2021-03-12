@@ -1,0 +1,196 @@
+﻿
+
+@{
+    ViewBag.Title = "فهرست سفارشات " /*+ Server.HtmlDecode(Html.DisplyModelPluralName(model => model).ToString())*/;
+    ViewBag.page = Request.QueryString["page"] ?? "1";
+    ViewBag.pageSize = Request.QueryString["pageSize"] ?? "2";
+}
+
+<div class="table-responsive portlet box border shadow" ng-app="myApp" ng-controller="orderCtrl">
+    <div class="portlet-heading">
+        <h2>@ViewBag.Title</h2>
+    </div>
+    @using (Html.BeginForm("AllDetail", "Orders", FormMethod.Get))
+    {
+        <div class="row">
+            <div class="col-sm-4 m-b-20">
+                تعداد در صفحه
+                @*@Html.DropDownList("_PageSize", new SelectList(new Dictionary<string, int> { { "5", 5 }, { "10", 10 }, { "20", 20 }, { "50", 50 }, { "100", 100 } }, "Key", "Value", Model.PageSize), new { @class = "input-sm round", id = "pagesizelist" })*@
+                <select id="ddlPageSize" class="input-sm round"
+                        ng-model="pageSizeSelected"
+                        ng-change="changePageSize()">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                </select>
+            </div><!-- /.col-sm-4 -->
+            <div class="col-sm-4 m-b-20">
+
+                @*<a class="btn btn-info btn-round">
+                        <i class="icon-layers"></i>
+                        بایگانی
+                        <div class="paper-ripple"><div class="paper-ripple__background" style="opacity: 0.0064;"></div><div class="paper-ripple__waves"></div></div>
+                    </a>*@
+            </div><!-- /.col-sm-4 -->
+
+            <div class="col-sm-4 m-b-20">
+                <form role="form">
+                    <div class="input-group round">
+                        @*@Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control", @placeholder = "جستجو بر اساس نام کاربری..." })*@
+                        <input class="form-control" ng-model="searchString" ng-change="changePageSize()" placeholder="جستجو بر اساس شماره سفارش..." type="text" value="">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="submit">
+                                <i class="icon-magnifier"></i>
+                                <div class="paper-ripple"></div><div class="paper-ripple"><div class="paper-ripple__background"></div><div class="paper-ripple__waves"></div></div>
+                            </button>
+                        </span>
+                    </div><!-- ./input-group -->
+                </form>
+            </div><!-- /.col-sm-4 -->
+        </div>
+    }
+
+
+    <table class="table table-bordered table-hover table-striped text-center" id="data-table">
+        <thead>
+            <tr>
+                <th>
+                    خریدار
+                </th>
+                <th>
+                    محصول
+                </th>
+                <th>
+                    قیمت
+                </th>
+                <th>
+                    تعداد
+                </th>
+                <th>
+                    مجموع
+                </th>
+                <th>
+                    وضعیت پرداخت
+                </th>
+                <th>
+                    تاریخ
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="x in orders ">
+                <td class="text-right">
+                    {{x.Name}}
+                </td>
+                <td>
+                    <a href="/admin/Product/Edit/{{x.ProductId}}" target="_blank"> {{x.ProductTitle }}</a>
+                </td>
+                <td></td>
+                <td>
+                    <label> {{x.ProductCount }}</label>
+                </td>
+                <td>
+                    <label> {{x.Sum }}</label>
+                </td>
+                <td>
+                    <label class=" {{x.IsFinally | isfinally }}"> {{x.IsFinally | isfinallyPrice }}</label>
+                </td>
+                <td>
+                    {{x.AddedDate | mydate | date: 'yyyy-MM-dd'}}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <br />
+    <div class="row">
+        <div class="col-md-6">
+            <a class="btn btn-primary">Page: {{pageIndex}} / {{numPages}}</a>
+        </div>
+        <div class="ltr col-md-6">
+            <pagination total-items="totalCount" ng-change="pageChanged()" items-per-page="pageSizeSelected" direction-links="true" ng-model="pageIndex" max-size="maxSize" class="pagination" boundary-links="true" rotate="false" num-pages="numPages"></pagination>
+        </div>
+    </div>
+</div>
+
+@section Script{
+    <script type="text/javascript">
+
+            var app = angular.module('myApp' ,['ui.bootstrap']);
+            app.controller('orderCtrl', function ($scope, $http) {
+
+                $scope.searchString = "";     // the String words for serarching .
+                $scope.maxSize = 3;     // Limit number for pagination display number.
+                $scope.totalCount = 0;  // Total number of items in all pages. initialize as a zero
+                $scope.pageIndex = @ViewBag.page;   // Current page number. First page is 1.-->
+                $scope.pageSizeSelected = @ViewBag.pageSize; // Maximum number of items per page.
+
+                $scope.getOrderList = function () {
+                    $http.get('/admin/orders/GetAllDetail?page=' + $scope.pageIndex + '&pageSize=' + $scope.pageSizeSelected + '&searchString=' + $scope.searchString).then(function (response) {
+                        $scope.orders = response.data.getList;
+                        $scope.totalCount = response.data.totalCount;
+                        $scope.numPages = response.data.numPages;
+                    },
+                        function (err) {
+                            var error = err;
+                        });
+                }
+
+                //Loading employees list on first time
+                $scope.getOrderList();
+
+                //This method is calling from pagination number
+                $scope.pageChanged = function () {
+                    $scope.getOrderList();
+                };
+
+                //This method is calling from dropDown
+                $scope.changePageSize = function () {
+                    $scope.pageIndex = 1;
+                    $scope.getOrderList();
+                };
+
+            });
+
+            app.filter("mydate", function () {
+                var re = /\/Date\(([0-9]*)\)\//;
+                return function (x) {
+                    if (x != null) {
+                        var m = x.match(re);
+                        if (m) return new Date(parseInt(m[1]));
+                        else return null;
+                    }
+                };
+        });
+
+        app.filter("isfinally", function () {
+            return function (x) {
+                if (x == true)
+                    return "label-success";
+                else
+                    return "label-danger";
+            };
+        });
+
+        app.filter("isfinallyPrice", function () {
+            return function (x) {
+                if (x == true)
+                    return "پرداخت شده";
+                else
+                    return "پرداخت نشده";
+            };
+        });
+
+            $("#pagesizelist").change(function (event) {
+                var form = $(event.target).parents("form");
+                form.submit();
+            });
+    </script>
+
+}
+
+
+@section Head{
+    <script src="~/content/Koshop/assets/js/angular.js"></script>
+    <script src="~/content/Koshop/assets/js/ui-bootstrap-tpls-0.13.4.min.js"></script>
+}

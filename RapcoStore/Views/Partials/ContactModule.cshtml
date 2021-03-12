@@ -1,0 +1,100 @@
+﻿@model Koshop.DomainClasses.Module
+
+<section class="contact-area ptb-100">
+    <div class="container">
+        <div class="section-title">
+            <span class="sub-title">ارسال پیام</span>
+            <h2>برای هرگونه سؤال برای ما پیامی بگذارید</h2>
+            @Html.Raw(Model.ContactModule.Description)
+        </div>
+
+
+        <div class="row">
+            <div class="col-lg-7 col-md-12">
+                <div class="contact-form">
+                    <form id="contactForm">
+                        <div class="row">
+                            @foreach (var item in Model.ContactModule.ContactPerson)
+                            {
+                                <input type="hidden" id="User[@item.UserId]" name="User[@item.UserId]" />
+                            }
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <input type="text" name="name" id="name" class="form-control" required data-error="لطفا نام خود را وارد کنید" placeholder="نام شما">
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <input type="email" name="email" id="email" class="form-control" required data-error="لطفا آدرس ایمیل خود را وارد کنید" placeholder="ایمیل شما">
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <input type="text" name="phone_number" id="phone_number" required data-error="لطفا شماره خود را وارد کنید" class="form-control" placeholder="شماره تلفن">
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <input type="text" name="msg_subject" id="msg_subject" class="form-control" required data-error="لطفا موضوع خود را وارد کنید" placeholder="موضوع">
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12 col-md-12">
+                                <div class="form-group">
+                                    <textarea name="message" class="form-control" id="message" cols="30" rows="6" required data-error="پیام خود را بنویسید" placeholder="پیام شما"></textarea>
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12">
+                                <button id="SendButton" class="default-btn">ارسال پیام <span></span></button>
+                                <div id="msgSubmit" class="h3 text-center hidden"></div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-lg-5 col-md-12">
+                <div class="contact-info">
+                    <ul>
+                        <li>
+                            <div class="icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <span>آدرس شما</span>
+                            @Model.ContactModule.Address
+                        </li>
+
+                        <li>
+                            <div class="icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <span>ایمیل شما</span>
+                            <a href="@Model.ContactModule.Email">@Model.ContactModule.Email</a>
+                        </li>
+
+                        <li>
+                            <div class="icon">
+                                <i class="fas fa-phone-volume"></i>
+                            </div>
+                            <span>تماس بگیرید</span>
+                            <a href="#">@Model.ContactModule.PhoneNum</a>
+                            <a href="#">@Model.ContactModule.MobileNum</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-map"><img src="/zovio/assets/img/bg-map.png" alt="image"></div>
+</section>
+
