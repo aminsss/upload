@@ -1,12 +1,16 @@
 ﻿@model ICollection<Koshop.DomainClasses.ProductGroup>
 
-<div id="wrapper" style="z-index:25">
+<div id="wrapper" >
     <input type="checkbox" id="menu" name="menu" class="menu-checkbox">
-    <div class="menu">
-        <label class="menu-toggle" for="menu"><text>asa</text><span>Toggle</span></label>
-        <ul>
-            @ShowTree(Model.Where(s => s.Depth == 0))
-        </ul>
+    <div class="menu" >
+        <div style="top:85px">
+            <label class="menu-toggle" for="menu"><span>Toggle</span></label>
+        </div>
+        <div class="example">
+            <ul>
+                @ShowTree(Model.Where(s => s.Depth == 0))
+            </ul>
+        </div>
     </div>
 </div><!-- #wrapper -->
 
@@ -22,9 +26,11 @@
                     <input type="checkbox" id="menu-@item.ProductGroupId" name="menu-@item.ProductGroupId" class="menu-checkbox">
                     <div class="menu">
                         <label class="menu-toggle" for="menu-@item.ProductGroupId"><span>Toggle</span></label>
-                        <ul>
-                            @ShowTree(Model.Where(s => s.ParentId == item.ProductGroupId))
-                        </ul>
+                        <div class="example">
+                            <ul>
+                                @ShowTree(Model.Where(s => s.ParentId == item.ProductGroupId))
+                            </ul>
+                        </div>
                     </div>
                 }
                 else

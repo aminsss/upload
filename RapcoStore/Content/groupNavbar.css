@@ -19,18 +19,34 @@ label {
         outline: none;
     }
 
+.example {
+    height: calc(100vh);
+    overflow-x: hidden;
+}
+
+.example::-webkit-scrollbar {
+    display: none;
+}
+
+.example {
+    -ms-overflow-style: none; 
+    scrollbar-width: none; 
+}
+
 .menu {
-    position: absolute;
+    position: fixed;
     top: 0;
     right: 0;
     background: #fff;
     width: 240px;
-    height: 100vh;
+    height: calc(100vh);
     transform: translate3d(240px, 0, 0);
     transition: transform 0.35s;
+    z-index: 1000
 }
 
     .menu label.menu-toggle {
+        z-index:1000;
         position: absolute;
         left: -60px;
         width: 60px;
@@ -38,6 +54,7 @@ label {
         line-height: 0px;
         display: compact;
         padding: 0;
+        top:85px;
         text-indent: -9999px;
         background: #fff url(https://cdn4.iconfinder.com/data/icons/wirecons-free-vector-icons/32/menu-alt-512.png) 50% 50%/25px 25px no-repeat;
     }
