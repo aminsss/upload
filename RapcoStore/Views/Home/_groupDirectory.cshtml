@@ -1,0 +1,24 @@
+﻿@model ICollection<Koshop.DomainClasses.ProductGroup>
+
+<h5>
+    <a href="/Home">بایکو / </a>
+       
+        @ShowTree(Model, int.Parse(ViewBag.groupSelected))
+
+        @helper ShowTree(ICollection<Koshop.DomainClasses.ProductGroup> product_Groups, int? groupSelected)
+        {
+
+            foreach (var item in product_Groups.Where(x => x.ProductGroupId == groupSelected))
+            {
+                @ShowTree(Model, item.ParentId);
+
+                if (item.ParentId != 0)
+                {
+                    <span> / </span>
+                }
+                <a href="/Product/search?SlctGrpFilt=@item.GroupTitle.Replace(" ","-")">
+                    @item.GroupTitle
+                </a>
+            }
+        }
+</h5>

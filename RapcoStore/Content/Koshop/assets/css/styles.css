@@ -5000,3 +5000,16 @@ input:checked + .sliderexist:before {
     transform: translate(-50%,-50%);
     color: #a09898;
 }
+
+h4.sidelines {
+    text-align: right;
+    border-bottom: 1px solid #dbd7d7;
+    height: 0.5em;
+    color: #637783
+}
+
+    h4.sidelines span {
+        display: inline-block;
+        background: #fff;
+        padding: 0 0.25em;
+    }

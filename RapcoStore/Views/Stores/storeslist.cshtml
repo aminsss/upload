@@ -1,0 +1,189 @@
+﻿@model IEnumerable<Koshop.DomainClasses.StoresProduct>
+@{
+    int n = 20;
+    int i = 0;
+    if (Model.Count() <= 20)
+    {
+        n = Model.Count();
+    }
+    int PrID = Convert.ToInt32(Url.RequestContext.RouteData.Values["id"].ToString());
+
+}
+
+@foreach (var item in Model)
+{
+    <div class="an-accordion map" id="map_@item.Store.StoreInfo.lngitute,@item.Store.StoreInfo.latitute,@item.StoreId" >
+        <div id="store_@item.StoreId"  class=" store an-listing-single category-listing-single">
+            <div  id="accordionStore_@item.StoreId" role="tablist" aria-multiselectable="true">
+                <div id="collapseStore_@item.StoreId" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headStore_@item.StoreId" aria-expanded="false" style="height:0px;position: absolute;z-index: 1;width: 100%">
+                    <a style="position:absolute;top:2px;right:2px;z-index:3" role="button" data-toggle="collapse" data-parent="#accordionkala" href="#collapseStore_@item.StoreId" aria-expanded="false" aria-controls="collapseStore_@item.StoreId" class="collapsed"><i class="ion-close-circled" style="color:#fff"></i></a>
+                    <div class="panel-body" style="padding-top:0px;max-height:100px;min-height:100px;overflow:auto;background-color:#2c353a;opacity:0.95;border-radius:2px">
+                        <div id="Store_@item.StoreId" name="Store_@item.StoreId" style="padding:12px 9px 0 0">
+                            <div style="padding-bottom:10px">
+                                <a style="color:#fff;cursor: pointer;" href="/@item.Store.SiteName">
+                                    @item.Store.StoreName
+                                    @*<span style="padding:0px 6px;font-size:11px;color:#bbb;">(صفحه شخصی)</span>*@
+                                </a>
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    if (item.Store.StoreFollower.Any(x => x.User.moblie == User.Identity.Name))
+                                    {
+                                        <a id="followclick_@item.StoreId" class="an-btn an-btn-light icon-right" style="padding:2px 10px;border-radius:3px;font-size:11px;float:left" onclick="followStor('@item.StoreId')">دنبال میکنم</a>
+                                    }
+                                    else
+                                    {
+                                        <a id="followclick_@item.StoreId" class="an-btn an-btn-default icon-right" style="padding:2px 10px;border-radius:3px;font-size:11px;float:left" onclick="followStor('@item.StoreId')">دنبال کردن</a>
+                                    }
+                                }
+                                else
+                                {
+                                    <a id="followclick_@item.StoreId" class="an-btn an-btn-default icon-right" style="padding:2px 10px;border-radius:3px;font-size:11px;float:left" onclick="followStor('@item.StoreId')">دنبال کردن</a>
+                                }
+
+                            </div>
+                            <div>
+                                <div style="font-size:12px;display:flex;color:#eee;">
+                                    <i class="ion-android-call"></i>
+                                    <span style="padding:0px 6px;font-size:11px;color:#bbb;">شماره تماس</span>&nbsp; &nbsp;
+                                    <span>@item.Store.PhoneNo</span>
+                                </div>
+                            </div>
+                            <div>
+                                <div style="font-size:12px;display:flex;color:#eee;">
+                                    <i class="typcn typcn-location"></i>
+                                    <span style="padding:0px 6px;font-size:11px;color:#bbb;">موقعیت</span>&nbsp; &nbsp;
+                                    <span>@item.Store.Cities.State.StateName | @item.Store.Cities.CityName</span>
+                                </div>
+                            </div>
+                            <div>
+                                <div style="font-size:12px;display:flex;color:#eee;">
+                                    <i class="ion-android-locate"></i>
+                                    <span style="padding:0px 6px;font-size:11px;color:#bbb;">آدرس</span>&nbsp; &nbsp;
+                                    <span>@item.Store.StoreAddress</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="an-tab-container">
+                    <div class="panel-title">
+                        <div style="background-color:#FFF;box-shadow:0 0 8px 0px #c9c9c9;border-radius:2px;overflow-x:hidden;max-height:100px;min-height:100px">
+                            <a >
+                                <img class="backgrstore" src="http://statics-kspub.koshop.ir/StoreImage/thumbnail/@item.Store.StoreIcon" height="85" width="85" style="cursor: pointer;float:right;margin:5px;border-radius: 3px;" />
+                            </a>
+                            <div class="" style="padding-top:10px;max-height:80px;min-height:80px;overflow:hidden">
+                                <div class="col-md-12 col-sm-12 col-xs-12" style="padding-bottom:10px">
+                                    <a href="/@item.Store.SiteName" target="_blank" class="color-primary btn small-padding">@item.Store.StoreName</a>
+                                    @if (item.Color.Contains("F"))
+                                    {<div style="float:left;border-radius:10px;margin:10px 1px;background-color:#FFF;height:10px;width:10px;border:solid 1px #333" rel="help"></div>}
+                                    @if (item.Color.Contains("L"))
+                                    {<div style="float:left;border-radius:10px;margin:10px 1px;background-color:#000;height:10px;width:10px;border:solid 1px #333" rel="help"></div>}
+                                    @if (item.Color.Contains("R"))
+                                    {<div style="float:left;border-radius:10px;margin:10px 1px;background-color:#f00;height:10px;width:10px;border:solid 1px #333" rel="help"></div>}
+                                    @if (item.Color.Contains("B"))
+                                    {<div style="float:left;border-radius:10px;margin:10px 1px;background-color:#00f;height:10px;width:10px;border:solid 1px #333" rel="help"></div>}
+                                    @if (item.Color.Contains("Y"))
+                                    {<div style="float:left;border-radius:10px;margin:10px 1px;background-color:#ff0;height:10px;width:10px;border:solid 1px #333" rel="help"></div>}
+                                    @if (item.Color.Contains("G"))
+                                    {<div style="float:left;border-radius:10px;margin:10px 1px;background-color:#f1ea29;height:10px;width:10px;border:solid 1px #333" rel="help"></div>}
+                                    @if (item.Color.Contains("N"))
+                                    {<div style="float:left;border-radius:10px;margin:10px 1px;background-color:#0f0;height:10px;width:10px;border:solid 1px #333" rel="help"></div>}
+                                    @if (item.Color.Contains("H"))
+                                    {<div style="float:left;border-radius:10px;margin:10px 1px;background-color:#c5c5c1;height:10px;width:10px;border:solid 1px #333" rel="help"></div>}
+                                    @if (item.Color.Contains("P"))
+                                    {<div style="float:left;border-radius:10px;margin:10px 1px;background-color:#ffc0c0;height:10px;width:10px;border:solid 1px #333" rel="help"></div>}
+                                    @if (item.Color.Contains("V"))
+                                    {<div style="float:left;border-radius:10px;margin:10px 1px;background-color:#df00e4;height:10px;width:10px;border:solid 1px #333" rel="help"></div>}
+                                    @if (item.Color.Contains("O"))
+                                    {<div style="float:left;border-radius:10px;margin:10px 1px;background-color:#ffc800;height:10px;width:10px;border:solid 1px #333" rel="help"></div>}
+                                    @if (item.Color.Contains("W"))
+                                    {<div style="float:left;border-radius:10px;margin:10px 1px;background-color:#867272;height:10px;width:10px;border:solid 1px #333" rel="help"></div>}
+                                    @if (item.Color.Contains("Z"))
+                                    {<div style="float:left;border-radius:10px;margin:10px 1px;background-color:#ece6e6;height:10px;width:10px;border:solid 1px #333" rel="help"></div>}
+                                    @if (item.Color.Contains("S"))
+                                    {<div style="float:left;border-radius:10px;margin:10px 1px;background-color:#f5f2f2;height:10px;width:10px;border:solid 1px #333" rel="help"></div>}
+                                    @if (item.Color.Contains("A"))
+                                    {<div style="float:left;border-radius:10px;margin:10px 1px;background-image:linear-gradient(to right, red,orange,yellow,green,blue,violet);height:10px;width:10px;border:solid 1px #333" rel="help"></div>}
+                                </div>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <div class="" style="font-weight:100;font-size:15px;display:flex;">
+                                        @if (item.Price != 0)
+                                        {
+                                            <p style="padding:0px 6px">@Html.DisplayFor(Model => item.Price)</p>
+                                            <span style="font-size:11px;color:#ccc;"> تومان</span>
+                                        }
+                                        else
+                                        {
+                                            <p style="padding:0px 6px"><a role="button" data-toggle="collapse" data-parent="#accordionkala" href="#collapseStore_@item.StoreId" aria-expanded="false" aria-controls="collapseStore_@item.StoreId" class="collapsed">تماس بگیرید!</a></p>
+                                        }
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    @if (item.OffPrice != "" && item.OffPrice != "0")
+                                    {
+                                        <div class="small-padding" style="font-weight:100;font-size:15px;display:flex;">
+                                            <span style="padding:0px 6px;font-size:11px;color:#ccc;">تخفیف روز :</span>
+                                            <p>@item.OffPrice.ToString()%</p>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                            <div class="listing-meta">
+                                <span><a role="button" data-toggle="collapse" data-parent="#accordionkala" href="#collapseStore_@item.StoreId" aria-expanded="false" aria-controls="collapseStore_@item.StoreId" class="collapsed" style="position:absolute;top:-10px"><i class="ion-information-circled"></i></a></span>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> <!-- end category-listing-single -->
+    i += 1;
+    if (i == 20)
+    {
+        break;
+    }
+
+}
+@if (Model.Count() > 20)
+{
+    <div class="warning-storelist">
+        <div class="inner-warn">
+            <p>تعداد 20 از @Model.Count() فروشگاه نمایش داده شد</p>
+            <p>  برای جستجوی بهتر محدوده را کوچکتر کنید.</p>
+            <p class="bg-warning">  آیا این کالا را دارید؟  <a target="_blank" href="/Panel/ProductRequests/Index?SearchString=@PrID">افزودن به فروشگاه</a></p>
+        </div>
+    </div>
+}
+else if (Model.Count() == 0)
+{
+    <div class="warning-storelist">
+        <div class="inner-warn">
+            <p>در این محدوده فروشگاهی یافت نشد!   پیشنهاد میشود :  </p>
+            <p>  - تنظیمات دنبال کنند ها را به حالت اول بازگردانید </p>
+            <p>  - محدوده جستجوی خود را <a>بزرگتر کنید</a></p>
+            <p class="bg-warning">  آیا این کالا را دارید؟  <a target="_blank" href="/Panel/ProductRequests/Index?SearchString=@PrID">افزودن به فروشگاه</a></p>
+
+        </div>
+    </div>
+}
+else
+{
+    <div class="warning-storelist">
+        <div class="inner-warn">
+            <p>  برای گرفتن نتایج بیشتر محدوده جستجوی خود را <a>بزرگتر کنید</a></p>
+            <p class="bg-warning">  آیا این کالا را دارید؟  <a target="_blank" href="/Panel/ProductRequests/Index?SearchString=@PrID">افزودن به فروشگاه</a></p>
+        </div>
+    </div>
+}
+
+    <script>
+        $(".map").on("click", function () {
+            var id = $(this).attr("id").replace("map_", "");
+            var splitid = id.split(',');
+            flyTo(parseFloat(splitid[0]), parseFloat(splitid[1]), splitid[2])
+        });
+    </script>
+
+

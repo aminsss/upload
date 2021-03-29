@@ -1,10 +1,8 @@
 ﻿@model IEnumerable<Koshop.DomainClasses.ProductGroup>
 
 @{
-                /**/
-
-                ViewBag.Title = " فهرست " + Server.HtmlDecode(Html.DisplyModelPluralName(model => model).ToString());
-                // Layout = null;
+       ViewBag.Title = " فهرست " + Server.HtmlDecode(Html.DisplyModelPluralName(model => model).ToString());
+       // Layout = null;
 }
 
 <div class="table-responsive portlet box border shadow">

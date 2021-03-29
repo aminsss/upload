@@ -1,0 +1,274 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    Koshop.DataLayer.AppDbContext db = new Koshop.DataLayer.AppDbContext();
+    string s = (Url.RequestContext.RouteData.Values["id"]).ToString();
+    var product = db.Products.Where(x => x.AliasName == s).FirstOrDefault();
+    int idPr = product.ProductId;
+}
+@Html.Hidden("authStatus", User.Identity.IsAuthenticated)
+@Html.Hidden("idPr", idPr)
+
+<div class="block-slide" style="display:none">
+    <div class="back-slide"></div>
+    <div class="slider-kala">
+        @*<div class="activeImages"></div>*@
+        <div class="all-galleries">
+            <div class="picsscroll ">
+                <a class="zoom-kala ">
+                    <img id="preview_@product.ProductImage.Replace(".jpg", "")" style="object-fit: contain;" class=" slidecontent-preview activemode activePic" src="~/content/upload/ProductImages/thumbnail/@product.ProductImage" />
+                </a>
+                @foreach (var item in product.ProductGallery)
+                {
+                    <a class="zoom-kala ">
+                        <img id="preview_@item.ImageName.Replace(".jpg", "")" class=" slidecontent-preview backgrkala activemode" src="~/content/upload/ProductImages/thumbnail/@item.ImageName" />
+                    </a>
+                }
+            </div>
+        </div>
+        <div id="slidercontent" class="slider-content">
+            <img class=" slidecontent-image" src="~/Content/Upload/ProductImages/Images/@product.ProductImage" />
+        </div>
+    </div>
+</div>
+
+
+<div class="an-inner-banner">
+
+    <div class="container">
+        <div class="an-advertise">
+            <div class="row">
+                <div class="col-sm-8">
+                    <div class="ad-details">
+                        @Html.Action("_groupDirectory", "Home", new { id = product.ProductGroupId })
+                        <div class="listing-meta">
+                            @*<span><a class="color-hotel" href="#">رستوران و ناهار خوری زیبا</a></span>
+                                <span class="user"><span class="meta-italic">توسط:</span><a href="#">مدیر هتل</a></span>
+                                <span><i class="typcn typcn-time"></i>16.1.17</span>
+                                <span><i class="typcn typcn-location"></i>نیویورک</span>*@
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="ad-price">
+                        @*<h1><small><i class="ion-social-usd"></i></small>120/در روز</h1>
+                            <div class="listing-meta">
+                                <span>
+                                    <span class="meta-italic">تبدیل:</span>
+                                    <a href="#">یورو</a>
+                                    <a href="#">دلار</a>
+                                    <a class="active" href="#">پوند</a>
+                                </span>
+                            </div>*@
+                    </div>
+                </div>
+            </div>
+        </div> <!-- end an-advertise -->
+    </div> <!-- end cotnainer -->
+</div> <!-- an-header-banner -->
+<div class="an-page-content">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9">
+                <div class="content-body">
+
+                    <div class="search-fields">
+                        <div class="row">
+                            <div class="image-holder col-md-6" style="width: 350px; padding:0 5px;float: right;">
+                                <img class="backgrkala zoom-kala" width="250" height="250" src="~/Content/Upload/ProductImages/thumbnail/@product.ProductImage" />
+                                <br />
+
+                            </div>
+
+                            <div class="name-holder col-md-6" style="padding:0 5px">
+                                <div class="listing-content">
+                                    <div class="listing-name">
+                                        <h2>@product.ProductTitle</h2>
+
+                                        <h4 class="sidelines"><span> @product.ProductName</span></h4>
+                                        <br />
+
+                                        <p>ویژگی های کالا</p>
+                                        <ul>
+
+                                            @foreach (var item in product.ProductTag)
+                                            {
+                                                <li>@item.TagTitle</li>
+                                                @*<span style="cursor:default" class="an-btn an-btn-light rounded">@item.TagTitle</span>*@
+                                            }
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            @foreach (var item in product.ProductGallery)
+                            {
+                                <a class="zoom-kala ">
+                                    <img style="width:60px;height:60px;margin:15px 0px 10px 15px" id="preview_@item.ImageName.Replace(".jpg", "")" class=" slidecontent-preview backgrkala activemode" src="~/content/upload/ProductImages/thumbnail/@item.ImageName" />
+                                </a>
+                            }
+                        </div>
+                        <div style="margin:10px "></div>
+
+                        @*<div class="row" style="padding: 5px 5px 5px 12px;color:#FFF;font-size:11px"><a id="followshop" style="width:50%;border-left:solid 1px; font-size:12px;padding-left: 3px;border-bottom-left-radius:0;border-top-left-radius:0" class="btn an-btn-default">آنهایی که دنبال میکنم</a><a id="notfollowshop" style="width:50%;font-size:12px;padding-right: 3px;border-bottom-right-radius:0;border-top-right-radius:0" class="btn an-btn-default">آنهایی که دنبال نمیکنم</a></div>*@
+                    </div>
+
+                    <div class="an-section-container">
+                        <div class="an-blog-post">
+                            <div class="content">
+                                <h3>توضیحات محصول</h3>
+                                <h4 class="sidelines"><span> @product.ProductName</span></h4>
+
+                                <p class="an-quote">
+                                    سامسونگ گوشی جدید سری A خود را با نام «A31» در تاریخ 27 آوریل 2020 معرفی کرد. این سری از تولیدات سامسونگ به داشتن صفحه‌نمایش بسیار با کیفیت AMOLED و دوربین‌هایی با امکانات بالا شهرت دارند. گوشی موبایل Galaxy A31با صفحه‌نمایش سوپر آمولد طراحی شده است و ظاهر هم زیبایی دارد. سامسونگ تلاش کرده است حاشیه را در این تولید جدید خود تا حد امکان کم کند. قاب جلویی آن را یک نمایشگر تمام صفحه پوشانده که البته جلوه‌ی زیبایی هم به آن داده است. این محصول سامسونگ با جدیدترین نسخه از سیستم‌عامل اندروید 10 و رابط کاربری One UI 2.0 روانه بازار شده است تا از هر نظر گوشی مدرن به‌حساب بیاید. صفحه‌نمایش استفاده‌شده در این گوشی 6.4 اینچ با رزولوشن 2400 در 1080 پیکسل است که با استفاده از فناوری Super AMOLED تصاویر شفاف و بی‌نظیری را به نمایش می‌گذارد. این صفحه‌نمایش در هر اینچ 411 پیکسل را نشان می‌دهد . تراشه‌ی این محصول MediaTek Helio G70 است که به همراه 4 گیگابایت رم عرضه می‌شود. این گوشی در ظرفیت 128 گیگابایتی عرضه شده است و با استفاده از یک کارت حافظه‌ی جانبی قادر خواهید بود حافظه داخلی را تا یک ترابایت دیگر هم افزایش دهید. شرکت سامسونگ برای این مدل یک دوربین 4 گانه در نظر گرفته است که شامل یک لنز 48 مگاپیکسلی از نوع عریض (Wide)، یک لنز 8 مگاپیکسلی از نوع فوق‌عریض (Ultrawide) و دو لنز 5 مگاپیکسلی از نوع ماکرو سنسورعمق است. دوربین سلفی 20 مگاپیکسلی هم در قاب جلویی این گوشی به کار گرفته شده است. باتری 5000 میلی‌آمپرساعتی، پشتیبانی از فناوری شارژ سریع 15 واتی، درگاه USB Type-C و حسگر اثرانگشت زیر صفحه‌نمایش هم از دیگر ویژگی‌های این تازه‌وارد است. سامسونگ این گوشی با طراحی کاملاً مطلوب و امکانات فراوان به بازار عرضه کرده است تا در بازار میان‌رده‌ها هم حرفی برای گفتن داشته باشد.
+                                </p>
+
+                                <h3>مشخصات</h3>
+                                <h4 class="sidelines"><span> @product.ProductName</span></h4>
+
+                                <div class="">
+                                    @foreach (var detG in product.ProductGroup.DetailGroups)
+                                    {
+                                        if (detG.DetailItem.Any(x => x.ProductDetail.Any(y => y.ProductId == product.ProductId)))
+                                        {
+                                            <div class="col-md-4">
+                                                <h3>@detG.Name</h3>
+                                            </div>
+                                            <div class="col-md-8">
+                                                @foreach (var detI in detG.DetailItem)
+                                                {
+                                                    if (detI.ProductDetail.FirstOrDefault(x => x.ProductId == product.ProductId) != null)
+                                                    {
+                                                        if (!detI.ProductDetail.FirstOrDefault(x => x.ProductId == product.ProductId).Value.IsEmpty())
+                                                        {
+                                                            <div class="col-md-6">
+                                                                <h3 style="color:#808080">@detI.DetailTitle</h3>
+                                                            </div>
+                                                            <div class="col-md-6">
+
+                                                                <h3>@detI.ProductDetail.FirstOrDefault(x => x.ProductId == product.ProductId).Value </h3>
+                                                            </div>
+                                                            <br />
+
+                                                        }
+                                                    }
+                                                }
+                                            </div>
+                                            <hr />
+                                        }
+                                    }
+                                </div>
+                                <br />
+                            </div> <!-- end content -->
+
+
+                        </div>
+                    </div> <!-- end an-section-container -->
+                </div> <!-- end content-body -->
+            </div>
+            <div class="col-md-3">
+                <h3>لیست پیشنهاد های دیگر</h3>
+                <br />
+                @Html.Action("_ProductOffer", "Home", new { id = product.ProductGroupId })
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+<div id="ModalLogin" class="modal  fade" role="dialog">
+    <div class="modal-dialog" style="width:300px">
+        <div class="modal-content">
+            <div class="an-login-register-content" style="padding:0;min-height:100%">
+                <div class="overlay"></div>
+                <div class="content">
+                    <div id="senddiv" style="display:block">
+                        <p>ورود سریع با یکبار رمز</p>
+                        <div id="validationForget"></div>
+
+                        <hr />
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <input id="UserMobile" type="text" class="an-form-control light ltr" placeholder="موبایل ">
+                                <div id="validmobileNum"><small class="color-job"></small></div>
+                                <p>
+                                    <button id="btnsendsms" class="an-btn an-btn-default ladda-button" data-style="slide-left" style="float:left">
+                                        ارسال
+                                    </button>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="Confirmdiv" style="display:none">
+                        <h4>تایید شماره موبایل</h4>
+                        <p> رمز یکبارمصرف به شماره <span id="mobilechecker"></span> ارسال شد</p>
+                        <hr />
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="activeline">
+                                    <input id="activatecode" type="text" class="activatequickInput" maxlength="6">
+                                    <div class="dash-line"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="rep-payam-containar">
+                            <div class="rep-payam">
+                                <div class="form-group">
+                                    <button id="sendAgain" class="an-btn an-btn-light" style="display:block">
+                                        <i class="ion-refresh"></i>
+                                        ارسال مجدد
+                                    </button>
+                                    <button id="timerdiv" class="an-btn an-btn-light" style="display:none">
+                                        <span id="timer"></span>
+                                        <i class="ion-ios-clock-outline"></i>
+                                    </button>
+                                </div>
+                                <div class="form-group ">
+                                    <button id="btnquicklogin" class="an-btn an-btn-default ladda-button" data-style="slide-left" name="signup" value="Sign up">
+                                        <i class="icon-check"></i>
+                                        تایید
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Html.Partial("_footer", db.Menus)
+
+
+@section Script{
+    <script src="~/Content/assets/plugins/ladda/dist/spin.min.js"></script>
+    <script src="~/Content/assets/plugins/ladda/dist/ladda.min.js"></script>
+    <script src="~/Content/assets/js/pages/ladda.js"></script>
+    <script src="~/Content/koshop/assets/js/login.js"></script>
+    <script src="~/Content/koshop/assets/js/ks-storeSearch.js"></script>
+
+    <script type="text/javascript">
+        function gettoken() {
+            var token = '@Html.AntiForgeryToken()';
+            token = $(token).val();
+            return token;
+        }
+    </script>
+}
+
+@section Head{
+    <title>کوشاپ - جستجوی فروشگاه</title>
+    <link href="~/Content/assets/plugins/ladda/dist/ladda-themeless.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="~/Content/ol/ol.css" type="text/css">
+    <style>
+    </style>
+    <script src="~/Content/ol/ol.js"></script>
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
+}
+
