@@ -61,7 +61,14 @@
 
                 <div class="col-md-12">
                     <div class="form-group">
-                        <input placeholder="کلمات کلیدی ، با - از هم جدا کنید" type="text" id="tags" name="tags" class="form-control col-md-12" />
+                        <textarea placeholder="کلمات کلیدی ، با - از هم جدا کنید" type="text" id="tags" name="tags" class="form-control col-md-12" ></textarea>
+                    </div>
+                </div>
+                <div class="form-group ">
+                    @*@Html.LabelFor(model => model.ProductDescription, new { @class = "control-label col-md-2" })*@
+                    <div class="col-md-12 ">
+                        @Html.EditorFor(model => model.ProductDescription, new { @class = "form-control col-md-5" })
+                        @Html.ValidationMessageFor(model => model.ProductDescription, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="form-group">
@@ -172,8 +179,16 @@
     <script src="~/content/assets/plugins/ladda/dist/ladda.min.js"></script>
     <script src="~/content/assets/js/pages/ladda.js"></script>
 
-    <script src="~/content/Scripts/textbox/jasny-bootstrap.js"></script>
-    <script src="~/content/Scripts/textbox/jasny-bootstrap.min.js"></script>
+    <script src="~/Scripts/textbox/jasny-bootstrap.js"></script>
+    <script src="~/Scripts/textbox/jasny-bootstrap.min.js"></script>
+    
+    <script src="~/content/ckeditor/ckeditor.js"></script>
+    <script src="~/content/ckeditor/adapters/jquery.js"></script>
+    <script>
+        $(function () {
+            $('#ProductDescription').ckeditor();
+        });
+    </script>
 
     <script>
         $(document).ready(function () {

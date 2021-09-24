@@ -15,6 +15,9 @@ CKEDITOR.editorConfig = function( config ) {
     config.extraAllowedContent = 'class(*)';
     config.extraAllowedContent = '*(*);*{*}';
     config.protectedSource.push(/<i[^>]*><\/i>/g);
+    //config.contentsCss = 'StyleSheet1.css';
+    config.contentsCss = 'style.css';
+    config.font_names = 'B Nazanin;IranSans;IranSansEn;Parastoo;Arial;tahoma;sans-serif;';
 
     config.autoParagraph = false;
 

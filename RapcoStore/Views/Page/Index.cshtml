@@ -25,14 +25,14 @@
     </div>
 </div><!-- end an-page-content -->
 <div id="positionbottom1">
-    @foreach (var item in db.Modules.Where(x => x.PositionId == 8 && x.ModulePage.Any(y => y.MenuId == Model.MenuId)).OrderBy(z=>z.DisplayOrder))
+    @foreach (var item in db.Modules.Where(x => x.PositionId == 8 && x.ModulePage.Any(y => y.MenuId == Model.MenuId)).OrderBy(z => z.DisplayOrder))
     {
         @Html.Action(item.Component.ActionName, item.Component.ControllerName, new { @id = item.ModuleId })
     }
 </div>
 
 @section Head{
-    <title>کوشاپ | koshop.ir </title>
+    <title>فروشگاه بای اُک - جستجوی کالا</title>
     <link rel="stylesheet" href="~/content/ol/ol.css" type="text/css">
     <script src="~/content/ol/ol.js"></script>
 }

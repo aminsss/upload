@@ -9,7 +9,7 @@
     {
         foreach (var item in news_Groups)
         {
-            <option value="@item.NewsGroupId">@string.Concat(Enumerable.Repeat(" - ", Convert.ToInt32(item.Depth))) @item.GroupTitle </option>
+            <option value="@item.AliasName">@string.Concat(Enumerable.Repeat(" - ", Convert.ToInt32(item.Depth))) @item.GroupTitle </option>
             if (Model.Any(s => s.ParentId == item.NewsGroupId))
             {
                 @ShowTree(Model.Where(s => s.ParentId == item.NewsGroupId));

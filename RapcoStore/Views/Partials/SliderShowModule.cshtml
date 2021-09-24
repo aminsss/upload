@@ -1,30 +1,44 @@
 ﻿@model Koshop.DomainClasses.MultiPictureModule
 
-<div class="home-slides owl-carousel owl-theme">
-    @foreach (var item in Model.MultiPictureItems)
-    {
 
-        <div id="item_@item.MultiPictureItemsId" class="main-banner jarallax" data-jarallax='{"speed": 0.01}'>
-            <div class="d-table">
-                <div class="d-table-cell">
+<div class="an-header-banner with-slider">
+    <div class="owl-carousel home-slider">
+        @foreach (var item in Model.MultiPictureItems)
+        {
+            <div id="item_@item.MultiPictureItemsId">
+                <div class="home-banner-content" style="background: url('/Content/Modules/Images/@item.Image') center center no-repeat;
+                     background-size: cover;">
+                    <div class="overlay"></div>
                     <div class="container">
-                        <div class="main-banner-content">
-                            <p class="sub-title text-white">@item.Title</p>
-                            <h1>@item.TitleBold</h1>
-                            <p>@item.Description</p>
-
-                            <div class="btn-box">
-                                <a href="@item.Link" target="_blank" class="default-btn">نقل و قول <span></span></a>
-                                <a href="@item.LinkMore" class="optional-btn">اطلاعات بیشتر <span></span></a>
-                            </div>
+                        <div class="details">
+                            <h2 class="">@item.Title</h2>
+                            <h1 class="">@item.TitleBold</h1>
+                            <p class="">@item.Description</p>
+                            <a href="@Model.Link" class="an-btn an-btn-default">@Model.Title</a>
+                            <a href="@Model.LinkMore" class="an-btn an-btn-black">@Model.TitleBold</a>
                         </div>
+
                     </div>
                 </div>
             </div>
-        </div>
-    }
+        }
+    </div>
+    <div class="container">
+        <div class="an-search-container slider-search">
+            <form action="/product/Search">
+                <div class="search-fields">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <input name="searchstring" class='an-form-control' type="text" placeholder="جستجوی کالا و خدمات ...">
+                        </div>
+                    </div>
+                </div>
+                <div class="search-submit">
+                    <button class="an-btn an-btn-default" type="submit"><i class="ion-android-search"></i></button>
+                </div>
+            </form>
+        </div> <!-- end an-search-container -->
+    </div> <!-- end cotnainer -->
+
 </div>
-@foreach (var item in Model.MultiPictureItems)
-{
-    <script>document.getElementById("item_@item.MultiPictureItemsId").setAttribute("style", "background-image:url(Modules/Images/@item.Image");</script>
-}
+

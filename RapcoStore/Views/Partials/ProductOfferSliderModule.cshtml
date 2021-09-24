@@ -1,0 +1,46 @@
+﻿@model Koshop.DomainClasses.MultiPictureModule
+
+<div class="an-premium-listing slider" style="background:@Model.TitleBold">
+    <div class="an-title-container light-text">
+        <h2 class="an-title">@Model.Title</h2>
+    </div>
+    <div class="" style="position:absolute">
+        <img src="/Content/Modules/Images/@Model.Image" style="width:200px" />
+    </div>
+    <div class="" style="margin-right:235px">
+        <div class="owl-carousel default-slider testimonial with-bg">
+            @foreach (var item in Model.MultiPictureItems)
+            {
+                <div class="item ">
+                    <div class="an-listing-single" style=" margin-bottom: 10px;padding: 10px; padding-top: 25px; height: 350px;background: #fff;border-radius: 10px;">
+                        <a href="@item.Link">
+                            <div class="listing-img-container"
+                                 style="background: url('/Content/Modules/Images/thumbnail/@item.Image') center center no-repeat;
+                background-size: contain;">
+                                @*<div class="listing-hover-content">
+                    <a class="link-single" href="@item.LinkMore"><i class="ion-ios-paper color-property"></i></a>
+                    <p>
+                        <span><i class="typcn typcn-eye-outline color-job"></i> @item.TitleBold</span>
+                    </p>
+                    <button class="an-btn an-btn-black icon-left small-padding"><i class=""></i>مشاهده</button>
+                </div>*@
+                            </div>
+                        </a>
+                        <a href="@item.Link">
+
+                            <div class="listing-content">
+                                <div class="listing-name">
+                                    <p><a href="@item.Link">@item.Title</a></p>
+                                    <br />
+                                    <p class="color-primary">@item.Description</p>
+
+                                </div>
+                                @*<div class="listing-meta"><span><i class="ion-android-time"></i></span><span><i class="typcn typcn-location"></i></span></div>*@
+                            </div>
+                        </a>
+                    </div> <!-- end listing-single -->
+                </div>
+            }
+        </div> <!-- end slider -->
+    </div>
+</div> <!-- end primium-listing -->

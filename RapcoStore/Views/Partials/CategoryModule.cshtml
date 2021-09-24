@@ -1,0 +1,28 @@
+﻿@model Koshop.DomainClasses.MultiPictureModule
+
+
+@if (Model.MultiPictureItems.Any())
+{
+    <div style="margin:25px 0 0" class=" col-sm-4">
+        <div class="an-category-single">
+            <div class="listing-img-container"
+                 style="background: url('/Content/Modules/Images/thumbnail/@Model.Image') center center no-repeat;
+                          background-size: cover;">
+            </div>
+            <div class="category-content">
+                <div class="category-icon"><i class="ion-ios-paper color-property"></i></div>
+                <h3>@Model.Title <span class="color-property">@Model.TitleBold</span></h3>
+                <ul class="list-unstyled">
+                    @foreach (var item in Model.MultiPictureItems)
+                    {
+                        <li><a href="@item.Link"><span>@item.Title</span><span style="position:absolute;left:0">@item.TitleBold</span></a></li>
+                    }
+                </ul>
+                <div class="view-more">
+                    <a class="an-btn an-btn-default btn-sm" href="@Model.Link">نمایش کالای مرتبط</a>
+                </div>
+            </div>
+        </div> <!-- end an-category-single -->
+    </div>
+}
+

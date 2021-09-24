@@ -19,48 +19,68 @@ label {
         outline: none;
     }
 
-.example {
+.groups {
     height: calc(100vh);
     overflow-x: hidden;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    background-color: #2c353a;
+    border-right: 2px solid #ab1278;
 }
 
-.example::-webkit-scrollbar {
+.groups::-webkit-scrollbar {
     display: none;
-}
-
-.example {
-    -ms-overflow-style: none; 
-    scrollbar-width: none; 
 }
 
 .menu {
     position: fixed;
     top: 0;
-    right: 0;
+    left: 0;
     background: #fff;
     width: 240px;
     height: calc(100vh);
-    transform: translate3d(240px, 0, 0);
+    transform: translate3d(-240px, 0, 0);
     transition: transform 0.35s;
     z-index: 1000
 }
 
     .menu label.menu-toggle {
-        z-index:1000;
-        position: absolute;
-        left: -60px;
-        width: 60px;
+        /*z-index: 1000;*/
+        /*position: absolute;*/
+        right: -130px;
+        width: 130px;
         height: 60px;
-        line-height: 0px;
+        line-height: 55px;
         display: compact;
         padding: 0;
-        top:85px;
-        text-indent: -9999px;
+        top: 85px;
+        /*text-indent: -99999px;*/
         background: #fff url(https://cdn4.iconfinder.com/data/icons/wirecons-free-vector-icons/32/menu-alt-512.png) 50% 50%/25px 25px no-repeat;
     }
+    .menu label.mainToggle {
+        z-index: 9999;
+        position: absolute;
+        right: -100px;
+        width: 102px;
+        height: 60px;
+        line-height: 55px;
+        display: compact;
+        padding: 0;
+        top: 84px;
+        padding: 0 8px 0 0;
+        color: #fff;
+        text-indent: 0px;
+        background: none;
+        background-color: #2c353a;
+        border: 2px solid #ab1278;
+        border-left: none;
+        text-align: center;
+    }
+
+
 
     .menu ul li > label {
-        background: url(https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-arrow-left-b-128.png) 95% 50%/16px 16px no-repeat;
+        background: url("/Content/Koshop/assets/img/icon-arrow-left.png") 95% 50%/16px 16px no-repeat;
     }
 
     .menu ul li a, .menu ul li label {
@@ -69,8 +89,17 @@ label {
         padding: 0 20px;
         line-height: 60px;
         text-decoration: none;
-        color: #000;
+        color: #fff;
+        font-weight: 100;
+        font-size: 14px;
     }
+
+.backbutton {
+    background: url('/Content/Koshop/assets/img/icon-arrow-right.png') 95% 50%/16px 16px no-repeat #2c353a;
+    border-right: 2px solid #ab1278;
+    margin: 0;
+    width: 100%;
+}
 
         .menu ul li a:hover, .menu ul li label:hover {
             color: #666;
@@ -96,9 +125,9 @@ html, body {
     height: 100%;
 }
 
-body {
+/*body {
     background: url(https://37.media.tumblr.com/f6c67ec2821a91051e4175f8a102e1e2/tumblr_n6rzpcsMk41st5lhmo1_1280.jpg) 50% 50%/cover;
-}
+}*/
 
 p {
     margin-bottom: 15px;

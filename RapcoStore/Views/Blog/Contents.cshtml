@@ -6,7 +6,7 @@
 }
 
 @section Head{
-    <title>ایرمان کابینت | IrmanCabinet </title>
+    <title>@Koshop.web.Content.Resources.Titles.SiteTitle</title>
     <meta name="keywords" content="@Model.NewsTag">
 }
 
@@ -16,262 +16,501 @@
     @Html.Action(item.Component.ActionName, item.Component.ControllerName, new { @id = item.ModuleId })
 }
 
+
+<div class="an-inner-banner">
+
+    <div class="container">
+        <div class="an-advertise">
+            <div class="row">
+                <div class="col-sm-8">
+                    <div class="ad-details">
+                        <i class="ion-leaf color-hotel"></i>
+                        <h1><a href="#">@Model.NewsTitle</a></h1>
+                        <div class="">
+                            <span><a class="color-hotel right" href="/Blog/Groups?group=@Model.NewsGroup.AliasName">@Model.NewsGroup.GroupTitle</a></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                </div>
+            </div>
+        </div> <!-- end an-advertise -->
+    </div> <!-- end cotnainer -->
+</div> <!-- an-header-banner -->
+
 @foreach (var item in modulelist.Where(x => x.Position.PositionName == "Top").OrderBy(z => z.DisplayOrder))
 {
     @Html.Action(item.Component.ActionName, item.Component.ControllerName, new { @id = item.ModuleId })
 }
 
 
-<section class="blog-details-area ptb-100">
+<div class="an-page-content">
     <div class="container">
         <div class="row">
-            <div class="col-lg-8 col-md-12">
-                <div class="blog-details-desc">
-                    <div class="article-image">
-                        <img src="~/Content/Upload/NewsImages/Images/@Model.NewsImage" alt="image">
-                    </div>
+            <div class="col-md-9">
+                <div class="content-body">
+                    <div class="an-section-container">
+                       
 
-                    <div class="article-content">
-                        <div class="entry-meta">
-                            <ul>
-                                <li><span>ارسال شده در:</span> <a href="#">@Model.ModifiedDate</a></li>
-                                <li><span>ارسال شده توسط:</span> <a href="#">@Model.User.Name</a></li>
-                            </ul>
-                        </div>
+                        <div class="an-blog-post">
+                         @if (Model.NewsImage != "no-photo.jpg")
+                         {
+                            <div class="owl-carousel listing-slider owl-theme">
+                                <div class="">
+                                    <div class="slider-item" style="background: url('/Content/Upload/NewsImages/Images/@Model.NewsImage') center center no-repeat;
+                                                                         background-size:contain;">
+                                    </div>
+                                </div>
+                            </div>
+                         }
+                            <div class="content">
+                                <h3>@Model.NewsTitle</h3>
 
-                        <h3>@Model.NewsTitle</h3>
+                                <p class="an-quote"> @Model.NewsContent </p>
 
-                        @Html.Raw(Model.NewsDescription)
+                                @Html.Raw(Model.NewsDescription)
 
-                        @if (Model.NewsGallery.Any())
-                        {
-                            <ul class="wp-block-gallery columns-3">
-                                @foreach (var item in Model.NewsGallery)
+                            <br />
+                                @if (Model.NewsGallery.Any())
                                 {
-                                    <li class="blocks-gallery-item">
-                                        <figure>
-                                            <img src="~/Content/Upload/NewsImages/Images/@item.ImageName" alt="image">
-                                        </figure>
-                                    </li>
-                                }
-                            </ul>
-                        }
-
-                        <div class="article-footer">
-                            @if (Model.NewsTag.Any())
-                            {
-                                <div class="article-tags">
-                                    <span><i class="fas fa-bookmark"></i></span>
-                                    @foreach (var item in Model.NewsTag)
+                                <div class="owl-carousel listing-slider owl-theme">
+                                    @foreach (var item in Model.NewsGallery)
                                     {
-                                        <a href="/Blog/Tags/@item.TagsTitle">@item.TagsTitle ,</a>
+                                    <div class="slider-item" style="background: url('/Content/Upload/NewsImages/Images/@item.ImageName') center center no-repeat;
+                                                          background-size:cover;">
+                                    </div>
                                     }
                                 </div>
-                            }
-                        </div>
+                                }
 
-                    </div>
-                    <div class="comments-area">
-                        <h3 class="comments-title">@Model.NewsComments.Count() نظر:</h3>
+                                <div class="entry-meta">
+                                    <ul>
+                                        <li><span>ارسال شده در:</span> <a href="#">@Model.ModifiedDate</a></li>
+                                        <li><span>ارسال شده توسط:</span> <a href="#">@Model.User.Name</a></li>
+                                    </ul>
+                                </div>
 
-                        <ol class="comment-list">
-                            @foreach (var item in Model.NewsComments.Where(x => x.ParentId == 0 && x.IsActive))
-                            {
-                                <li class="comment">
-                                    <article class="comment-body">
-                                        <footer class="comment-meta">
-                                            <div class="comment-author vcard">
-                                                @if (item.UserId == null)
-                                                {
-                                                    <img src="~/Content/Upload/Profile/no-photo.png" class="avatar" alt="image">
-                                                    <b class="fn">@item.Name</b>
-                                                }
-                                                else
-                                                {
-                                                    <img src="~/Content/Upload/Profile/@item.User.Profile" class="avatar" alt="image">
-                                                    <b class="fn">@item.User.Name</b>
-                                                }
-                                                <span class="says">می گوید:</span>
-                                            </div>
-
-                                            <div class="comment-metadata">
-                                                <a href="#">
-                                                    <time>@item.AddedDate.Value.ToString("HH:mm  yyyy/MM/dd")</time>
-                                                </a>
-                                            </div>
-                                        </footer>
-
-                                        <div class="comment-content">
-                                            <p>@item.Comment</p>
+                                <div class="article-footer">
+                                    @if (Model.NewsTag.Any())
+                                    {
+                                        <div class="article-tags">
+                                            <span><i class="fas fa-bookmark"></i></span>
+                                            @foreach (var item in Model.NewsTag)
+                                            {
+                                                <a href="/Blog/Tags/@item.TagsTitle">@item.TagsTitle ,</a>
+                                            }
                                         </div>
+                                    }
+                                </div>
 
-                                        <div class="reply">
+                            </div> <!-- end content -->
+                            <div class="an-comment-section">
+                                <h4 class="an-title-xs">دیدگاهها <span>(@Model.NewsComments.Count(x => x.IsActive == true))</span></h4>
+                                @foreach (var item in Model.NewsComments.Where(x => x.ParentId == 0 && x.IsActive))
+                                {
+
+                                    <div class="an-comment-single with-shadow-dark">
+                                        @if (item.UserId == null)
+                                        {
+                                            <div class="comment-img"
+                                                 style="background: url('/Content/Upload/Profile/no-photo.png') center center no-repeat;
+                                                background-size:cover;"></div>
+                                        }
+                                        else
+                                        {
+                                            <div class="comment-img"
+                                                 style="background: url('/Content/Upload/Profile/@item.User.Profile') center center no-repeat;
+                                                background-size:cover;"></div>
+                                        }
+                                        <div class="comment-details">
+                                            @*<b class="fn">@item.User.Name</b>*@
+                                            <h5><a href="#">@item.Name</a> <span>@item.AddedDate.Value.ToString("HH:mm  yyyy/MM/dd")</span></h5>
+                                            <p class="commnet">@item.Comment</p>
                                             @if (item.UserId == null)
                                             {
-                                                <a id="@item.Name" name="@item.NewsCommentId" href="#" class="comment-reply-link">پاسخ دادن</a>
+                                                <a id="@item.Name" name="@item.NewsCommentId" class="reply-link" href="#"><i class="ion-ios-redo"></i>پاسخ دادن</a>
                                             }
                                             else
                                             {
-                                                <a id="@item.User.Name" name="@item.NewsCommentId" href="#" class="comment-reply-link">پاسخ دادن</a>
+                                                <a id="@item.User.Name" name="@item.NewsCommentId" class="reply-link" href="#"><i class="ion-ios-redo"></i>پاسخ دادن</a>
                                             }
                                         </div>
-                                    </article>
-                                    @foreach (var item2 in Model.NewsComments.Where(x => x.ParentId == item.NewsCommentId && x.IsActive))
+                                        @foreach (var item2 in Model.NewsComments.Where(x => x.ParentId == item.NewsCommentId && x.IsActive))
+                                        {
+                                            <div class="an-comment-single with-shadow-dark">
+                                                @if (item2.UserId == null)
+                                                {
+                                                    <div class="comment-img"
+                                                         style="background: url('/Content/Upload/Profile/no-photo.png') center center no-repeat;
+                                                background-size:cover;"></div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="comment-img"
+                                                         style="background: url('/Content/Upload/Profile/@item2.User.Profile') center center no-repeat;
+                                                background-size:cover;"></div>
+                                                }
+                                                <div class="comment-details">
+                                                    @*<b class="fn">@item.User.Name</b>*@
+                                                    <h5><a href="#">@item2.Name</a> <span>@item2.AddedDate.Value.ToString("HH:mm  yyyy/MM/dd")</span></h5>
+                                                    <p class="commnet">@item2.Comment</p>
+                                                    @if (item2.UserId == null)
+                                                    {
+                                                        <a id="@item2.Name" name="@item2.NewsCommentId" class="reply-link" href="#"><i class="ion-ios-redo"></i>پاسخ دادن</a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <a id="@item2.User.Name" name="@item2.NewsCommentId" class="reply-link" href="#"><i class="ion-ios-redo"></i>پاسخ دادن</a>
+                                                    }
+                                                </div>
+                                            </div>
+                                        }
+                                    </div> <!-- end an-comment-single -->
+                                }
+
+
+                                <div class="an-write-comment">
+                                    <h4 class="an-title-xs">نوشتن دیدگاه</h4>
+
+                                    <form action="#" id="comment-top">
+                                        <input type="hidden" id="newsId" name="newsId" value="@Model.NewsId" />
+                                        <input type="hidden" id="parentId" name="parentId" value="0" />
+                                        <label> نظر شما <a hidden class="cancelReply" id="btnCancelReply" href="#"> انصراف از پاسخ به <span id="replyIndicator"></span></a></label>
+
+                                        <div class="row">
+                                            @if (!User.Identity.IsAuthenticated)
+                                            {
+                                                <div class="col-md-6">
+                                                    <label>نام</label>
+                                                    <input type="text" class="an-form-control">
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label>ایمیل</label>
+                                                    <input type="email" class="an-form-control">
+                                                </div>
+                                            }
+
+                                            <div class="col-md-12">
+                                                <label>پیغام</label>
+                                                <textarea class="an-form-control"></textarea>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <button type="submit" class="an-btn an-btn-default">ارسال نظر</button>
+                                            </div>
+
+                                        </div>
+                                    </form>
+                                </div>
+
+                            </div> <!-- end an-comment-single -->
+
+                        </div>
+                    </div> <!-- end an-section-container -->
+                </div> <!-- end content-body -->
+            </div>
+            <div class="col-md-3">
+                <div class="an-sidebar">
+                    <div class="an-sidebar-search">
+
+                        <div class="search-submit">
+                            <button class="an-btn an-btn-default" type="submit"><i class="ion-android-search"></i></button>
+                        </div>
+
+                        <div class="search-single">
+                            <input type="text" class="an-form-control bottom-border dark" placeholder="جستجو کلمه">
+                        </div>
+
+                        <div class="search-single">
+                            <h4>دسته بندی</h4>
+                            @foreach (var item in db.NewsGroups.Where(x => x.IsActive == true))
+                            {
+                                <a class="an-white-title" href="/Blog/Groups?group=@item.AliasName">
+                                    <p>@item.GroupTitle </p>
+                                </a>
+                            }
+                        </div>
+
+                        <div class="search-single">
+                            <h4>پست های محبوب</h4>
+                            @{
+                                int j = 0;
+                                foreach (var item in db.News.OrderByDescending(x => x.Popular))
+                                {
+                                    <a class="an-white-title" href="/Blog/Contents/@item.AliasName">
+                                        <p>@item.NewsTitle </p>
+                                    </a>
+                                    if (j++ == 5) { break; }
+                                }
+                            }
+                        </div>
+
+
+                        <div class="search-single">
+                            <h4>برچسب ها</h4>
+                            <div class="an-tags">
+                                @foreach (var item in Model.NewsTag)
+                                {
+                                    <a class="an-white-title tag-link" href="/Blog/Tags/@item.TagsTitle">
+                                        <span>@item.TagsTitle </span>
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    </div> <!-- end an-sidebar -->
+                </div> <!-- end col-md-3 -->
+            </div>
+        </div>
+    </div> <!-- end an-page-content -->
+</div>
+
+
+
+@*<section class="blog-details-area ptb-100">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-md-12">
+                    <div class="blog-details-desc">
+                        <div class="article-image">
+                            <img src="~/Content/Upload/NewsImages/Images/@Model.NewsImage" alt="image">
+                        </div>
+
+                        <div class="article-content">
+                            <div class="entry-meta">
+                                <ul>
+                                    <li><span>ارسال شده در:</span> <a href="#">@Model.ModifiedDate</a></li>
+                                    <li><span>ارسال شده توسط:</span> <a href="#">@Model.User.Name</a></li>
+                                </ul>
+                            </div>
+
+                            <h3>@Model.NewsTitle</h3>
+
+                            @Html.Raw(Model.NewsDescription)
+
+                            @if (Model.NewsGallery.Any())
+                            {
+                                <ul class="wp-block-gallery columns-3">
+                                    @foreach (var item in Model.NewsGallery)
                                     {
-                                        <ol class="children">
-                                            <li class="comment">
-                                                <article class="comment-body">
-                                                    <footer class="comment-meta">
-                                                        <div class="comment-author vcard">
+                                        <li class="blocks-gallery-item">
+                                            <figure>
+                                                <img src="~/Content/Upload/NewsImages/Images/@item.ImageName" alt="image">
+                                            </figure>
+                                        </li>
+                                    }
+                                </ul>
+                            }
+
+                            <div class="article-footer">
+                                @if (Model.NewsTag.Any())
+                                {
+                                    <div class="article-tags">
+                                        <span><i class="fas fa-bookmark"></i></span>
+                                        @foreach (var item in Model.NewsTag)
+                                        {
+                                            <a href="/Blog/Tags/@item.TagsTitle">@item.TagsTitle ,</a>
+                                        }
+                                    </div>
+                                }
+                            </div>
+
+                        </div>
+                        <div class="comments-area">
+                            <h3 class="comments-title">@Model.NewsComments.Count() نظر:</h3>
+
+                            <ol class="comment-list">
+                                @foreach (var item in Model.NewsComments.Where(x => x.ParentId == 0 && x.IsActive))
+                                {
+                                    <li class="comment">
+                                        <article class="comment-body">
+                                            <footer class="comment-meta">
+                                                <div class="comment-author vcard">
+                                                    @if (item.UserId == null)
+                                                    {
+                                                        <img src="~/Content/Upload/Profile/no-photo.png" class="avatar" alt="image">
+                                                        <b class="fn">@item.Name</b>
+                                                    }
+                                                    else
+                                                    {
+                                                        <img src="~/Content/Upload/Profile/@item.User.Profile" class="avatar" alt="image">
+                                                        <b class="fn">@item.User.Name</b>
+                                                    }
+                                                    <span class="says">می گوید:</span>
+                                                </div>
+
+                                                <div class="comment-metadata">
+                                                    <a href="#">
+                                                        <time>@item.AddedDate.Value.ToString("HH:mm  yyyy/MM/dd")</time>
+                                                    </a>
+                                                </div>
+                                            </footer>
+
+                                            <div class="comment-content">
+                                                <p>@item.Comment</p>
+                                            </div>
+
+                                            <div class="reply">
+                                                @if (item.UserId == null)
+                                                {
+                                                    <a id="@item.Name" name="@item.NewsCommentId" href="#" class="comment-reply-link">پاسخ دادن</a>
+                                                }
+                                                else
+                                                {
+                                                    <a id="@item.User.Name" name="@item.NewsCommentId" href="#" class="comment-reply-link">پاسخ دادن</a>
+                                                }
+                                            </div>
+                                        </article>
+                                        @foreach (var item2 in Model.NewsComments.Where(x => x.ParentId == item.NewsCommentId && x.IsActive))
+                                        {
+                                            <ol class="children">
+                                                <li class="comment">
+                                                    <article class="comment-body">
+                                                        <footer class="comment-meta">
+                                                            <div class="comment-author vcard">
+                                                                @if (item2.UserId == null)
+                                                                {
+                                                                    <img src="~/Content/Upload/Profile/no-photo.png" class="avatar" alt="image">
+                                                                    <b class="fn">@item2.Name</b>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <img src="~/Content/Upload/Profile/@item2.User.Profile" class="avatar" alt="image">
+                                                                    <b class="fn">@item2.User.Name</b>
+                                                                }
+                                                                <span class="says">می گوید:</span>
+                                                            </div>
+
+                                                            <div class="comment-metadata">
+                                                                <a href="#">
+                                                                    <time>@item2.AddedDate.Value.ToString("HH:mm  yyyy/MM/dd")</time>
+                                                                </a>
+                                                            </div>
+                                                        </footer>
+
+                                                        <div class="comment-content">
+                                                            <p>@item2.Comment</p>
+                                                        </div>
+
+                                                        <div class="reply">
                                                             @if (item2.UserId == null)
                                                             {
-                                                                <img src="~/Content/Upload/Profile/no-photo.png" class="avatar" alt="image">
-                                                                <b class="fn">@item2.Name</b>
+                                                                <a id="@item2.Name" name="@item.NewsCommentId" href="#" class="comment-reply-link">پاسخ دادن</a>
                                                             }
                                                             else
                                                             {
-                                                                <img src="~/Content/Upload/Profile/@item2.User.Profile" class="avatar" alt="image">
-                                                                <b class="fn">@item2.User.Name</b>
+                                                                <a id="@item2.User.Name" name="@item.NewsCommentId" href="#" class="comment-reply-link">پاسخ دادن</a>
                                                             }
-                                                            <span class="says">می گوید:</span>
                                                         </div>
 
-                                                        <div class="comment-metadata">
-                                                            <a href="#">
-                                                                <time>@item2.AddedDate.Value.ToString("HH:mm  yyyy/MM/dd")</time>
-                                                            </a>
-                                                        </div>
-                                                    </footer>
+                                                    </article>
 
-                                                    <div class="comment-content">
-                                                        <p>@item2.Comment</p>
-                                                    </div>
-
-                                                    <div class="reply">
-                                                        @if (item2.UserId == null)
-                                                        {
-                                                            <a id="@item2.Name" name="@item.NewsCommentId" href="#" class="comment-reply-link">پاسخ دادن</a>
-                                                        }
-                                                        else
-                                                        {
-                                                            <a id="@item2.User.Name" name="@item.NewsCommentId" href="#" class="comment-reply-link">پاسخ دادن</a>
-                                                        }
-                                                    </div>
-
-                                                </article>
-
-                                            </li>
-                                        </ol>
-                                    }
-                                </li>
-                            }
-                        </ol>
-
-                        <div id="comment-top" class="comment-respond">
-                            <h3 class="comment-reply-title">پاسخ دهید </h3>
-
-                            <form class="comment-form">
-                                <input type="hidden" id="newsId" name="newsId" value="@Model.NewsId" />
-                                <input type="hidden" id="parentId" name="parentId" value="0" />
-                                <p class="comment-notes">
-                                    <span id="email-notes">آدرس ایمیل شما منتشر نخواهد شد.</span>
-                                    قسمت های مورد نیاز علامت گذاری شده اند
-                                    <span class="required">*</span>
-                                </p>
-                                <p class="comment-form-comment">
-                                    <label> نظر شما <a hidden class="cancelReply" id="btnCancelReply" href="#"> انصراف از پاسخ به <span id="replyIndicator"></span></a></label>
-
-                                    <textarea name="comment" id="comment" cols="45" rows="5" maxlength="65525" required="required"></textarea>
-                                </p>
-                                @if (!User.Identity.IsAuthenticated)
-                                {
-                                    <p class="comment-form-author">
-                                        <label>نام شما <span class="required">*</span></label>
-                                        <input type="text" id="author" name="author" required="required">
-                                    </p>
-                                    <p class="comment-form-email">
-                                        <label>ایمیل شما <span class="required">*</span></label>
-                                        <input type="email" id="email" name="email" required="required">
-                                    </p>
-                                    <p class="comment-form-url">
-                                        <label>وب سایت</label>
-                                        <input type="url" id="url" name="url">
-                                    </p>
+                                                </li>
+                                            </ol>
+                                        }
+                                    </li>
                                 }
-                                @*<p class="comment-form-cookies-consent">
-                                        <input type="checkbox" value="yes" name="wp-comment-cookies-consent" id="wp-comment-cookies-consent">
-                                        <label for="wp-comment-cookies-consent">اولین بار در مورد این نظر ، نام ، ایمیل و وب سایت خود را در این مرورگر ذخیره کنید.</label>
-                                    </p>*@
-                                <p class="form-submit">
-                                    <input type="submit" name="submit" id="submit" class="submit" value="ارسال نظر">
-                                </p>
-                            </form>
+                            </ol>
+
+                            <div id="comment-top" class="comment-respond">
+                                <h3 class="comment-reply-title">پاسخ دهید </h3>
+
+                                <form class="comment-form">
+                                    <input type="hidden" id="newsId" name="newsId" value="@Model.NewsId" />
+                                    <input type="hidden" id="parentId" name="parentId" value="0" />
+                                    <p class="comment-notes">
+                                        <span id="email-notes">آدرس ایمیل شما منتشر نخواهد شد.</span>
+                                        قسمت های مورد نیاز علامت گذاری شده اند
+                                        <span class="required">*</span>
+                                    </p>
+                                    <p class="comment-form-comment">
+                                        <label> نظر شما <a hidden class="cancelReply" id="btnCancelReply" href="#"> انصراف از پاسخ به <span id="replyIndicator"></span></a></label>
+
+                                        <textarea name="comment" id="comment" cols="45" rows="5" maxlength="65525" required="required"></textarea>
+                                    </p>
+                                    @if (!User.Identity.IsAuthenticated)
+                                    {
+                                        <p class="comment-form-author">
+                                            <label>نام شما <span class="required">*</span></label>
+                                            <input type="text" id="author" name="author" required="required">
+                                        </p>
+                                        <p class="comment-form-email">
+                                            <label>ایمیل شما <span class="required">*</span></label>
+                                            <input type="email" id="email" name="email" required="required">
+                                        </p>
+                                        <p class="comment-form-url">
+                                            <label>وب سایت</label>
+                                            <input type="url" id="url" name="url">
+                                        </p>
+                                    }
+                                    <p class="form-submit">
+                                        <input type="submit" name="submit" id="submit" class="submit" value="ارسال نظر">
+                                    </p>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="col-lg-4 col-md-12">
-                <aside class="widget-area" id="secondary">
-                    <section class="widget widget_search">
-                        <form class="search-form">
-                            <label>
-                                <span class="screen-reader-text">جستجو:</span>
-                                <input type="search" class="search-field" placeholder="جستجو ...">
-                            </label>
-                            <button type="submit"><i class="fas fa-search"></i></button>
-                        </form>
-                    </section>
+                <div class="col-lg-4 col-md-12">
+                    <aside class="widget-area" id="secondary">
+                        <section class="widget widget_search">
+                            <form class="search-form">
+                                <label>
+                                    <span class="screen-reader-text">جستجو:</span>
+                                    <input type="search" class="search-field" placeholder="جستجو ...">
+                                </label>
+                                <button type="submit"><i class="fas fa-search"></i></button>
+                            </form>
+                        </section>
 
 
-                    <section class="widget widget_zovio_posts_thumb">
-                        <h3 class="widget-title">پست های محبوب</h3>
-                        @{
-                            int i = 0;
-                            foreach (var item in db.News.OrderByDescending(x => x.Popular))
-                            {
-                                <article class="item">
-                                    <a href="/Blog/Contents/@item.AliasName" class="thumb">
-                                        <span class="fullimage cover" role="img" style="background-image:url(/Content/Upload/NewsImages/thumbnail/@item.NewsImage)"></span>
-                                    </a>
-                                    <div class="info">
-                                        <time datetime="@item.AddedDate">@item.AddedDate.Value.ToString("dd/MM/yyy")</time>
-                                        <h4 class="title usmall"><a href="/Blog/Contents/@item.AliasName">@item.NewsTitle</a></h4>
-                                    </div>
+                        <section class="widget widget_zovio_posts_thumb">
+                            <h3 class="widget-title">پست های محبوب</h3>
+                            @{
+                                int i = 0;
+                                foreach (var item in db.News.OrderByDescending(x => x.Popular))
+                                {
+                                    <article class="item">
+                                        <a href="/Blog/Contents/@item.AliasName" class="thumb">
+                                            <span class="fullimage cover" role="img" style="background-image:url(/Content/Upload/NewsImages/thumbnail/@item.NewsImage)"></span>
+                                        </a>
+                                        <div class="info">
+                                            <time datetime="@item.AddedDate">@item.AddedDate.Value.ToString("dd/MM/yyy")</time>
+                                            <h4 class="title usmall"><a href="/Blog/Contents/@item.AliasName">@item.NewsTitle</a></h4>
+                                        </div>
 
-                                    <div class="clear"></div>
-                                </article>
-                                if (i++ == 2) { break; }
+                                        <div class="clear"></div>
+                                    </article>
+                                    if (i++ == 2) { break; }
+                                }
                             }
-                        }
-                    </section>
+                        </section>
 
-                    <section class="widget widget_categories">
-                        <h3 class="widget-title">دسته بندی</h3>
+                        <section class="widget widget_categories">
+                            <h3 class="widget-title">دسته بندی</h3>
 
-                        <ul>
-                            @foreach (var item in db.NewsGroups.Where(x => x.IsActive == true))
-                            {
-                                <li><a href="/Blog/Groups?group=@item.AliasName">@item.GroupTitle</a></li>
-                            }
-                        </ul>
-                    </section>
+                            <ul>
+                                @foreach (var item in db.NewsGroups.Where(x => x.IsActive == true))
+                                {
+                                    <li><a href="/Blog/Groups?group=@item.AliasName">@item.GroupTitle</a></li>
+                                }
+                            </ul>
+                        </section>
 
-                    <section class="widget widget_tag_cloud">
-                        <h3 class="widget-title">برچسب ها</h3>
+                        <section class="widget widget_tag_cloud">
+                            <h3 class="widget-title">برچسب ها</h3>
 
-                        <div class="tagcloud">
-                            @foreach (var item in Model.NewsTag)
-                            {
-                                <a href="/Blog/Tags/@item.TagsTitle">@item.TagsTitle<span class="tag-link-count"> </span></a>
-                            }
-                        </div>
-                    </section>
-                </aside>
+                            <div class="tagcloud">
+                                @foreach (var item in Model.NewsTag)
+                                {
+                                    <a href="/Blog/Tags/@item.TagsTitle">@item.TagsTitle<span class="tag-link-count"> </span></a>
+                                }
+                            </div>
+                        </section>
+                    </aside>
+                </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>*@
 
 @foreach (var item in modulelist.Where(x => x.Position.PositionName == "Bottom").OrderBy(z => z.DisplayOrder))
 {
@@ -284,7 +523,7 @@
 
 @section script{
     <script>
-        $(".comment-reply-link").on("click", function (e) {
+        $(".reply-link").on("click", function (e) {
             e.preventDefault();
             $("#parentId").val($(this).attr("name"));
             $("body,html").animate({

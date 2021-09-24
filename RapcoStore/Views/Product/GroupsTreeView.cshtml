@@ -1,0 +1,50 @@
+﻿@model IEnumerable<Koshop.DomainClasses.ProductGroup>
+<div class="an-accordion">
+    <div class="" id="accordionyadak" role="tablist" aria-multiselectable="true">
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingOne">
+                <div class="an-tab-container">
+                    <div class="panel-title">
+                        <h4 class="no-margin">
+                            <a class="colapsflex" role="button" data-toggle="collapse" data-parent="#accordionyadak" href="#collapseyadak" aria-expanded="true" aria-controls="collapseyadak">
+                                <span id="yadakGrp"> دسته بندی نتایج</span>
+                                <i class="ion-android-arrow-dropdown color-primary" />
+                            </a>
+                        </h4>
+                    </div>
+                </div>
+            </div>
+            <div id="collapseyadak" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingyadak" aria-expanded="true">
+                <div class="panel-body">
+                    <div class="group-body">
+                        @foreach (var item in Model.OrderBy(x => x.Depth))
+                        {
+                        <div class="depth-@item.Depth">
+                            @if (item.ProductGroupId == ViewBag.groupSelectedParentId)
+                            {
+                                <a href="/Product/search?SlctGrpFilt=@item.GroupTitle.Replace(" ", "-")"> <p> <img style="width:14px" src="~/Content/Koshop/assets/img/expand-bottom.png" /> @item.GroupTitle</p></a>
+                            }
+                            else if (item.ParentId == ViewBag.groupSelectedParentId)
+                            {
+                                if (item.GroupTitle.Replace(" ", "-") != ViewBag.groupSelected)
+                                {
+                                    <a href="/Product/search?SlctGrpFilt=@item.GroupTitle.Replace(" ", "-")"> <p>  @item.GroupTitle</p></a>
+                                }
+                                else
+                                {
+                                    <p class="an-black-title"> <strong> @item.GroupTitle</strong></p>
+                                }
+                            }
+                            else if (item.GroupTitle.Replace(" ", "-") != ViewBag.groupSelected)
+                            {
+                                <a href="/Product/search?SlctGrpFilt=@item.GroupTitle.Replace(" ", "-")"> <p> <img style="width:20px" src="~/Content/Koshop/assets/img/expand-left.png" /> @item.GroupTitle</p></a>
+                            }
+                        </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

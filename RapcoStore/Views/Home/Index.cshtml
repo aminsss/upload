@@ -1,38 +1,64 @@
 ﻿@model Koshop.DomainClasses.Menu
 
 @section Head{
-    <title>فروشگاه راپکو | RAPCO STORE </title>
+    <title> @Koshop.web.Content.Resources.Titles.SiteTitle </title>
+    <meta name="keywords" content="بای اک ، بایوک ، بایاک ، bayok ، تامین کالا و خدمات شهرداری ها">
     <meta name="keywords" content="@Model.Description">
 }
 
 @{
+
     if (Model.PageType == "1")
     {
-        foreach (var item in Model.ModulePage.Where(y => y.MenuId == Model.MenuId && y.Module.Position.PositionName == "Slider" && y.Module.IsActive == true).OrderBy(z => z.Module.DisplayOrder))
+        foreach (var item in Model.ModulePage.Where(y => (y.MenuId == Model.MenuId || y.Menu.PageName == "ALLPages") && y.Module.Position.PositionName == "Slider" && y.Module.IsActive == true).OrderBy(z => z.Module.DisplayOrder))
         {
             @Html.Action(item.Module.Component.ActionName, item.Module.Component.ControllerName, new { @id = item.ModuleId })
         }
 
-        foreach (var item in Model.ModulePage.Where(y => y.MenuId == Model.MenuId && y.Module.Position.PositionName == "Top" && y.Module.IsActive == true).OrderBy(z => z.Module.DisplayOrder))
+        <div class="an-page-content">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8">
+                        @foreach (var item in Model.ModulePage.Where(y => (y.MenuId == Model.MenuId || y.Menu.PageName == "ALLPages") && y.Module.Position.PositionName == "SmallSlider" && y.Module.IsActive == true).OrderBy(z => z.Module.DisplayOrder))
+                        {
+                            @Html.Action(item.Module.Component.ActionName, item.Module.Component.ControllerName, new { @id = item.ModuleId })
+                        }
+                    </div>
+                    <div class="col-md-4">
+                        @foreach (var item in Model.ModulePage.Where(y => (y.MenuId == Model.MenuId || y.Menu.PageName == "ALLPages") && y.Module.Position.PositionName == "SliderSide" && y.Module.IsActive == true).OrderBy(z => z.Module.DisplayOrder))
+                        {
+                            @Html.Action(item.Module.Component.ActionName, item.Module.Component.ControllerName, new { @id = item.ModuleId })
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        foreach (var item in Model.ModulePage.Where(y => (y.MenuId == Model.MenuId || y.Menu.PageName == "ALLPages") && y.Module.Position.PositionName == "Top" && y.Module.IsActive == true).OrderBy(z => z.Module.DisplayOrder))
         {
             @Html.Action(item.Module.Component.ActionName, item.Module.Component.ControllerName, new { @id = item.ModuleId })
         }
 
-        <div class="col-md-3">
-            @foreach (var item in Model.ModulePage.Where(y => y.MenuId == Model.MenuId && y.Module.Position.PositionName == "Side" && y.Module.IsActive == true).OrderBy(z => z.Module.DisplayOrder))
-            {
-                @Html.Action(item.Module.Component.ActionName, item.Module.Component.ControllerName, new { @id = item.ModuleId })
-            }
+        <div class="an-page-content">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-9">
+                        @foreach (var item in Model.ModulePage.Where(y => (y.MenuId == Model.MenuId || y.Menu.PageName == "ALLPages") && y.Module.Position.PositionName == "Content" && y.Module.IsActive == true).OrderBy(z => z.Module.DisplayOrder))
+                        {
+                            @Html.Action(item.Module.Component.ActionName, item.Module.Component.ControllerName, new { @id = item.ModuleId })
+                        }
+                    </div>
+                    <div class="col-md-3">
+                        @foreach (var item in Model.ModulePage.Where(y => (y.MenuId == Model.MenuId || y.Menu.PageName == "ALLPages") && y.Module.Position.PositionName == "Side" && y.Module.IsActive == true).OrderBy(z => z.Module.DisplayOrder))
+                        {
+                            @Html.Action(item.Module.Component.ActionName, item.Module.Component.ControllerName, new { @id = item.ModuleId })
+                        }
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="col-md-9">
-            @foreach (var item in Model.ModulePage.Where(y => y.MenuId == Model.MenuId && y.Module.Position.PositionName == "Content" && y.Module.IsActive == true).OrderBy(z => z.Module.DisplayOrder))
-            {
-                @Html.Action(item.Module.Component.ActionName, item.Module.Component.ControllerName, new { @id = item.ModuleId })
-            }
-        </div>
-
-        foreach (var item in Model.ModulePage.Where(y => y.MenuId == Model.MenuId && y.Module.Position.PositionName == "Bottom" && y.Module.IsActive == true).OrderBy(z => z.Module.DisplayOrder))
+        foreach (var item in Model.ModulePage.Where(y => (y.MenuId == Model.MenuId || y.Menu.PageName == "ALLPages") && y.Module.Position.PositionName == "Bottom" && y.Module.IsActive == true).OrderBy(z => z.Module.DisplayOrder))
         {
             @Html.Action(item.Module.Component.ActionName, item.Module.Component.ControllerName, new { @id = item.ModuleId })
         }
@@ -42,12 +68,12 @@
         }
 
         @section script{
-
+            <script src="/content/koshop/assets/js/ks-homeIndex.js"></script>
         }
     }
     else if (Model.PageType == "2") // product
     {
-
+        @Html.Action("Product", "search", new { @id = Model.PageContetnt })
     }
     if (Model.PageType == "3") // blog
     {

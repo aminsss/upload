@@ -1,25 +1,21 @@
 ﻿@{ 
     Koshop.DataLayer.AppDbContext db = new Koshop.DataLayer.AppDbContext();
-
 }
-
 <footer class="an-footer">
     <div class="container">
         <div class="an-footer-top">
             <div class="row">
-                <div class="col-md-10">
-                     @foreach (var item in db.Modules.Where(x=>x.PositionId == 13))
+                <div class="col-md-8">
+                    @foreach (var item in db.Modules.Where(x => x.Position.PositionName == "Footer1" && x.IsActive == true))
                     {
-                        @Html.Action(item.Component.ActionName,item.Component.ControllerName , new { @id = item.ModuleId})
+                        @Html.Action(item.Component.ActionName, item.Component.ControllerName, new { @id = item.ModuleId })
                     }
-                  
                 </div>
-                <div class="col-md-2 ">
-                    @foreach (var item in db.Modules.Where(x=>x.PositionId == 14))
+                <div class="col-md-3 col-md-push-1">
+                    @foreach (var item in db.Modules.Where(x => x.Position.PositionName == "Social" && x.IsActive == true))
                     {
-                        @Html.Action(item.Component.ActionName,item.Component.ControllerName, new { @id = item.ModuleId})
+                        @Html.Action(item.Component.ActionName, item.Component.ControllerName, new { @id = item.ModuleId })
                     }
-                    
                 </div>
             </div>
         </div>
@@ -28,51 +24,42 @@
             <div class="row">
                 <div class="col-md-3 col-sm-6">
                     <div class="an-widget">
-                         @foreach (var item in db.Modules.Where(x=>x.PositionId == 15))
-                    {
-                        @Html.Action(item.Component.ActionName,item.Component.ControllerName, new { @id = item.ModuleId})
-                    }
-
-
+                        @foreach (var item in db.Modules.Where(x => x.Position.PositionName == "Footer2" && x.IsActive == true))
+                        {
+                            @Html.Action(item.Component.ActionName, item.Component.ControllerName, new { @id = item.ModuleId })
+                        }
                     </div>
                 </div>
                 <div class="col-md-3 col-sm-6">
                     <div class="an-widget">
-                    
-                    @foreach (var item in db.Modules.Where(x=>x.PositionId == 16))
-                    {
-                        @Html.Action(item.Component.ActionName,item.Component.ControllerName, new { @id = item.ModuleId})
-                    }
 
+                        @foreach (var item in db.Modules.Where(x => x.Position.PositionName == "Footer3" && x.IsActive == true))
+                        {
+                            @Html.Action(item.Component.ActionName, item.Component.ControllerName, new { @id = item.ModuleId })
+                        }
                     </div>
                 </div>
                 <div class="col-md-3 col-sm-6">
                     <div class="an-widget">
-                    
-                    @foreach (var item in db.Modules.Where(x=>x.PositionId == 17))
-                    {
-                        @Html.Action(item.Component.ActionName,item.Component.ControllerName, new { @id = item.ModuleId})
-                    }
-
+                        @foreach (var item in db.Modules.Where(x => x.Position.PositionName == "Footer4" && x.IsActive == true))
+                        {
+                            @Html.Action(item.Component.ActionName, item.Component.ControllerName, new { @id = item.ModuleId })
+                        }
                     </div>
                 </div>
-              
                 <div class="col-md-3 col-sm-6">
-
-
-                    <div class="an-widget ">
-                         @foreach (var item in db.Modules.Where(x=>x.PositionId == 18))
-                    {
-                        @Html.Action(item.Component.ActionName,item.Component.ControllerName, new { @id = item.ModuleId})
-                    }
-                        
-
+                    <div class="an-widget newsletter">
+                        <h4 class="an-small-title light-color">عضویت در خبر نامه</h4>
+                        <form action="#" class="an-form">
+                            <input type="email" class="an-form-control " placeholder="ایمیل">
+                            <button type="submit" class="an-btn an-btn-default btn-submit-full"><i class="ion-ios-paperplane"></i></button>
+                        </form>
                     </div>
                 </div>
                 <div class="col-md-12 text-center copyrights">
-                     @foreach (var item in db.Modules.Where(x=>x.PositionId == 19))
+                    @foreach (var item in db.Modules.Where(x => x.Position.PositionName == "Copyright" && x.IsActive == true))
                     {
-                        @Html.Action(item.Component.ActionName,item.Component.ControllerName, new { @id = item.ModuleId})
+                        @Html.Action(item.Component.ActionName, item.Component.ControllerName, new { @id = item.ModuleId })
                     }
                 </div>
             </div>

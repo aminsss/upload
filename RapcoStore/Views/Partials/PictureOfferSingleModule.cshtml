@@ -1,0 +1,23 @@
+﻿@model Koshop.DomainClasses.MultiPictureModule
+@{ 
+    string height = Model.TitleBold;
+}
+<div class="an-page-content">
+    <div class="row">
+        @foreach (var item in Model.MultiPictureItems)
+        {
+            <a href="@item.Link">
+                <div style="margin:15px 0 0">
+                    <div class="an-category-single no-margin">
+                        <div class="listing-img-container"
+                             style="background: url('/Content/Modules/Images/@item.Image') center center no-repeat;
+                                                 background-size: cover;height:@height">
+                        </div>
+                    </div> <!-- end an-category-single -->
+                </div>
+            </a>
+        }
+    </div>
+</div>
+
+

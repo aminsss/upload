@@ -1,0 +1,17 @@
+﻿@model Koshop.DomainClasses.Module
+<div class="an-inner-banner">
+    <div class="container">
+        <div class="an-title-container center">
+            <h1 class="an-title">@Model.ModuleTitle</h1>
+        </div> <!-- end title container -->
+    </div> <!-- end cotnainer -->
+</div>
+
+<div class="an-page-content">
+    <div class="container">
+        <div class="row">
+            @Html.Raw(Model.HtmlModule.HtmlText)
+        </div>
+    </div>
+</div>
+

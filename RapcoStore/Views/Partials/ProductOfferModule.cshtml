@@ -1,0 +1,49 @@
+﻿@model Koshop.DomainClasses.Module
+
+@{
+    Koshop.DataLayer.AppDbContext db = new Koshop.DataLayer.AppDbContext();
+}
+
+<h3>لیست کالاهای پیشنهادی</h3>
+<br />
+<div class="an-news-container">
+
+    @{
+        List<int> listprduct = new List<int>();
+        foreach (var item in db.Products)
+        {
+            listprduct.Add(item.ProductId);
+        }
+
+        List<string> bgColorList = new List<string>() { "bg-primary", "bg-property", "bg-hotel", "bg-job", "bg-motor", "bg-accents", "bg-pet", "bg-restaurant" };
+
+        for (int i = 0; i < 7; i++)
+        {
+            Random rnd = new Random();
+            int indxPr = rnd.Next(listprduct.Count);
+            int indxBg = rnd.Next(bgColorList.Count);
+            int selectedProductId = listprduct[indxPr];
+            string bgColor = bgColorList[indxBg];
+            if (listprduct.Count > 1)
+            {
+                listprduct.RemoveAt(indxPr);
+            }
+            if (bgColorList.Count > 1)
+            {
+                bgColorList.RemoveAt(indxBg);
+            }
+            var selectedProduct = db.Products.FirstOrDefault(x => x.ProductId == selectedProductId);
+
+            <div class="an-news-single latest-listing ">
+                <div class="an-top-meta">
+                    <span class="an-badge @bgColor "> @selectedProduct.ProductGroup.GroupTitle </span>
+                    @*<span class="price">@selectedProduct.ProductName</span>*@
+                </div>
+                <a href="/details/explore/@selectedProduct.AliasName"> @selectedProduct.ProductTitle</a>
+                @*<div class="listing-meta">
+                    <span>@selectedProduct.AliasName</span>
+                </div>*@
+            </div>
+        }
+    }
+</div>

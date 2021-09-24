@@ -60,6 +60,22 @@
         url('../fonts/iransans-fanum/woff/IRANSansWeb(FaNum)_Light.woff') format('woff'),
         url('../fonts/iransans-fanum/ttf/IRANSansWeb(FaNum)_Light.ttf') format('truetype');
 }
+
+@font-face {
+    font-family: 'B Nazanin';
+    src: local('B Nazanin'), local('BNazanin'), url('../font/BNazanin/BNazanin.woff2') format('woff2'), url('../font/BNazanin/BNazanin.woff') format('woff'), url('../font/BNazanin/BNazanin.ttf') format('truetype');
+    font-weight: 400;
+    font-stretch: normal;
+    /*font-style: normal;*/
+}
+
+@font-face {
+    font-family: 'B Nazanin';
+    src: local('B Nazanin Bold'), local('BNazanin-Bold'), url('../font/BNazanin/BNaznnBd.woff2') format('woff2'), url('../font/BNazanin/BNaznnBd.woff') format('woff'), url('../font/BNazanin/BNaznnBd.ttf') format('truetype');
+    font-weight: 700;
+    font-stretch: normal;
+    /*font-style: normal;*/
+}
 /*---------------------------- Fonts End --------------------------*/
 
 

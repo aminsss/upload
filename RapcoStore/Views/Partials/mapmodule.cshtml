@@ -17,39 +17,39 @@
 </div>
 
 
-
+<link rel="stylesheet" href="~/Content/ol/ol.css" type="text/css">
+<script src="~/Content/ol/ol.js"></script>
 <script>
-            var lan = document.getElementsByClassName("lan")[0].value;
-            var lat = document.getElementsByClassName("lat")[0].value;
-            var view = new ol.View({
-                center: ol.proj.fromLonLat([parseFloat(lan), parseFloat(lat)]),
-                zoom: 15,
-                maxZoom: 19,
-                minZoom: 5,
+    //var lan = document.getElementsByClassName("lan")[0].value;
+    //var lat = document.getElementsByClassName("lat")[0].value;
+    var view = new ol.View({
+       // center: ol.proj.fromLonLat([parseFloat(lan), parseFloat(lat)]),
+        zoom: 15,
+        maxZoom: 19,
+        minZoom: 5,
 
-            });
+    });
 
+    var map = new ol.Map({
+        target: 'map',
+        view: view,
+        layers: [
+            new ol.layer.Tile({
+                preload: 3,
+                source: new ol.source.OSM(),
+            })
+        ],
+        loadTilesWhileAnimating: true,
+    });
 
-            var map = new ol.Map({
-                target: 'map',
-                view: view,
-                layers: [
-                    new ol.layer.Tile({
-                        preload: 3,
-                        source: new ol.source.OSM(),
-                    })
-                ],
-                loadTilesWhileAnimating: true,
-            });
-
-            /**/
-            var pos = new ol.proj.fromLonLat([parseFloat(lan), parseFloat(lat)]);
-            /**/
-            var markervienna = new ol.Overlay({
-                position: pos,
-                positioning: 'bottom-center',
-                element: document.getElementById('markervienna'),
-                stopEvent: false
-            });
-            map.addOverlay(markervienna);
+    /**/
+    var pos = new ol.proj.fromLonLat([parseFloat(lan), parseFloat(lat)]);
+    /**/
+    var markervienna = new ol.Overlay({
+        position: pos,
+        positioning: 'bottom-center',
+        element: document.getElementById('markervienna'),
+        stopEvent: false
+    });
+    map.addOverlay(markervienna);
 </script>

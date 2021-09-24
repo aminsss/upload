@@ -1,0 +1,46 @@
+﻿@model Koshop.DomainClasses.MultiPictureModule
+
+@{
+    string part = string.Empty;
+    string height = Model.TitleBold;
+    switch (Model.MultiPictureItems.Count)
+    {
+        case 1:
+            part = "col-md-12";
+            break;
+        case 2:
+            part = "col-md-6";
+            break;
+        case 3:
+            part = "col-md-4";
+            break;
+        case 4:
+            part = "col-md-3";
+            break;
+        case 6:
+            part = "col-md-2";
+            break;
+    }
+}
+<div class="an-page-content">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                @foreach (var item in Model.MultiPictureItems)
+                {
+                    <a href="@item.Link">
+                        <div style="margin:25px 0 0" class=" @part">
+                            <div class="an-category-single">
+                                <div class="listing-img-container"
+                                     style="background: url('/Content/Modules/Images/@item.Image') center center no-repeat;
+                                                 background-size: cover; height:@height">
+                                </div>
+                            </div> <!-- end an-category-single -->
+                        </div>
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+

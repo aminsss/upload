@@ -14,7 +14,6 @@
                             <div class="no-kala">
                                 <p>کالایی جهت نمایش وجود ندارد!</p>
                                 <p>برای نمایش بهتر از کلمات مناسبتر برای جستجو استفاده کنید و یا از تعداد فیلترها حذف کنید(فیلترهای اعمال شده با <i class="ion-android-checkbox-outline"></i> نشان داده شده اند)</p>
-                                <p>و یا احتمالا شهر مورد نظر  کالا و دسته انتخابی شما را ندارد.</p>
                             </div>
                         </div>
                     </div>
@@ -24,13 +23,11 @@
     </div>
 }
 <div id="forload" class="an-tab-container">
-    <!-- Tab panes -->
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane fade active in" id="lowest-detail">
             @foreach (var item in Model)
             {
-                string count = "0";
-                <div class="an-kaladiv col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
+                <div class="an-kaladiv  col-lg-3 col-md-4 col-sm-6 col-xs-12 ">
                     <div class="an-accordion an-scalupkala" id="kalaStore_@item.ProductId">
                         <div class="" id="accordionkala_@item.ProductId" role="tablist" aria-multiselectable="true">
                             <div class="panel panel-default">
@@ -62,33 +59,13 @@
                                 <div class="an-kalabody an-tab-container">
                                     <div class=" an-listing-single">
                                         <a role="button" href="@Url.Action("explore","details",new { @id = item.AliasName })"target="_blank" >
-                                            @if (count == "0")
-                                            {
-                                                <div class="existence-text "> ناموجود در فروشگاه </div>
-                                            }
+                                           
                                             <img class="backgrkala" src="/Content/Upload/productImages/thumbnail/@item.ProductImage" height="150" width="150" />
                                         </a>
-                                    </div> <!-- end listing-single -->
+                                    </div> 
                                     <div class="an-kalaname">
                                         <p><a target="_blank" href="@Url.Action("explore","details",new { @id=item.AliasName})">@Html.DisplayFor(modelitem => item.ProductTitle)</a></p>
-                                        <div class="an-priceaverage">
-                                            @*@if (item.StoresProduct.Any())
-                                            {
-                                                <span id="price_@item.ProductId"> @string.Format("{0:C}", item.StoresProduct.Average(x => x.Price)) &nbsp;تومان </span>
-                                            }
-                                            else
-                                            {
-                                                <span id="price_@item.ProductId">در انتظار قیمت</span>
-                                            }*@
-                                            @*@if (count != "0")
-                                            {
-                                                <span id="count_@item.ProductId" style="display:none;"><span class="an-countstore"><img src="~/Content/Upload/StoreImage/thumbnail/no-photo.png" width="25" height="25" />&nbsp; @count فروشنده</span><span class="an-storecity" style="float:left">@incity.Replace("-", " ")</span></span>
-                                            }
-                                            else
-                                            {
-                                                <span id="count_@item.ProductId" style="display:none;"><a target="_blank" href="/Panel/ProductList/Index?SearchString=@item.ProductId" class="an-btn an-btn-default pdside-10"><i class="ion-plus-round"></i> اولین فروشنده باشید</a></span>
-                                            }*@
-                                        </div>
+                                       
                                         <div class="an-collapsebtn">
                                             <span><a role="button" data-toggle="collapse" data-parent="#accordionkala" href="#collapsekala_@item.ProductId" aria-expanded="false" aria-controls="collapsekala_@item.ProductId" class="collapsed"><i class="ion-information-circled"></i></a></span>
                                         </div>
@@ -102,7 +79,7 @@
         </div>
         <div role="tabpanel" class="tab-pane fade" id="highest-detail">
         </div>
-    </div> <!-- end tab-content -->
+    </div>
 </div>
 
 <div class="col-md-12">
@@ -134,17 +111,6 @@
                                                                               })
                                                                       )
         </div>
-    </div> <!-- an-pagination -->
+    </div>
 </div>
-@*<script>
-    $(".an-scalupkala").hover(function () {
-        var id = $(this).attr("id");
-        $("#price_" + id.replace("kalaStore_", "")).hide();
-        $("#count_" + id.replace("kalaStore_", "")).fadeIn();
-    }, function () {
-        var id = $(this).attr("id");
-        $("#price_" + id.replace("kalaStore_", "")).fadeIn();
-        $("#count_" + id.replace("kalaStore_", "")).hide();
-    });
-</script>*@
 <script>window.onload = function (event) { var element = document.getElementById('productdiv'); if (typeof (element) != 'undefined' && element != null) { } else { var hiddendiv = document.getElementById('hiddendiv'); hiddendiv.style.height = "1500px"; hiddendiv.style.width = "100%"; window.location.reload(); } }</script>

@@ -3,7 +3,7 @@
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
 @section Head{
-    <title>ایرمان کابینت | IrmanCabinet </title>
+    <title>@Koshop.web.Content.Resources.Titles.SiteTitle</title>
 }
 
 @{
@@ -15,45 +15,97 @@
 {
     @Html.Action(item.Component.ActionName, item.Component.ControllerName, new { @id = item.ModuleId })
 }
+    <div class="an-inner-banner center">
+        <div class="container">
+            <div class="an-advertise">
+                <div class="ad-details">
+                    @if (Model.Count > 0)
+                    {
+                        <h1><a href="#">@Model.FirstOrDefault().NewsGroup.GroupTitle</a></h1>
+                    }
+                </div>
+            </div> <!-- end an-advertise -->
 
+        </div> <!-- end cotnainer -->
+    </div>
 @foreach (var item in modulelist.Where(x => x.Position.PositionName == "Top").OrderBy(z => z.DisplayOrder))
 {
     @Html.Action(item.Component.ActionName, item.Component.ControllerName, new { @id = item.ModuleId })
 }
 
-<section class="blog-area ptb-100">
-    <div class="container">
-        <div class="row">
+    <div class="an-page-content">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="content-body">
+                        <div class="an-section-container">
+                            @foreach (var item in Model)
+                            {
+                                <div class="an-listing-single category-listing-single">
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <div class="listing-img-container" style="background: url('/Content/Upload/NewsImages/Images/@item.NewsImage') center center no-repeat;
+                                                background-size: contain;">
+                                                <div class="listing-hover-content">
+                                                    @*<a class="link-single" href="listing-single.html"><i class="ion-forward"></i></a>
+                                                    <p>
+                                                        <span><i class="typcn typcn-eye-outline color-job"></i> 10 234</span>
+                                                        <span><i class="typcn typcn-heart-outline color-accents"></i> 234</span>
+                                                    </p>*@
+                                                    <a href="/Blog/Contents/@item.AliasName" class="an-btn an-btn-black icon-left small-padding">نمایش مطلب</a>
+                                                </div>
+                                            </div>
+                                        </div>
 
-            @foreach (var item in Model)
-            {
-                <div class="col-lg-4 col-md-6 col-sm-6">
-                    <div class="single-blog-post">
-                        <div class="post-image">
-                            <a href="/Blog/Contents/@item.AliasName"><img src="~/Content/Upload/NewsImages/Images/@item.NewsImage" alt="image"></a>
-                        </div>
-
-                        <div class="post-content">
-                            <h3><a href="/Blog/Contents/@item.AliasName"> @item.NewsTitle</a></h3>
-                            <p>@item.NewsContent</p>
-                            <a href="/Blog/Contents/@item.AliasName" class="read-more-btn">ادامه خواندن <i class="flaticon-left-chevron"></i></a>
-                        </div>
-                    </div>
+                                        <div class="col-sm-8">
+                                            <div class="listing-content">
+                                                <div class="listing-name">
+                                                    <h3><a href="/Blog/Contents/@item.AliasName"> @item.NewsTitle</a></h3>
+                                                </div>
+                                                <p>@item.NewsContent</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> <!-- end category-listing-single -->
+                            }
+                                <div class="an-pagination">
+                                    <div class="col-lg-12 col-md-12">
+                                        <div class="pagination-area">
+                                            @Html.PagedListPager(Model, page => Url.Action("Groups",
+                                                     new { page, pageSize = Model.PageSize ,group = ViewBag.group }))
+                                        </div>
+                                    </div>
+                                </div> <!-- an-pagination -->
+                        </div> <!-- end an-section-container -->
+                    </div> <!-- end content-body -->
                 </div>
-            }
+                <div class="col-md-3">
+                    <div class="an-sidebar">
+                        <div class="an-sidebar-search">
+                                <div class="search-submit">
+                                    <button class="an-btn an-btn-default" type="submit"><i class="ion-android-search"></i></button>
+                                </div>
 
-            <div class="col-lg-12 col-md-12">
-                <div class="pagination-area">
-                    @Html.PagedListPager(Model, page => Url.Action("Groups",
-                             new { page, pageSize = Model.PageSize ,group = ViewBag.group }))
-                </div>
+                                <div class="search-single">
+                                    <input type="text" class="an-form-control bottom-border dark" placeholder="جستجو کلمه">
+                                </div>
+
+                                <div class="search-single">
+                                    <h4>دسته بندی</h4>
+                                    @foreach (var item in db.NewsGroups.Where(x => x.IsActive == true))
+                                     {
+                                        <a class="an-white-title" href="/Blog/Groups?group=@item.AliasName">
+                                                <p >@item.GroupTitle </p>
+                                        </a>    
+                                     }
+                                </div>
+                               
+                        </div> <!-- end sidebar-search -->
+                    </div> <!-- end an-sidebar -->
+                </div> <!-- end col-md-3 -->
             </div>
         </div>
     </div>
-</section>
-
-
-
 
 @foreach (var item in modulelist.Where(x => x.Position.PositionName == "Bottom").OrderBy(z => z.DisplayOrder))
 {
